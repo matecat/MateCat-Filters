@@ -39,6 +39,12 @@
                 <version>2.10.3</version>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <targetPath>.</targetPath>
+                <directory>src/main/config</directory>
+            </resource>
+        </resources>
     </build>
 
 </project>
