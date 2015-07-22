@@ -29,6 +29,108 @@
             <artifactId>junit-dep</artifactId>
             <version>4.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>55.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>net.sf.okapi</groupId>
+            <artifactId>build-okapi</artifactId>
+            <version>0.27</version>
+            <type>pom</type>
+        </dependency>-->
+
+
+        <!-- OKAPI CORE -->
+        <dependency>
+            <groupId>net.sf.okapi</groupId>
+            <artifactId>okapi-core</artifactId>
+            <version>LATEST</version>
+        </dependency>
+
+        <!-- OKAPI STEPS -->
+        <dependency>
+            <groupId>net.sf.okapi.steps</groupId>
+            <artifactId>okapi-step-common</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.steps</groupId>
+            <artifactId>okapi-step-segmentation</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.steps</groupId>
+            <artifactId>okapi-step-rainbowkit</artifactId>
+            <version>LATEST</version>
+        </dependency>
+
+        <!-- OKAPI FILTERS -->
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-rainbowkit</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-html</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-plaintext</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-openxml</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-openoffice</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-php</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-properties</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-po</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-xliff</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-json</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-idml</artifactId>
+            <version>LATEST</version>
+        </dependency>
+
+
+
+
     </dependencies>
 
     <build>
@@ -44,7 +146,23 @@
                 <targetPath>.</targetPath>
                 <directory>src/main/config</directory>
             </resource>
+            <resource>
+                <targetPath>.</targetPath>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                    <include>**/*</include>
+                </includes>
+            </resource>
         </resources>
     </build>
+
+    <repositories>
+        <repository>
+            <id>okapi-release</id>
+            <name>Okapi Release</name>
+            <url>http://repository-okapi.forge.cloudbees.com/release/</url>
+        </repository>
+    </repositories>
 
 </project>

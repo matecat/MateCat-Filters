@@ -1,5 +1,6 @@
 package com.matecat.converter.core;
 
+import com.matecat.converter.core.okapiclient.OkapiPack;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -19,42 +20,26 @@ import static org.junit.Assert.assertEquals;
  */
 public class XliffBuilderTest {
 
-    File originalFile;
-    OkapiResult result;
+    OkapiPack pack;
 
     @Before
     public void setUp() throws Exception {
 
         // Load files
-        originalFile = new File(getClass().getResource(File.separator + "Oviedo" + File.separator + "Oviedo.docx").toURI());
-        File xlf = new File(getClass().getResource(File.separator + "Oviedo" + File.separator + "Oviedo.docx.xlf").toURI());
-                File manifest = new File(getClass().getResource(File.separator + "Oviedo" + File.separator + "manifest.rkm").toURI());
-
-        // Check that the files exist
-        assert originalFile.exists();
-        assert xlf.exists();
-        assert manifest.exists();
-
-        // Generate result
-        result = new OkapiResult(xlf, manifest);
+        pack = new OkapiPack(new File(getClass().getResource(File.separator + "samplepack").getPath()));
 
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testBuildWithNullFile() throws Exception {
-        XliffBuilder.build(null, result);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testBuildWithNullSolution() throws Exception {
-        XliffBuilder.build(originalFile, null);
+    public void testBuildWithNullPack() throws Exception {
+        XliffBuilder.build(null);
     }
 
     @Test
     public void testBuild() throws Exception {
 
         // Build xliff
-        File xliff = XliffBuilder.build(originalFile, result);
+        File xliff = XliffBuilder.build(pack);
 
         // Check the generated xliff
         try {
@@ -67,12 +52,12 @@ public class XliffBuilderTest {
 
             // Check that the first element is the original file
             Element firstElement = (Element) root.getFirstChild();
-            String originalFilename = originalFile.getName();
+            String originalFilename = pack.getOriginalFile().getName();
             String retrievedFirstElementFilename = firstElement.getAttribute("original");
             assertEquals(originalFilename, retrievedFirstElementFilename);
 
             // Check that the encoding is stored properly
-            byte[] originalFileBytes = Files.readAllBytes(originalFile.toPath());
+            byte[] originalFileBytes = Files.readAllBytes(pack.getOriginalFile().toPath());
             String originalFileEncoded = Base64.getEncoder().encodeToString(originalFileBytes);
             String encodedFile = firstElement.getFirstChild().getFirstChild().getTextContent();
             assertEquals("The encoding of the original file does not match", originalFileEncoded, encodedFile);
@@ -83,7 +68,7 @@ public class XliffBuilderTest {
             assertEquals("manifest.rkm", retrievedSecondElementFilename);
 
             // Check that the manifest is stored properly
-            byte[] manifestBytes = Files.readAllBytes(result.getManifest().toPath());
+            byte[] manifestBytes = Files.readAllBytes(pack.getManifest().toPath());
             String originalManifestEncoded = Base64.getEncoder().encodeToString(manifestBytes);
             String encodedManifest = secondElement.getFirstChild().getFirstChild().getTextContent();
             assertEquals("The encoding of the manifest does not match", originalManifestEncoded, encodedManifest);

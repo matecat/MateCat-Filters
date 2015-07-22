@@ -103,7 +103,7 @@ public class LOCFormatConverter extends SocketFormatConverter {
     /**
      * LOC Converter constructor using the properties loaded before
      */
-    protected LOCFormatConverter() throws IOException {
+    public LOCFormatConverter() {
         super(HOST, PORT, true);
     }
 

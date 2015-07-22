@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- LGPL see http://languagetool.cvs.sourceforge.net/viewvc/languagetool/JLanguageTool/src/resource/segment.srx -->
+<srx xmlns="http://www.lisa.org/srx20" xmlns:okpsrx="http://okapi.sf.net/srx-extensions" version="2.0">
+<header segmentsubflows="yes" cascade="yes">
+<formathandle type="start" include="no"></formathandle>
+<formathandle type="end" include="yes"></formathandle>
+<formathandle type="isolated" include="no"></formathandle>
+<okpsrx:options oneSegmentIncludesAll="no" trimLeadingWhitespaces="yes" trimTrailingWhitespaces="yes" useJavaRegex="no"></okpsrx:options>
+<okpsrx:sample language="EN" useMappedRules="yes">                                     ## LEADING SPACES ##
+
+Example.) examp
+Example.) Example
+
+## URLS ##
+www.web.com
+web.com
+http://www.web.com
+http://www.web.com/web.web?v=v&amp;v=v
+sftp://host
+ssh://host
+
+## BRACKETS ##
+(Example) no
+(Example)no
+(Example), no
+(Example). Yes
+(Example).Yes
+(Example.) Yes
+(Example.)Yes
+(Example.) no
+(Example.)no
+
+## DASHES / QUOTES ##
+Word -yes-. Word.
+Word -yes.- Word.
+Word -yes-. word.
+Word -yes.- word.
+Word "yes". Word.
+Word "yes." Word.
+Word "yes". word.
+Word "yes." word.
+
+## LINE BREAKS ##
+Example
+example
+Example
+
+## MIDDLE SPACES ##
+Example.               Example.             Example
+           Example.                example
+
+## TABS ##
+Word		word
+	Word	Word
+
+## MAX/MIN ##
+Max. 10.
+max. 10.
+Max. yes.
+max. yes
+Max. Yes.
+max. yes
+Min. 10.
+min. 10.
+Min. yes.
+min. yes
+Min. Yes.
+min. yes
+
+## ELLIPSIS ###
+Example... Example
+Example... example
+
+## ENUMERATION ##
+A. Example
+A. example
+A. 1
+A. "Hola"
+a. Example
+a. example
+a. 1
+a. "Hola"
+1. Example
+1. example
+1. 1
+1. "Hola"
+   a. Example
+   a. example
+a. 1. Hola.
+13. Hola
+
+## COLON ##
+Example: yes
+Example: Yes
+Example: 12
+Example: "Yes"
+Example: ¡Yes!
+
+## HOURS ##
+1:00PM. 1:00. 1:00 AM. 10:00.
+
+## ETC ##
+etc. 123
+ecc. 123
+usw. 123
+etc. Capital case.
+ecc. Capital case.
+usw. Capital case
+etc., continuation
+ecc., continuation
+usw., continuation
+etc. lowercase
+ecc. lowercase
+usw. lowercase
+
+## OTHERS ##
+1º. 1ª. 1.º. 1.ª.
+
+## TRAILING SPACES ##                                              </okpsrx:sample>
+<okpsrx:rangeRule></okpsrx:rangeRule>
+</header>
+<body>
+<languagerules>
+<languagerule languagerulename="Common Exceptions">
+<rule break="no">
+<beforebreak>\b(Hon|Dr|[Ss]t|Hr|[Mm][Mm]|[Mm]mes?|[Mm]ssrs?|Mr|Ms|Mrs|Sr|Sra|Srto|Srta|St|Gen|Col|Maj|Gov|Brig|Sgt|Capt|Ch|Cmnd|Lt|Sen|Rev|Esq|Rep|Revd|Pr|Br|Pres|[Pp]rof|JS)\.\s</beforebreak>
+<afterbreak>[^\p{Ll}]</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>\b(Gen|Ex|Lev|Num|Art|Deut|Josh|Judg|Neh|Esth|Ps|Prov|Eccl|Isa|Jer|Lam|Ezek|Dan|Obad|Hab|Zeph|Hag|Zech|Mal|Matt|Rom|Cor|Gal|Eph|Philip|Col|Thes|Tim|Philem|Heb|Pet|Jn|Rev|Ne|Hel|Morm|Moro|Abr|Sam|Kgs|Chr)\.\s</beforebreak>
+<afterbreak>[^\p{Lu}]</afterbreak>
+</rule>
+<!--\b(A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z)\.-->
+<rule break="no">
+<beforebreak>\b(A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z)\.\s</beforebreak>
+<afterbreak></afterbreak>
+</rule>
+<!--\b([Ii]\.?e|[Ee]\.?g|cf|Inc|Ltd|Corp|[Ee]ng|v|[Ee]d|DC|comp|US|www|[Nn]r|lds|pp|p|[Vv]ol|ols|[Vv]s|[Ff]ig|[Ff]igs|[Vv]iz|[Aa]pprox|[Tt]el|[Ii]ncl|[Dd]ept|[Gg]ovt|Ibid|comp|[Bb]ros|Dist|Co|Ph\.?D|et\b\s\bal|[Zz]\.?\s?B)\.-->
+<rule break="no">
+<beforebreak>\b([Ii]\.?\s?e|[Ee]\.?\s?g|cf|Inc|Ltd|Corp|[Ee]ng|v|[Ee]d|DC|comp|US|www|[Nn]r|lds|pp|p|[Vv]ol|ols|[Vv]s|[Ff]ig|[Ff]igs|[Vv]iz|[Aa]pprox|[Tt]el|[Ii]ncl|Chem|Soc|[Dd]ept|[Gg]ovt|Ibid|comp|[Bb]ros|Dist|Co|Ph\.?D|et\b\s\bal|[Zz]\.?\s?B)\.\s</beforebreak>
+<afterbreak></afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>[Pp][aá]g\.\s?</beforebreak>
+<afterbreak>\d</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>\b(U\.?\s*K|U\.?\s*S|e\.?\s*g|i\.?\s*e|c\.?\s*f)\.\s</beforebreak>
+<afterbreak>[^\p{Lu}]</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>\b([A-Z]\.){2,}\s?</beforebreak>
+<afterbreak>\p{L}</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>[\)\]]\s*</beforebreak>
+<afterbreak>\p{Ll}</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>\b([Mm]ax|[Mm]in)\.\s+</beforebreak>
+<afterbreak>[\p{Ll}\d]</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>\.</beforebreak>
+<afterbreak>[ºª]</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>\.</beforebreak>
+<afterbreak>[\.\-"\)\]]</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>(etc|ecc|usw)\.\s?</beforebreak>
+<afterbreak>:</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>\d:</beforebreak>
+<afterbreak>\d</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>[Nn][Oo]?[Ss]?\.\s?</beforebreak>
+<afterbreak>\d</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>^\s*\p{Lu}\s*\.\s?</beforebreak>
+<afterbreak>(\p{Lu}\.|/)</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>:</beforebreak>
+<afterbreak>[/\\]</afterbreak>
+</rule>
+</languagerule>
+<languagerule languagerulename="Deutsch Breaks">
+<rule break="yes">
+<beforebreak>.+(«|&lt;&lt;)[!\.?]?\s*</beforebreak>
+<afterbreak>[\p{Lu}\d]</afterbreak>
+</rule>
+<!--[\p{L}\d]+[\p{Pe}\p{Po}"'‘’“”_„«\+\-%/\s]*[\.?!]+[\p{Pe}"'‘’“”\*]*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\s+[\p{Lu}\d\-\p{Pi}\p{Ps}\p{Pc}]-->
+<rule break="yes">
+<beforebreak>[\p{L}]+[\(\p{Pe}\p{Po}"'‘’“”_„«\+\-%/\s]*[\.?!]+[\p{Pe}"'‘’“”\*]*\s+</beforebreak>
+<afterbreak>\P{Ll}</afterbreak>
+</rule>
+<rule break="yes">
+<beforebreak>["‘’“”«]\s?</beforebreak>
+<afterbreak>["‘’“”»]</afterbreak>
+</rule>
+</languagerule>
+<languagerule languagerulename="Non-Deutsch Breaks">
+<rule break="yes">
+<beforebreak>.+(»|>)[!\.?]?\s*</beforebreak>
+<afterbreak>[\p{Lu}\d¿¡]</afterbreak>
+</rule>
+<!--[\p{L}\d]+[\(\p{Pe}\p{Po}"'‘’“”_„»\+\-%/\s]*[\.?!]+[\p{Pe}"'‘’“”\*]*\s+
+
+
+
+[\P{Ll}]-->
+<rule break="yes">
+<beforebreak>[\p{L}\d]+[\(\p{Pe}\p{Po}"'‘’“”_„»\+\-%/\s]*[\.?!]+[\p{Pe}"'‘’“”\*
+
+
+]*\s+</beforebreak>
+<afterbreak>\P{Ll}</afterbreak>
+</rule>
+<!--["'‘’“”»]-->
+<rule break="yes">
+<beforebreak>["'‘’“”»]\s+</beforebreak>
+<afterbreak>["’“”«]</afterbreak>
+</rule>
+<rule break="yes">
+<beforebreak>\.</beforebreak>
+<afterbreak>[¿¡]</afterbreak>
+</rule>
+</languagerule>
+<languagerule languagerulename="Common Breaks">
+<!--^\s*[\d+\p{Lu}+\p{Ll}+]\s*\.\s?-->
+<rule break="yes">
+<beforebreak>^\s*[\d+\p{Lu}+\p{Ll}+]\s*\.\s?</beforebreak>
+<afterbreak>[\p{Lu}¿¡\p{Po}]</afterbreak>
+</rule>
+<rule break="yes">
+<beforebreak>:\s?</beforebreak>
+<afterbreak></afterbreak>
+</rule>
+<rule break="yes">
+<beforebreak>[\.?!]+("|'|‘|’|“|”)[\.?!]+\s+</beforebreak>
+<afterbreak>\p{Lu}</afterbreak>
+</rule>
+<rule break="yes">
+<beforebreak>\n\s*</beforebreak>
+<afterbreak></afterbreak>
+</rule>
+<rule break="yes">
+<beforebreak>^\s+</beforebreak>
+<afterbreak></afterbreak>
+</rule>
+<rule break="yes">
+<beforebreak>\S</beforebreak>
+<afterbreak>\s+$</afterbreak>
+</rule>
+<!--[^\.,\p{Ll}\d"'‘’“”\)]-->
+<rule break="yes">
+<beforebreak>[0-9][\+\-%]?\.\s*</beforebreak>
+<afterbreak>\p{Lu}</afterbreak>
+</rule>
+<!--CJK break characters-->
+<rule break="yes">
+<beforebreak>[\u2029\u3002\ufe52\uff0e\uff61\u2049\ufe56\uff1f\u203c\u2048\u2762\u2763\ufe57\uff01]+</beforebreak>
+<afterbreak></afterbreak>
+</rule>
+<rule break="yes">
+<beforebreak>\.[\-\"\)]\s*</beforebreak>
+<afterbreak>[\p{Lu}¿¡\p{Po}\d]</afterbreak>
+</rule>
+</languagerule>
+<languagerule languagerulename="Thai Breaks">
+<rule break="yes">
+<beforebreak>[\u0e01-\u0e5b]{20,}\s+</beforebreak>
+<afterbreak></afterbreak>
+</rule>
+</languagerule>
+<languagerule languagerulename="Khmer Breaks">
+<rule break="yes">
+<beforebreak>[\u17D4\u17D5]\s+</beforebreak>
+<afterbreak></afterbreak>
+</rule>
+</languagerule>
+<languagerule languagerulename="English Exceptions">
+<rule break="no">
+<beforebreak>\b([Ss]ec|sel|est)\.\s</beforebreak>
+<afterbreak></afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>\b([Jj]an|[Ff]eb|[Mm]ar|[Aa]pr|[Jj]un|[Jj]ul|[Aa]ug|[Ss]ep|[Ss]ept|[Oo]ct|[Nn]ov|[Dd]ec)\.\s</beforebreak>
+<afterbreak>[^\p{Lu}]</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>\b([Ss]un|[Mm]on|[Tt]ue|[Tt]ues|[Ww]ed|[Ww]eds|[Tt]hu|[Tt]hur|[Tt]hurs|[Ff]ri|[Ss]at)\.\s</beforebreak>
+<afterbreak>[^\p{Lu}]</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>\b([Ee]xcl)\.\s</beforebreak>
+<afterbreak></afterbreak>
+</rule>
+</languagerule>
+<languagerule languagerulename="Deutsch Exceptions">
+<rule break="no">
+<beforebreak>[Zz]\.?\s?</beforebreak>
+<afterbreak>B\.</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>\b(evtl|[Mm]io|ca|ehem|gez|lfd|[Aa]bs|a\.\s?N|[Aa]bb|z\.T)\.\s?</beforebreak>
+<afterbreak></afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>a\.\s?</beforebreak>
+<afterbreak>N\.</afterbreak>
+</rule>
+<rule break="no">
+<beforebreak>[^\d,\.]\d{1,2}\.\s*</beforebreak>
+<afterbreak>\p{Lu}</afterbreak>
+</rule>
+</languagerule>
+</languagerules>
+<maprules>
+<languagemap languagepattern="(en|EN|fr|FR|de|DE|it|IT|es|ES).*" languagerulename="Common Exceptions"></languagemap>
+<languagemap languagepattern="(en|EN).*" languagerulename="English Exceptions"></languagemap>
+<languagemap languagepattern="(de|DE).*" languagerulename="Deutsch Exceptions"></languagemap>
+<languagemap languagepattern="(de|DE).*" languagerulename="Deutsch Breaks"></languagemap>
+<languagemap languagepattern="(?!.*[Dd][Ee]).*" languagerulename="Non-Deutsch Breaks"></languagemap>
+<languagemap languagepattern=".*" languagerulename="Common Breaks"></languagemap>
+<languagemap languagepattern="[Tt][Hh].*" languagerulename="Thai Breaks"></languagemap>
+<languagemap languagepattern="[Kk]([Hh]?)[Mm].*" languagerulename="Khmer Breaks"></languagemap>
+</maprules>
+</body>
+</srx>

@@ -4,6 +4,7 @@ import com.matecat.converter.core.format.Format;
 import com.matecat.converter.core.format.FormatNotSupportedException;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -290,7 +291,17 @@ public abstract class SocketFormatConverter extends AbstractFormatConverter {
             // Save the file
             outfile = readFile(outputPath);
 
-        } catch (IOException ignored) {}
+        }
+
+        // If the communication was not established
+        catch (ConnectException e) {
+            throw new ConverterException("it was not possible to connect with the conversion server");
+        }
+
+        // Other exceptions should not occur
+        catch (IOException ignored) {}
+
+        // Close the connection and readers
         finally {
             try {
                 close();
@@ -299,7 +310,7 @@ public abstract class SocketFormatConverter extends AbstractFormatConverter {
 
         // Check that the file was converted
         if (outfile == null)
-            throw new ConverterException("unknow error");
+            throw new ConverterException("unknown error");
 
         // Return the file
         return outfile;
