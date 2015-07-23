@@ -133,7 +133,7 @@ public class XliffBuilder {
 
             // Add the original file
             Element manifestNode = createFileElement(document, sourceLanguage, targetLanguage,
-                    "manifest", "manifest.rkm", originalFormat, encodedManifest);
+                    "manifest", "manifest.rkm", null, encodedManifest);
             root.insertBefore(manifestNode, root.getFirstChild());
 
             // Add the original file
@@ -193,7 +193,8 @@ public class XliffBuilder {
         Element originalFileSkeleton = document.createElement("skeleton");
         Element originalFileContent = document.createElement("file-contents");
         originalFileContent.setAttribute("encoding", "base64");
-        originalFileContent.setAttribute("original-format", originalFormat.toString());
+        if (originalFormat != null)
+            originalFileContent.setAttribute("original-format", originalFormat.toString());
         originalFileContent.appendChild(document.createTextNode(encodedFile));
         originalFileSkeleton.appendChild(originalFileContent);
 

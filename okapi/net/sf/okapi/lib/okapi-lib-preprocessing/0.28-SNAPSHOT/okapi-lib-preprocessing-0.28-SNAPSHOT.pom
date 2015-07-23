@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>net.sf.okapi.lib</groupId>
+    <artifactId>build-libraries</artifactId>
+    <version>0.28-SNAPSHOT</version>
+  </parent>
+  <artifactId>okapi-lib-preprocessing</artifactId>
+  <name>Okapi Library for Preprocessing</name>
+  <dependencies>
+  	<dependency>
+  		<groupId>net.sf.okapi</groupId>
+  		<artifactId>okapi-core</artifactId>
+  		<version>${project.version}</version>
+  	</dependency>
+  	<dependency>
+        <groupId>net.sf.okapi</groupId>
+        <artifactId>okapi-core</artifactId>
+        <version>${project.version}</version>
+        <classifier>tests</classifier>
+        <scope>test</scope>
+    </dependency>
+  	<dependency>
+  		<groupId>net.sf.okapi.steps</groupId>
+  		<artifactId>okapi-step-common</artifactId>
+  		<version>${project.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>net.sf.okapi.filters</groupId>
+  		<artifactId>okapi-filter-xmlstream</artifactId>
+  		<version>${project.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>net.sf.okapi.filters</groupId>
+  		<artifactId>okapi-filter-html</artifactId>
+  		<version>${project.version}</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>net.sf.okapi.lib</groupId>
+  		<artifactId>okapi-lib-extra</artifactId>
+  		<version>${project.version}</version>
+  		<scope>test</scope>
+  	</dependency>
+  </dependencies>  
+</project>

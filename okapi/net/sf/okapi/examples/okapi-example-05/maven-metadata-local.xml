@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>net.sf.okapi.examples</groupId>
+  <artifactId>okapi-example-05</artifactId>
+  <versioning>
+    <versions>
+      <version>0.28-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20150722175751</lastUpdated>
+  </versioning>
+</metadata>

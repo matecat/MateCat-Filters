@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>build-libraries</artifactId>
+    <groupId>net.sf.okapi.lib</groupId>
+    <version>0.28-SNAPSHOT</version>
+  </parent>
+  <artifactId>okapi-lib-reporting</artifactId>
+  <name>Okapi Library for Reporting</name>
+  <dependencies>
+  	<dependency>
+  		<groupId>net.sf.okapi</groupId>
+  		<artifactId>okapi-core</artifactId>
+  		<version>${project.version}</version>
+  		<scope>compile</scope>
+  	</dependency>
+  </dependencies>
+</project>

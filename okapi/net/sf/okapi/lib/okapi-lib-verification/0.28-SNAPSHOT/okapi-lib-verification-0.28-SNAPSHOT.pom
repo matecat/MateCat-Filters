@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>build-libraries</artifactId>
+        <groupId>net.sf.okapi.lib</groupId>
+        <version>0.28-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>okapi-lib-verification</artifactId>
+    <name>Okapi Library for Verification Utilities</name>
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.okapi</groupId>
+            <artifactId>okapi-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.lib</groupId>
+            <artifactId>okapi-lib-translation</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.lib</groupId>
+            <artifactId>okapi-lib-terminology</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>net.sf.okapi.connectors</groupId>
+			<artifactId>okapi-connector-google</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+
+		<!-- For tests -->
+        <dependency>
+        	<groupId>net.sf.okapi.filters</groupId>
+        	<artifactId>okapi-filter-xliff</artifactId>
+        	<version>${project.version}</version>
+        	<scope>test</scope>
+        </dependency>
+        <dependency>
+        	<groupId>net.sf.okapi.filters</groupId>
+        	<artifactId>okapi-filter-tmx</artifactId>
+        	<version>${project.version}</version>
+        	<scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

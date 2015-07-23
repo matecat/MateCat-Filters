@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>build-okapi-ui</artifactId>
+	<packaging>pom</packaging>
+	<name>Okapi UI Build</name>
+	<parent>
+		<artifactId>build-okapi</artifactId>
+		<groupId>net.sf.okapi</groupId>
+		<version>0.28-SNAPSHOT</version>
+		<relativePath>../../okapi/pom.xml</relativePath>
+	</parent>
+
+	<modules>
+        <module>core-ui</module>
+		<module>filters</module>
+		<module>libraries</module>
+		<module>steps</module>
+		<module>test-utilities</module>
+	</modules>
+	
+</project>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>net.sf.okapi.filters</groupId>
+  <artifactId>okapi-filter-vignette</artifactId>
+  <versioning>
+    <versions>
+      <version>0.28-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20150722175710</lastUpdated>
+  </versioning>
+</metadata>

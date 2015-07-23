@@ -1,0 +1,45 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>build-libraries</artifactId>
+		<groupId>net.sf.okapi.lib</groupId>
+		<version>0.27</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>okapi-lib-segmentation</artifactId>
+	<name>Okapi Library for Segmentation</name>
+	<dependencies>
+		<dependency>
+			<groupId>net.sf.okapi</groupId>
+			<artifactId>okapi-core</artifactId>
+			<scope>test</scope>
+			<classifier>tests</classifier>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.okapi</groupId>
+			<artifactId>okapi-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.icu</groupId>
+			<artifactId>icu4j</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+        	<groupId>net.sf.okapi.filters</groupId>
+        	<artifactId>okapi-filter-html</artifactId>
+        	<version>${project.version}</version>
+        	<scope>test</scope>
+		</dependency>
+		<dependency>
+        	<groupId>net.sf.okapi.filters</groupId>
+        	<artifactId>okapi-filter-plaintext</artifactId>
+        	<version>${project.version}</version>
+        	<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
+

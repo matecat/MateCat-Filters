@@ -1,6 +1,7 @@
 package com.matecat.converter.core.okapiclient;
 
 import com.matecat.converter.core.encoding.Encoding;
+import com.matecat.converter.core.format.Format;
 import net.sf.okapi.common.LocaleId;
 import net.sf.okapi.common.Util;
 import net.sf.okapi.common.filters.FilterConfigurationMapper;
@@ -40,6 +41,10 @@ public class OkapiClient {
         defaultSegmentation = new File(path.getPath());
     }
 
+
+    public static boolean isSupported(Format format) {
+        return OkapiFilterFactory.isSupported(format);
+    }
 
     private File getSegmentationFile(String filename) {
         URL path = getClass().getResource(File.separator + "segmentation" + File.separator + filename.toLowerCase() + ".srx");

@@ -5,6 +5,7 @@ import net.sf.okapi.common.filters.IFilter;
 import net.sf.okapi.filters.html.HtmlFilter;
 import net.sf.okapi.filters.idml.IDMLFilter;
 import net.sf.okapi.filters.json.JSONFilter;
+import net.sf.okapi.filters.mif.MIFFilter;
 import net.sf.okapi.filters.openoffice.OpenOfficeFilter;
 import net.sf.okapi.filters.openxml.ConditionalParameters;
 import net.sf.okapi.filters.openxml.OpenXMLFilter;
@@ -12,12 +13,52 @@ import net.sf.okapi.filters.php.PHPContentFilter;
 import net.sf.okapi.filters.plaintext.PlainTextFilter;
 import net.sf.okapi.filters.po.POFilter;
 import net.sf.okapi.filters.properties.PropertiesFilter;
+import net.sf.okapi.filters.railsyaml.RailsYamlFilter;
+import net.sf.okapi.filters.rainbowkit.RainbowKitFilter;
+import net.sf.okapi.filters.txml.Parameters;
+import net.sf.okapi.filters.txml.TXMLFilter;
 import net.sf.okapi.filters.xliff.XLIFFFilter;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Reneses on 7/22/15.
  */
 public class OkapiFilterFactory {
+
+    // Formats supported by the filter factory
+    protected static Set<Format> supportedFormats;
+    static {
+        supportedFormats = new HashSet<>(Arrays.asList(
+                Format.DOCX,
+                Format.PPTX,
+                Format.XLSX,
+                Format.TXT,
+                Format.HTML,
+                Format.XHTML,
+                Format.HTM,
+                Format.ODP,
+                Format.ODS,
+                Format.ODT,
+                Format.PHP,
+                Format.PROPERTIES,
+                Format.PO,
+                Format.XLF,
+                Format.XLIFF,
+                Format.JSON,
+                Format.IDML,
+                Format.TXML,
+                Format.YML,
+                Format.RKM,
+                Format.MIF));
+    }
+
+    protected static boolean isSupported(Format format) {
+        return supportedFormats.contains(format);
+    }
+
 
     protected static IFilter getFilter(Format format) {
 
@@ -61,6 +102,18 @@ public class OkapiFilterFactory {
             case IDML:
                 return getIdmlFilter();
 
+            case TXML: // TODO add to Matecat
+                return getTxmlFilter();
+
+            case YML: // TODO add to Matecat
+                return getYmlFilter();
+
+            case RKM: // TODO add to Matecat
+                return getRkmFilter();
+
+            case MIF:
+                return getMifFilter();
+
             default:
                 throw new RuntimeException("There is no filter configured for the format: " + format);
         }
@@ -69,10 +122,13 @@ public class OkapiFilterFactory {
     private static OpenXMLFilter getOpenXMLFilter() {
         OpenXMLFilter filter = new OpenXMLFilter();
         ConditionalParameters conditionalParameters = (ConditionalParameters) filter.getParameters();
-        //conditionalParameters.setCleanupAggressively(true);
-        //conditionalParameters.setTranslateWordExcludeGraphicMetaData(true);
-        //conditionalParameters.setTranslateDocProperties(false);
+        conditionalParameters.setCleanupAggressively(true);
+        conditionalParameters.setTranslateWordExcludeGraphicMetaData(true);
+        conditionalParameters.setTranslateDocProperties(false);
         conditionalParameters.setTranslateComments(false);
+        conditionalParameters.setTranslatePowerpointMasters(false);
+        conditionalParameters.setTranslateWordHeadersFooters(true);
+        conditionalParameters.setTranslateWordHidden(false);
         filter.setParameters(conditionalParameters);
         return filter;
     }
@@ -168,6 +224,44 @@ public class OkapiFilterFactory {
         // params.setSimplifyCodes();
         return filter;
     }
+
+    private static TXMLFilter getTxmlFilter() {
+        TXMLFilter filter = new TXMLFilter();
+        // net.sf.okapi.filters.txml.Parameters params = (net.sf.okapi.filters.txml.Parameters) filter.getParameters();
+        // params.setAllowEmptyOutputTarget();
+        // filter.setParameters(params);
+        return filter;
+    }
+
+    private static RailsYamlFilter getYmlFilter() {
+        RailsYamlFilter filter = new RailsYamlFilter();
+        // net.sf.okapi.filters.railsyaml.Parameters params = (net.sf.okapi.filters.railsyaml.Parameters) filter.getParameters();
+        // params.setEscapeNonAscii();
+        // filter.setParameters(params);
+        return filter;
+    }
+
+    private static RainbowKitFilter getRkmFilter() {
+        RainbowKitFilter filter = new RainbowKitFilter();
+        // net.sf.okapi.filters.rainbowkit.Parameters params = (net.sf.okapi.filters.rainbowkit.Parameters) filter.getParameters();
+        // filter.setParameters(params);
+        return filter;
+    }
+
+    private static MIFFilter getMifFilter() {
+        MIFFilter filter = new MIFFilter();
+        // net.sf.okapi.filters.mif.Parameters params = (net.sf.okapi.filters.mif.Parameters) filter.getParameters();
+        // params.setExtractBodyPages();
+        // params.setExtractHiddenPages();
+        // params.setExtractIndexMarkers();
+        // params.setExtractLinks();
+        // params.setExtractMasterPages();
+        // params.setExtractReferencePages();
+        // params.setExtractVariables();
+        // filter.setParameters(params);
+        return filter;
+    }
+
 
 
 

@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>build-connectors</artifactId>
+        <groupId>net.sf.okapi.connectors</groupId>
+        <version>0.28-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>okapi-connector-simpletm</artifactId>
+    <name>Okapi TM Connector for SimpleTM</name>
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.okapi</groupId>
+            <artifactId>okapi-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.lib</groupId>
+            <artifactId>okapi-lib-translation</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.tm</groupId>
+            <artifactId>okapi-tm-simpletm</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>

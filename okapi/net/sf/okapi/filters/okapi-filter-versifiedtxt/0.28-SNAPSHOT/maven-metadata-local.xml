@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>net.sf.okapi.filters</groupId>
+  <artifactId>okapi-filter-versifiedtxt</artifactId>
+  <version>0.28-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <localCopy>true</localCopy>
+    </snapshot>
+    <lastUpdated>20150722175711</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>0.28-SNAPSHOT</value>
+        <updated>20150722175711</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>0.28-SNAPSHOT</value>
+        <updated>20150722175711</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>tests</classifier>
+        <extension>jar</extension>
+        <value>0.28-SNAPSHOT</value>
+        <updated>20150721151159</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

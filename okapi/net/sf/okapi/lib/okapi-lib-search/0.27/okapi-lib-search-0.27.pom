@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>build-libraries</artifactId>
+		<groupId>net.sf.okapi.lib</groupId>
+		<version>0.27</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>okapi-lib-search</artifactId>
+	<name>Okapi Library for Indexed Search</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.sf.okapi</groupId>
+			<artifactId>okapi-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.java.dev.javacc</groupId>
+			<artifactId>javacc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.ibm.icu</groupId>
+			<artifactId>icu4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.trove4j</groupId>
+			<artifactId>trove4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+		</dependency>
+
+		<!-- PLEASE DO NOT REMOVE!!!!!
+			Add this to properties, to the superpom:
+			<org.apache.lucene.version>3.1.0</org.apache.lucene.version>
+
+			<dependency> <groupId>org.apache.lucene</groupId> 
+			<artifactId>lucene-analyzers</artifactId> <version>${org.apache.lucene.version}</version> </dependency> 
+			<dependency> <groupId>org.apache.lucene</groupId> <artifactId>lucene-snowball</artifactId> 
+			<version>${org.apache.lucene.version}</version> </dependency> <dependency> <groupId>org.apache.lucene</groupId> 
+			<artifactId>lucene-surround</artifactId> <version>${org.apache.lucene.version}</version> </dependency> 
+			<dependency> <groupId>org.apache.lucene</groupId> <artifactId>lucene-spellchecker</artifactId> 
+			<version>${org.apache.lucene.version}</version> </dependency> <dependency> <groupId>org.apache.lucene</groupId> 
+			<artifactId>lucene-fast-vector-highlighter</artifactId> <version>${org.apache.lucene.version}</version> 
+			</dependency> <dependency> <groupId>org.apache.lucene</groupId> <artifactId>lucene-highlighter</artifactId> 
+			<version>${org.apache.lucene.version}</version> </dependency> <dependency> <groupId>org.apache.lucene</groupId> 
+			<artifactId>lucene-queries</artifactId> <version>${org.apache.lucene.version}</version> </dependency> 
+			<dependency> <groupId>org.apache.lucene</groupId> <artifactId>lucene-collation</artifactId> 
+			<version>${org.apache.lucene.version}</version> </dependency> <dependency> <groupId>org.apache.lucene</groupId> 
+			<artifactId>lucene-memory</artifactId> <version>${org.apache.lucene.version}</version> </dependency> -->
+	</dependencies>
+</project>

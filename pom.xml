@@ -39,98 +39,102 @@
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
         </dependency>
-        <!--<dependency>
-            <groupId>net.sf.okapi</groupId>
-            <artifactId>build-okapi</artifactId>
-            <version>0.27</version>
-            <type>pom</type>
-        </dependency>-->
-
 
         <!-- OKAPI CORE -->
         <dependency>
             <groupId>net.sf.okapi</groupId>
             <artifactId>okapi-core</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
 
         <!-- OKAPI STEPS -->
         <dependency>
             <groupId>net.sf.okapi.steps</groupId>
             <artifactId>okapi-step-common</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.steps</groupId>
             <artifactId>okapi-step-segmentation</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.steps</groupId>
             <artifactId>okapi-step-rainbowkit</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
 
         <!-- OKAPI FILTERS -->
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-rainbowkit</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-html</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-plaintext</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-openxml</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-openoffice</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-php</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-properties</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-po</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-xliff</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-json</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-idml</artifactId>
-            <version>LATEST</version>
+            <version>0.28-SNAPSHOT</version>
         </dependency>
-
-
-
-
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-txml</artifactId>
+            <version>0.28-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-railsyaml</artifactId>
+            <version>0.28-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-mif</artifactId>
+            <version>0.28-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -162,6 +166,17 @@
             <id>okapi-release</id>
             <name>Okapi Release</name>
             <url>http://repository-okapi.forge.cloudbees.com/release/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>okapi-dev</id>
+            <name>Okapi Snapshot</name>
+            <url>file://${basedir}/okapi</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 

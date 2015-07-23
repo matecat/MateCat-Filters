@@ -16,7 +16,7 @@ import java.util.Locale;
 
 /**
  * Xliff Generator
- * This is the main class of the converter's code. It is used to generate an Xliff.
+ * This is the main class of the converter's core. It is used to generate an Xliff.
  */
 public class XliffGenerator {
 
@@ -71,9 +71,13 @@ public class XliffGenerator {
      */
     public File generate() {
 
-        // 1. Convert the file if it is required
+        // 0. Load the file
         Format originalFormat = Format.getFormat(this.file);
-        File file = convertFile(this.file);
+        File file = this.file;
+
+        // 1. If the file it's not supported, convert it
+        if (!OkapiClient.isSupported(originalFormat))
+            file = convertFile(this.file);
 
         // 2. Detect the encoding
         Encoding encoding = encodingDetector.detect(file);
@@ -87,6 +91,7 @@ public class XliffGenerator {
 
 
     /**
+     * // TODO throw an exception if not?
      * If any of the converters can convert the file, do it
      * @param file File to convert if possible
      * @return Converted file if possible, original file otherwise

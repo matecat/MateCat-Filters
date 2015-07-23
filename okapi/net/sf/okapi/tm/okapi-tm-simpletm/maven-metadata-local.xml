@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>net.sf.okapi.tm</groupId>
+  <artifactId>okapi-tm-simpletm</artifactId>
+  <versioning>
+    <versions>
+      <version>0.28-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20150722175740</lastUpdated>
+  </versioning>
+</metadata>

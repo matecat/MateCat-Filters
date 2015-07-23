@@ -1,0 +1,5 @@
+#NOTE: This is an internal implementation file, its format can be changed without prior notice.
+#Tue Jul 21 17:13:21 CEST 2015
+integration-tests-pipeline-0.28-SNAPSHOT-tests.jar>=
+integration-tests-pipeline-0.28-SNAPSHOT.jar>=
+integration-tests-pipeline-0.28-SNAPSHOT.pom>=
