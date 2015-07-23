@@ -59,7 +59,7 @@ public class XliffBuilderTest {
             // Check that the encoding is stored properly
             byte[] originalFileBytes = Files.readAllBytes(pack.getOriginalFile().toPath());
             String originalFileEncoded = Base64.getEncoder().encodeToString(originalFileBytes);
-            String encodedFile = firstElement.getFirstChild().getFirstChild().getTextContent();
+            String encodedFile = firstElement.getFirstChild().getFirstChild().getFirstChild().getTextContent();
             assertEquals("The encoding of the original file does not match", originalFileEncoded, encodedFile);
 
             // Check that the second element is the manifest
@@ -70,7 +70,7 @@ public class XliffBuilderTest {
             // Check that the manifest is stored properly
             byte[] manifestBytes = Files.readAllBytes(pack.getManifest().toPath());
             String originalManifestEncoded = Base64.getEncoder().encodeToString(manifestBytes);
-            String encodedManifest = secondElement.getFirstChild().getFirstChild().getTextContent();
+            String encodedManifest = secondElement.getFirstChild().getFirstChild().getFirstChild().getTextContent();
             assertEquals("The encoding of the manifest does not match", originalManifestEncoded, encodedManifest);
 
             // Removed the generated file

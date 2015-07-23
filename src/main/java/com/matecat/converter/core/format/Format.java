@@ -1,5 +1,7 @@
 package com.matecat.converter.core.format;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,18 +58,14 @@ public enum Format {
 
     }
 
-
     /**
-     * Obtain the extension (as a string) of a given file
-     * @param file File we want to extract the extension from
-     * @return File's extension
+     * Obtain the format of a given filename
+     * @param filename Filename we want to know the format
+     * @return File's format
+     * @throws FormatNotSupportedException If the file's format is not supported
      */
-    private static String getExtension(File file) {
-        String filename = file.getName();
-        int index = filename.lastIndexOf('.');
-        if (index <= 0)
-            throw new IllegalArgumentException("The given file " + filename + " does not have any extension");
-        return filename.substring(index + 1);
+    public static Format getFormat(String filename) {
+        return parse(FilenameUtils.getExtension(filename));
     }
 
 
@@ -78,7 +76,7 @@ public enum Format {
      * @throws FormatNotSupportedException If the file's format is not supported
      */
     public static Format getFormat(File file) {
-        return parse(getExtension(file));
+        return parse(FilenameUtils.getExtension(file.getName()));
     }
 
 

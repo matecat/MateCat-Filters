@@ -2,6 +2,7 @@ package com.matecat.converter.core;
 
 import com.matecat.converter.core.format.Format;
 import com.matecat.converter.core.okapiclient.OkapiPack;
+import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -24,27 +25,30 @@ import java.util.Base64;
  * Xliff builder
  *
  * This class is used to build a new XLIFF based on the original XLIFF, containing both the original file and the
- * manifest. This is done in new 'file' elements, within their 'skeleton' child, following the
- * <a href="http://docs.oasis-open.org/xliff/xliff-core/v2.0/xliff-core-v2.0.html">Xliff v2.0 specification</a>
+ * manifest. The new Xliff follows the
+ * <a href="http://docs.oasis-open.org/xliff/v1.2/os/xliff-core.html">v1.2 specification</a>.
  *
  * Both files are inserted creating two new 'file' elements at the beggining of the XLF:
- * 1. Original file (id: original-file)
- * 2. Manifest (id: manifest)
+ * 1. Original file
+ * 2. Manifest
  *
- * The filename and contents are stored as following:
- * <file id="{ID OF THE FILE}" original="{FILENAME}">
- *   <skeleton>
- *      <file-contents encoding="{ENCODING USED}" original-format="{ORIGINAL FORMAT}">
- *          {ENCODED CONTENTS OF THE FILE}
- *      </file-contents>
- *   </skeleton>
+ * The files are stored as following:
+ *
+ * <file
+ *  original="{ORIGINAL FILENAME (before conversions)}"
+ *  datatype="x-{FORMAT (after conversions)}"
+ *  source-language="{SRC LANGUAGE}"
+ *  target-language="{TARGET LANGUAGE}"
+ *  tool-id="matecat-converter">
+ *      <header>
+ *          <reference>
+ *              <internal-file form="base64">{ENCODED CONTENTS OF THE FILE}</internal-file>
+ *          </reference>
+ *      </header>
+ *      <body></body>
  * </file>
  */
 public class XliffBuilder {
-
-    // Encoded which will be used to store the files
-    private static Base64.Encoder encoder = Base64.getEncoder();
-
 
     /**
      * Build the XLIFF, manifest and original file into a new Xliff
@@ -96,7 +100,7 @@ public class XliffBuilder {
         String output;
         try {
             byte[] bytes = Files.readAllBytes(input.toPath());
-            output = encoder.encodeToString(bytes);
+            output = Base64.getEncoder().encodeToString(bytes);
         } catch (IOException e) {
             //e.printStackTrace();
             throw new RuntimeException("It was not possible to encode the file " + input.getName());
@@ -133,12 +137,12 @@ public class XliffBuilder {
 
             // Add the original file
             Element manifestNode = createFileElement(document, sourceLanguage, targetLanguage,
-                    "manifest", "manifest.rkm", null, encodedManifest);
+                    "manifest.rkm", null, encodedManifest);
             root.insertBefore(manifestNode, root.getFirstChild());
 
             // Add the original file
             Element originalFileNode = createFileElement(document, sourceLanguage, targetLanguage,
-                    "original-file", filename, originalFormat, encodedFile);
+                    filename, originalFormat, encodedFile);
             root.insertBefore(originalFileNode, root.getFirstChild());
 
             // Normalize document
@@ -173,33 +177,43 @@ public class XliffBuilder {
      * @param document XML's document
      * @param sourceLanguage Source language
      * @param targetLanguage Target language
-     * @param elementID New element's ID
      * @param filename Filename of the file we are storing
      * @param originalFormat Original file's format, before any conversion
      * @param encodedFile Encoded contents of the file we are storing  @return New file element
      */
     private static Element createFileElement(Document document, String sourceLanguage, String targetLanguage,
-                                             String elementID, String filename, Format originalFormat, String encodedFile) {
+                                             String filename, Format originalFormat, String encodedFile) {
+
+        // Process filename and original format
+        Format format = Format.getFormat(filename);
+        if (originalFormat != null  &&  originalFormat != format)  {
+            String basename = FilenameUtils.getBaseName(filename);
+            filename = String.format("%s.%s", basename,format);
+        }
 
         // Create the new file element which will contain the original file
         Element originalFileNode = document.createElement("file");
-        originalFileNode.setAttribute("id", elementID);
-        originalFileNode.setAttribute("datatype", "x-undefined");
+        originalFileNode.setAttribute("tool-id", "matecat-converter");
         originalFileNode.setAttribute("original", filename);
+        originalFileNode.setAttribute("datatype", "x-" + format);
         originalFileNode.setAttribute("source-language", sourceLanguage);
         originalFileNode.setAttribute("target-language", targetLanguage);
 
-        // Original's file skeleton
-        Element originalFileSkeleton = document.createElement("skeleton");
-        Element originalFileContent = document.createElement("file-contents");
-        originalFileContent.setAttribute("encoding", "base64");
-        if (originalFormat != null)
-            originalFileContent.setAttribute("original-format", originalFormat.toString());
-        originalFileContent.appendChild(document.createTextNode(encodedFile));
-        originalFileSkeleton.appendChild(originalFileContent);
+        // Header
+        Element headerElement = document.createElement("header");
+        Element referenceElement = document.createElement("reference");
+        Element internalFileElement = document.createElement("internal-file");
+        internalFileElement.setAttribute("form", "base64");
+        internalFileElement.appendChild(document.createTextNode(encodedFile));
+        referenceElement.appendChild(internalFileElement);
+        headerElement.appendChild(referenceElement);
 
         // Add the skeleton to the file, and the file to the document
-        originalFileNode.appendChild(originalFileSkeleton);
+        originalFileNode.appendChild(headerElement);
+
+        // Add empty body
+        Element bodyElement = document.createElement("body");
+        originalFileNode.appendChild(bodyElement);
 
         // Return the new node
         return originalFileNode;

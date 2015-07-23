@@ -112,37 +112,49 @@ public class XliffReverser {
 
     private void extractOriginalFormat(Element fileElement) {
 
+        // Try to obtain the format from the data type
+        try {
+            String filename = fileElement.getAttribute("original");
+            this.originalFormat = Format.getFormat(filename);
+        }
+        catch (Exception e1) {
+            throw new RuntimeException("The encoded file has no extension");
+        }
+
+    }
+
+
+    private String getFilename(Element fileElement) {
+
         // Filename
         String filename = fileElement.getAttribute("original");
 
-        // Original format
-        String originalFormatString = ((Element) fileElement.getFirstChild().getFirstChild()).getAttribute("original-format");
-        Format originalFormat;
+        // Replace the extension of the file for the one it was converted to
+        // Datatype structure is:  datatype="x-{FORMAT (after conversions)}"
         try {
-            originalFormat = Format.parse(originalFormatString);
+            String datatype = fileElement.getAttribute("datatype");
+            String convertedExtension = datatype.substring(2);
+            filename = FilenameUtils.getBaseName(filename) + "." + convertedExtension;
         }
-        catch (FormatNotSupportedException e1) {
-            try {
-                originalFormat = Format.parse(FilenameUtils.getExtension(filename));
-            }
-            catch (FormatNotSupportedException e2) {
-                throw new RuntimeException("The encoded file has no extension");
-            }
-        }
-        this.originalFormat = originalFormat;
-    }
+        catch (Exception ignore) {}
 
+        // Return it
+        return filename;
+
+    }
 
     private void reconstructOriginalFile(File packFolder, Element fileElement) {
 
         try {
 
             // Filename
-            String filename = fileElement.getAttribute("original");
+            String filename = getFilename(fileElement);
 
             // Contents
-            String encodedFile = ((Element) fileElement.getFirstChild().getFirstChild()).getTextContent();
+            Element internalFileElement = (Element) fileElement.getFirstChild().getFirstChild().getFirstChild();
+            String encodedFile = internalFileElement.getTextContent();
             byte[] originalFileBytes = Base64.getDecoder().decode(encodedFile);
+            //String form = internalFileElement.getAttribute("form");
 
             // Create original folder
             File originalFolder = new File(packFolder.getPath() + File.separator + OkapiPack.ORIGINAL_DIRECTORY_NAME);
@@ -171,7 +183,7 @@ public class XliffReverser {
                 throw new RuntimeException("The xlf is corrupted: it does not contain a manifest");
 
             // Manifest contents
-            String encodedManifest = manifestElement.getFirstChild().getFirstChild().getTextContent();
+            String encodedManifest = manifestElement.getFirstChild().getFirstChild().getFirstChild().getTextContent();
             byte[] manifestBytes = Base64.getDecoder().decode(encodedManifest);
 
             // Reconstruct the manifest file
@@ -193,7 +205,7 @@ public class XliffReverser {
             Element root = document.getDocumentElement();
 
             // Filename
-            String filename = fileElement.getAttribute("original");
+            String filename = getFilename(fileElement);
 
             // Obtain the original xlf
             root.removeChild(fileElement);
