@@ -12,9 +12,9 @@ import java.util.Arrays;
 public class OkapiPack {
 
     // File and directory names
-    private static final String MANIFEST_FILENAME = "manifest.rkm";
-    private static final String ORIGINAL_DIRECTORY_NAME = "original";
-    private static final String WORK_DIRECTORY_NAME = "work";
+    public static final String MANIFEST_FILENAME = "manifest.rkm";
+    public static final String ORIGINAL_DIRECTORY_NAME = "original";
+    public static final String WORK_DIRECTORY_NAME = "work";
 
     // Inner files
     private File pack;
