@@ -1,9 +1,11 @@
-package com.matecat.converter.server.rest;
+package com.matecat.converter.server.rest.resources;
 
 import com.matecat.converter.core.XliffGenerator;
 import com.matecat.converter.core.project.Project;
 import com.matecat.converter.core.project.ProjectFactory;
 import com.matecat.converter.server.exceptions.ServerException;
+import com.matecat.converter.server.rest.JSONResponseFactory;
+import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -28,7 +30,7 @@ import java.util.logging.Logger;
  * The result is returned as JSON, to obey the old Matecat library (TODO replace for file content)
  */
 @Path("/convert")
-public class ConvertResource {
+public class ConvertToXliffResource {
 
     // Logger
     private static Logger LOGGER = Logger.getLogger("ConvertResource");
@@ -51,10 +53,11 @@ public class ConvertResource {
             @FormDataParam("file") InputStream fileInputStream,
             @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
 
+        // Filename
+        String filename = FilenameUtils.getName(contentDispositionHeader.getFileName());
+
         // Logging
-        LOGGER.info(String.format(
-                "# REQUEST [%s]: %s to %s",
-                contentDispositionHeader.getFileName(), sourceLanguageCode, targetLanguageCode));
+        LOGGER.info(String.format("# [CONVERSION REQUEST] %s: %s to %s", filename, sourceLanguageCode, targetLanguageCode));
 
         try {
 
@@ -62,10 +65,9 @@ public class ConvertResource {
             Locale sourceLanguage = parseLanguage(sourceLanguageCode);
             Locale targetLanguage = parseLanguage(targetLanguageCode);
 
-            // Creating project
-            Project project = ProjectFactory.createProject(contentDispositionHeader.getFileName(), fileInputStream);
-            LOGGER.info(String.format("# PROJECT [%s]: %s",
-                    contentDispositionHeader.getFileName(), project.getFolder().getPath()));
+            // Create the project
+            Project project = ProjectFactory.createProject(filename, fileInputStream);
+            LOGGER.info(String.format("# PROJECT [%s]: %s", filename, project.getFolder().getPath()));
 
             // Retrieve the xlf
             File xlf = new XliffGenerator(sourceLanguage, targetLanguage, project.getFile()).generate();
@@ -104,7 +106,8 @@ public class ConvertResource {
     private Locale parseLanguage(String languageCode) throws ServerException {
 
         // Parse the code
-        Locale language = new Locale(languageCode);
+        Locale language = Locale.forLanguageTag(
+                languageCode);
 
         // Validate language
         try {

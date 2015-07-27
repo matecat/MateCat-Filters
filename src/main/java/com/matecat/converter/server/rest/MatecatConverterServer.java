@@ -1,6 +1,8 @@
 package com.matecat.converter.server.rest;
 
-import com.matecat.converter.server.rest.ConvertResource;
+import com.matecat.converter.server.rest.resources.ConvertToXliffResource;
+import com.matecat.converter.server.rest.resources.ExtractOriginalFileResource;
+import com.matecat.converter.server.rest.resources.GenerateDerivedFileResource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -29,17 +31,19 @@ public class MatecatConverterServer {
         String ip = InetAddress.getLocalHost().getHostAddress();
         Logger.getLogger("Server").info( "\n" +
                         "############################################\n" +
-                        "###   MATECAT SERVER STARTED\n" +
+                        "###   MATECAT CONVERTER SERVER STARTED\n" +
                         "###   > IP: " + ip + "\n" +
                         "###   > PORT: " + serverPort + "\n" +
-                        "############################################");
+                        "############################################\n");
         server.join();
 
     }
 
     private Server configureServer() {
         ResourceConfig resourceConfig = new ResourceConfig();
-        resourceConfig.packages(ConvertResource.class.getPackage().getName());
+        resourceConfig.packages(ConvertToXliffResource.class.getPackage().getName());
+        resourceConfig.packages(GenerateDerivedFileResource.class.getPackage().getName());
+        resourceConfig.packages(ExtractOriginalFileResource.class.getPackage().getName());
         resourceConfig.register(JacksonFeature.class);
         resourceConfig.register(MultiPartFeature.class);
         ServletContainer servletContainer = new ServletContainer(resourceConfig);
