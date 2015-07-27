@@ -1,0 +1,690 @@
+# English translations for subdomain_parser package.
+# Copyright (C) 2005 Immunix, Inc.
+# This file is distributed under the same license as the subdomain_parser package.
+# Steve Beattie <steve@immunix.com>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: subdomain-parser 1.1\n"
+"Report-Msgid-Bugs-To: apparmor-general@forge.novell.com\n"
+"POT-Creation-Date: 2010-10-06 14:19-0400\n"
+"PO-Revision-Date: 2008-04-25 15:23+0200\n"
+"Last-Translator: Steve Beattie <steve@immunix.com>\n"
+"Language-Team: English\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../parser_include.c:113
+#, fuzzy
+msgid "Error: Out of memory.\n"
+msgstr "Error: Out of Memory\n"
+
+#: ../parser_include.c:123
+#, c-format
+msgid "Error: basedir %s is not a directory, skipping.\n"
+msgstr ""
+
+#: ../parser_include.c:137
+#, fuzzy, c-format
+msgid "Error: Could not add directory %s to search path.\n"
+msgstr "Error: Can't add directory %s to search path\n"
+
+#: ../parser_include.c:147
+#, fuzzy
+msgid "Error: Could not allocate memory.\n"
+msgstr "Error: Could not allocate memory\n"
+
+#: ../parser_interface.c:71
+msgid "Bad write position\n"
+msgstr "Bad write position\n"
+
+#: ../parser_interface.c:74
+msgid "Permission denied\n"
+msgstr "Permission denied\n"
+
+#: ../parser_interface.c:77
+msgid "Out of memory\n"
+msgstr "Out of memory\n"
+
+#: ../parser_interface.c:80
+#, fuzzy
+msgid "Couldn't copy profile: Bad memory address\n"
+msgstr "Couldn't copy profile Bad memory address\n"
+
+#: ../parser_interface.c:83
+msgid "Profile doesn't conform to protocol\n"
+msgstr "Profile doesn't conform to protocol\n"
+
+#: ../parser_interface.c:86
+msgid "Profile does not match signature\n"
+msgstr "Profile does not match signature\n"
+
+#: ../parser_interface.c:89
+#, fuzzy
+msgid "Profile version not supported by Apparmor module\n"
+msgstr "Profile version not supported\n"
+
+#: ../parser_interface.c:92
+#, fuzzy
+msgid "Profile already exists\n"
+msgstr "Profile doesn't exist\n"
+
+#: ../parser_interface.c:95
+msgid "Profile doesn't exist\n"
+msgstr "Profile doesn't exist\n"
+
+#: ../parser_interface.c:98
+msgid "Permission denied; attempted to load a profile while confined?\n"
+msgstr ""
+
+#: ../parser_interface.c:101
+#, fuzzy, c-format
+msgid "Unknown error (%d): %s\n"
+msgstr "Unknown error\n"
+
+#: ../parser_interface.c:118
+#, c-format
+msgid "%s: Unable to add \"%s\".  "
+msgstr "%s: Unable to add \"%s\".  "
+
+#: ../parser_interface.c:123
+#, c-format
+msgid "%s: Unable to replace \"%s\".  "
+msgstr "%s: Unable to replace \"%s\".  "
+
+#: ../parser_interface.c:128
+#, c-format
+msgid "%s: Unable to remove \"%s\".  "
+msgstr "%s: Unable to remove \"%s\".  "
+
+#: ../parser_interface.c:133
+#, c-format
+msgid "%s: Unable to write to stdout\n"
+msgstr "%s: Unable to write to stdout\n"
+
+#: ../parser_interface.c:137 ../parser_interface.c:160
+#, c-format
+msgid "%s: ASSERT: Invalid option: %d\n"
+msgstr "%s: ASSERT: Invalid option: %d\n"
+
+#: ../parser_interface.c:146
+#, c-format
+msgid "Addition succeeded for \"%s\".\n"
+msgstr "Addition succeeded for \"%s\".\n"
+
+#: ../parser_interface.c:150
+#, c-format
+msgid "Replacement succeeded for \"%s\".\n"
+msgstr "Replacement succeeded for \"%s\".\n"
+
+#: ../parser_interface.c:154
+#, c-format
+msgid "Removal succeeded for \"%s\".\n"
+msgstr "Removal succeeded for \"%s\".\n"
+
+#: ../parser_interface.c:249
+#, c-format
+msgid "PANIC bad increment buffer %p pos %p ext %p size %d res %p\n"
+msgstr "PANIC bad increment buffer %p pos %p ext %p size %d res %p\n"
+
+#: ../parser_interface.c:718
+#, c-format
+msgid "profile %s network rules not enforced\n"
+msgstr ""
+
+#: ../parser_interface.c:848 ../parser_interface.c:1000
+#, fuzzy, c-format
+msgid "Unable to open %s - %s\n"
+msgstr "Unable to open %s - %s\n"
+
+#: ../parser_interface.c:874
+#, fuzzy, c-format
+msgid "Memory Allocation Error: Unable to remove ^%s\n"
+msgstr "%s: Unable to remove \"%s\".  "
+
+#: ../parser_interface.c:887
+#, fuzzy, c-format
+msgid "Memory Allocation Error: Unable to remove %s:%s."
+msgstr "Memory allocation error."
+
+#: ../parser_interface.c:908
+msgid "unable to create work area\n"
+msgstr "unable to create work area\n"
+
+#: ../parser_interface.c:916
+#, c-format
+msgid "unable to serialize profile %s\n"
+msgstr "unable to serialize profile %s\n"
+
+#: ../parser_interface.c:927 ../parser_interface.c:1014
+#, c-format
+msgid "%s: Unable to write entire profile entry\n"
+msgstr "%s: Unable to write entire profile entry\n"
+
+#: ../parser_interface.c:937
+#, fuzzy, c-format
+msgid "%s: Unable to write entire profile entry to cache\n"
+msgstr "%s: Unable to write entire profile entry\n"
+
+#: parser_lex.l:97
+#, fuzzy, c-format
+msgid "Could not open '%s'"
+msgstr "Couldn't open file: %s."
+
+#: parser_lex.l:101
+#, c-format
+msgid "fstat failed for '%s'"
+msgstr ""
+
+#: parser_lex.l:118
+#, fuzzy, c-format
+msgid "opendir failed '%s'"
+msgstr "Download failed: "
+
+#: parser_lex.l:149
+#, c-format
+msgid "stat failed for '%s'"
+msgstr ""
+
+#: parser_lex.l:152
+#, fuzzy, c-format
+msgid "Could not open '%s' in '%s'"
+msgstr "Couldn't open file: %s."
+
+#: parser_lex.l:281 parser_lex.l:319 parser_lex.l:359 parser_lex.l:455
+#: parser_lex.l:641
+#, c-format
+msgid "Found unexpected character: '%s'"
+msgstr "Found unexpected character: '%s'"
+
+#: parser_lex.l:406
+#, fuzzy, c-format
+msgid "(network_mode) Found unexpected character: '%s'"
+msgstr "(ip_mode) Found unexpected character: '%s'"
+
+#: ../parser_main.c:232
+#, fuzzy, c-format
+msgid "Warning from %s (%s%sline %d): %s"
+msgstr "Warning (line %d): "
+
+#: ../parser_main.c:477
+#, c-format
+msgid "%s: Could not allocate memory for subdomainbase mount point\n"
+msgstr "%s: Could not allocate memory for subdomainbase mount point\n"
+
+#: ../parser_main.c:523
+#, c-format
+msgid ""
+"Warning: unable to find a suitable fs in %s, is it mounted?\n"
+"Use --subdomainfs to override.\n"
+msgstr ""
+
+#: ../parser_main.c:543
+#, fuzzy, c-format
+msgid ""
+"%s: Sorry. You need root privileges to run this program.\n"
+"\n"
+msgstr ""
+"%s: Sorry. You need root priveleges to run this program.\n"
+"\n"
+
+#: ../parser_main.c:550
+#, fuzzy, c-format
+msgid ""
+"%s: Warning! You've set this program setuid root.\n"
+"Anybody who can run this program can update your AppArmor profiles.\n"
+"\n"
+msgstr ""
+"%s: Warning! You've set this program setuid root.\n"
+"Anybody who can run this program can update your SubDomain profiles.\n"
+"\n"
+
+#: ../parser_main.c:667 ../parser_main.c:755
+#, fuzzy, c-format
+msgid "Error: Could not read profile %s: %s.\n"
+msgstr "Error couldn't allocate temporary file\n"
+
+#: ../parser_main.c:681 ../parser_misc.c:303 parser_yacc.y:218
+#: parser_yacc.y:245 parser_yacc.y:350 parser_yacc.y:362 parser_yacc.y:460
+#: parser_yacc.y:562 parser_yacc.y:600 parser_yacc.y:912 parser_yacc.y:921
+#: parser_yacc.y:930 parser_yacc.y:1003 parser_yacc.y:1051 parser_yacc.y:1062
+#: parser_yacc.y:1144 parser_yacc.y:1162 parser_yacc.y:1169 parser_yacc.y:1180
+msgid "Memory allocation error."
+msgstr "Memory allocation error."
+
+#: ../parser_main.c:703
+#, fuzzy, c-format
+msgid "Cached load succeeded for \"%s\".\n"
+msgstr "Removal succeeded for \"%s\".\n"
+
+#: ../parser_main.c:707
+#, fuzzy, c-format
+msgid "Cached reload succeeded for \"%s\".\n"
+msgstr "Removal succeeded for \"%s\".\n"
+
+#: ../parser_main.c:867
+#, c-format
+msgid "%s: Errors found in file. Aborting.\n"
+msgstr "%s: Errors found in file. Aborting.\n"
+
+#: ../parser_misc.c:459
+msgid ""
+"Uppercase qualifiers \"RWLIMX\" are deprecated, please convert to lowercase\n"
+"See the apparmor.d(5) manpage for details.\n"
+msgstr ""
+
+#: ../parser_misc.c:500 ../parser_misc.c:507
+msgid "Conflict 'a' and 'w' perms are mutually exclusive."
+msgstr ""
+
+#: ../parser_misc.c:524
+msgid "Exec qualifier 'i' invalid, conflicting qualifier already specified"
+msgstr "Exec qualifier 'i' invalid, conflicting qualifier already specified"
+
+#: ../parser_misc.c:535
+#, c-format
+msgid ""
+"Unconfined exec qualifier (%c%c) allows some dangerous environment variables "
+"to be passed to the unconfined process; 'man 5 apparmor.d' for details.\n"
+msgstr ""
+
+#: ../parser_misc.c:543 ../parser_misc.c:584
+#, fuzzy, c-format
+msgid "Exec qualifier '%c' invalid, conflicting qualifier already specified"
+msgstr "Exec qualifier 'i' invalid, conflicting qualifier already specified"
+
+#: ../parser_misc.c:570 ../parser_misc.c:578
+#, fuzzy, c-format
+msgid "Exec qualifier '%c%c' invalid, conflicting qualifier already specified"
+msgstr "Exec qualifier 'i' invalid, conflicting qualifier already specified"
+
+#: ../parser_misc.c:626
+#, fuzzy, c-format
+msgid "Internal: unexpected mode character '%c' in input"
+msgstr "Internal: unexpected mode character in input"
+
+#: ../parser_misc.c:648
+#, c-format
+msgid "Internal error generated invalid perm 0x%llx\n"
+msgstr ""
+
+#: ../parser_misc.c:902 ../parser_symtab.c:563 ../parser_regex.c:744
+#: ../parser_variable.c:227
+#, fuzzy, c-format
+msgid "AppArmor parser error: %s\n"
+msgstr "Subdomain parser error, line %d: %s\n"
+
+#: ../parser_merge.c:94
+#, fuzzy
+msgid "Couldn't merge entries. Out of Memory\n"
+msgstr "Couldn't merge entries. Out of Memory\n"
+
+#: ../parser_merge.c:113
+#, c-format
+msgid "profile %s: has merged rule %s with multiple x modifiers\n"
+msgstr "profile %s: has merged rule %s with multiple x modifiers\n"
+
+#: parser_yacc.y:222
+msgid "Profile names must begin with a '/', or keyword 'profile' or 'hat'."
+msgstr ""
+
+#: parser_yacc.y:272
+#, fuzzy, c-format
+msgid "Failed to create alias %s -> %s\n"
+msgstr "Unable to open %s - %s\n"
+
+#: parser_yacc.y:393
+msgid "Profile flag chroot_relative conflicts with namespace_relative"
+msgstr ""
+
+#: parser_yacc.y:397
+msgid "Profile flag mediate_deleted conflicts with delegate_deleted"
+msgstr ""
+
+#: parser_yacc.y:400
+msgid "Profile flag attach_disconnected conflicts with no_attach_disconnected"
+msgstr ""
+
+#: parser_yacc.y:403
+msgid "Profile flag chroot_attach conflicts with chroot_no_attach"
+msgstr ""
+
+#: parser_yacc.y:417
+msgid "Profile flag 'debug' is no longer valid."
+msgstr ""
+
+#: parser_yacc.y:439
+#, fuzzy, c-format
+msgid "Invalid profile flag: %s."
+msgstr "Writing updated profile for %s."
+
+#: parser_yacc.y:474 parser_yacc.y:496
+msgid "Assert: `rule' returned NULL."
+msgstr "Assert: `rule' returned NULL."
+
+#: parser_yacc.y:477 parser_yacc.y:522
+#, fuzzy
+msgid ""
+"Invalid mode, in deny rules 'x' must not be preceded by exec qualifier 'i', "
+"'p', or 'u'"
+msgstr "Invalid mode, 'x' must be preceded by exec qualifier 'i', 'u' or 'p'"
+
+#: parser_yacc.y:500
+#, fuzzy
+msgid ""
+"Invalid mode, 'x' must be preceded by exec qualifier 'i', 'p', 'c', or 'u'"
+msgstr "Invalid mode, 'x' must be preceded by exec qualifier 'i', 'u' or 'p'"
+
+#: parser_yacc.y:525
+#, fuzzy
+msgid "Invalid mode, 'x' must be preceded by exec qualifier 'i', 'p', or 'u'"
+msgstr "Invalid mode, 'x' must be preceded by exec qualifier 'i', 'u' or 'p'"
+
+#: parser_yacc.y:550 parser_yacc.y:588
+#, fuzzy
+msgid "Assert: `network_rule' return invalid protocol."
+msgstr "Assert: `netrule' returned NULL."
+
+#: parser_yacc.y:625
+#, fuzzy
+msgid "Assert: `change_profile' returned NULL."
+msgstr "Assert: `netrule' returned NULL."
+
+#: parser_yacc.y:656
+msgid "Assert: 'hat rule' returned NULL."
+msgstr "Assert: 'hat rule' returned NULL."
+
+#: parser_yacc.y:665
+#, fuzzy
+msgid "Assert: 'local_profile rule' returned NULL."
+msgstr "Assert: `netrule' returned NULL."
+
+#: parser_yacc.y:800
+#, c-format
+msgid "Unset boolean variable %s used in if-expression"
+msgstr ""
+
+#: parser_yacc.y:858
+msgid "subset can only be used with link rules."
+msgstr ""
+
+#: parser_yacc.y:860
+msgid "link and exec perms conflict on a file rule using ->"
+msgstr ""
+
+#: parser_yacc.y:862 parser_yacc.y:881
+msgid "link perms are not allowed on a named profile transition.\n"
+msgstr ""
+
+#: parser_yacc.y:878
+msgid "unsafe rule missing exec permissions"
+msgstr ""
+
+#: parser_yacc.y:894
+#, c-format
+msgid "missing an end of line character? (entry: %s)"
+msgstr "missing an end of line character? (entry: %s)"
+
+#: parser_yacc.y:1018 parser_yacc.y:1028
+#, fuzzy
+msgid "Invalid network entry."
+msgstr "Invalid relation"
+
+#: parser_yacc.y:1082 parser_yacc.y:1091
+#, fuzzy, c-format
+msgid "Invalid capability %s."
+msgstr "Denying capability %s to profile."
+
+#: parser_yacc.y:1109
+#, fuzzy, c-format
+msgid "AppArmor parser error for %s%s%s at line %d: %s\n"
+msgstr "Subdomain parser error, line %d: %s\n"
+
+#: parser_yacc.y:1115
+#, fuzzy, c-format
+msgid "AppArmor parser error,%s%s line %d: %s\n"
+msgstr "Subdomain parser error, line %d: %s\n"
+
+#: ../parser_regex.c:288
+#, c-format
+msgid "%s: Illegal open {, nesting groupings not allowed\n"
+msgstr "%s: Illegal open {, nesting groupings not allowed\n"
+
+#: ../parser_regex.c:309
+#, c-format
+msgid "%s: Regex grouping error: Invalid number of items between {}\n"
+msgstr "%s: Regex grouping error: Invalid number of items between {}\n"
+
+#: ../parser_regex.c:315
+#, c-format
+msgid ""
+"%s: Regex grouping error: Invalid close }, no matching open { detected\n"
+msgstr ""
+"%s: Regex grouping error: Invalid close }, no matching open { detected\n"
+
+#: ../parser_regex.c:381
+#, fuzzy, c-format
+msgid ""
+"%s: Regex grouping error: Unclosed grouping or character class, expecting "
+"close }\n"
+msgstr "%s: Regex grouping error. Unclosed grouping. Expecting close }.\n"
+
+#: ../parser_regex.c:395
+#, c-format
+msgid "%s: Internal buffer overflow detected, %d characters exceeded\n"
+msgstr "%s: Internal buffer overflow detected, %d characters exceeded\n"
+
+#: ../parser_regex.c:399
+#, c-format
+msgid "%s: Unable to parse input line '%s'\n"
+msgstr "%s: Unable to parse input line '%s'\n"
+
+#: ../parser_regex.c:451
+#, c-format
+msgid "%s: Failed to compile regex '%s' [original: '%s']\n"
+msgstr "%s: Failed to compile regex '%s' [original: '%s']\n"
+
+#: ../parser_regex.c:455
+#, c-format
+msgid "%s: error near               "
+msgstr "%s: error near               "
+
+#: ../parser_regex.c:465
+#, c-format
+msgid "%s: error reason: '%s'\n"
+msgstr "%s: error reason: '%s'\n"
+
+#: ../parser_regex.c:474
+#, c-format
+msgid "%s: Failed to compile regex '%s' [original: '%s'] - malloc failed\n"
+msgstr "%s: Failed to compile regex '%s' [original: '%s'] - malloc failed\n"
+
+#: ../parser_regex.c:510
+#, c-format
+msgid "%s: Invalid profile name '%s' - bad regular expression\n"
+msgstr ""
+
+#: ../parser_policy.c:200
+#, fuzzy, c-format
+msgid "ERROR merging rules for profile %s, failed to load\n"
+msgstr "ERROR in profile %s, failed to load\n"
+
+#: ../parser_policy.c:232
+#, c-format
+msgid ""
+"ERROR profile %s contains policy elements not usable with this kernel:\n"
+"\t'*', '?', character ranges, and alternations are not allowed.\n"
+"\t'**' may only be used at the end of a rule.\n"
+msgstr ""
+
+#: ../parser_policy.c:277
+#, fuzzy, c-format
+msgid "ERROR processing regexs for profile %s, failed to load\n"
+msgstr "ERROR in profile %s, failed to load\n"
+
+#: ../parser_policy.c:304
+#, fuzzy, c-format
+msgid "ERROR expanding variables for profile %s, failed to load\n"
+msgstr "ERROR in profile %s, failed to load\n"
+
+#: ../parser_policy.c:388
+#, fuzzy, c-format
+msgid "ERROR adding hat access rule for profile %s\n"
+msgstr "ERROR in profile %s, failed to load\n"
+
+#: ../parser_policy.c:488
+#, c-format
+msgid "ERROR in profile %s, failed to load\n"
+msgstr "ERROR in profile %s, failed to load\n"
+
+#: ../parser_policy.c:673
+#, fuzzy, c-format
+msgid "%s: Errors found during postprocessing.  Aborting.\n"
+msgstr "%s: Errors found during regex postprocess. Aborting.\n"
+
+#: ../parser_policy.c:680 ../parser_policy.c:701
+#, fuzzy, c-format
+msgid "%s: Errors found during regex postprocess.  Aborting.\n"
+msgstr "%s: Errors found during regex postprocess. Aborting.\n"
+
+#: ../parser_policy.c:687
+#, fuzzy, c-format
+msgid "%s: Errors found during postprocess.  Aborting.\n"
+msgstr "%s: Errors found during regex postprocess. Aborting.\n"
+
+#: ../parser_policy.c:694
+#, c-format
+msgid "%s: Errors found in combining rules postprocessing. Aborting.\n"
+msgstr "%s: Errors found in combining rules postprocessing. Aborting.\n"
+
+#, fuzzy
+#~ msgid "Error: Could not allocate temporary file.\n"
+#~ msgstr "Error couldn't allocate temporary file\n"
+
+#, fuzzy
+#~ msgid "Error: Could not allocate buffer for include at line %d in %s.\n"
+#~ msgstr "Error: could not allocate buffer for include. line %d in %s\n"
+
+#, fuzzy
+#~ msgid "Error: Bad include at line %d in %s.\n"
+#~ msgstr "Error: bad include. line %d in %s\n"
+
+#, fuzzy
+#~ msgid "Error: #include %s%c not found at line %d in %s.\n"
+#~ msgstr "Error: #include %s%c not found. line %d in %s\n"
+
+#, fuzzy
+#~ msgid "Error: Exceeded %d levels of includes.  Not processing %s include.\n"
+#~ msgstr "Error: exceeded %d levels of includes.  NOT processing %s include\n"
+
+#, fuzzy
+#~ msgid "Assert: `change_hat' returned NULL."
+#~ msgstr "Assert: `netrule' returned NULL."
+
+#~ msgid "link perms are not allowed on a named profile transtion.\n"
+#~ msgstr "link perms are not allowed on a named profile transition.\n"
+
+#~ msgid "(ip_mode) Found unexpected character: '%s'"
+#~ msgstr "(ip_mode) Found unexpected character: '%s'"
+
+#, fuzzy
+#~ msgid "Unexpected character in interface name: '%s'"
+#~ msgstr "Found unexpected character: '%s'"
+
+#, fuzzy
+#~ msgid "Found unexpected keyword: '%s'"
+#~ msgstr "Found unexpected character: '%s'"
+
+#~ msgid "Exec qualifier 'i' must be followed by 'x'"
+#~ msgstr "Exec qualifier 'i' must be followed by 'x'"
+
+#, fuzzy
+#~ msgid "Exec qualifier '%c' must be followed by 'x'"
+#~ msgstr "Exec qualifier 'i' must be followed by 'x'"
+
+#, fuzzy
+#~ msgid "flags=(debug) is no longer supported, sorry."
+#~ msgstr ""
+#~ "Default allow subdomains are no longer supported, sorry. (domain: %s)"
+
+#~ msgid "Assert: `netrule' returned NULL."
+#~ msgstr "Assert: `netrule' returned NULL."
+
+#~ msgid "Assert: `addresses' returned NULL."
+#~ msgstr "Assert: `addresses' returned NULL."
+
+#~ msgid "Network entries can only have one TO address."
+#~ msgstr "Network entries can only have one TO address."
+
+#~ msgid "Network entries can only have one FROM address."
+#~ msgstr "Network entries can only have one FROM address."
+
+#~ msgid "`%s' is not a valid ip address."
+#~ msgstr "`%s' is not a valid ip address."
+
+#~ msgid "`/%d' is not a valid netmask."
+#~ msgstr "`/%d' is not a valid netmask."
+
+#~ msgid "`%s' is not a valid netmask."
+#~ msgstr "`%s' is not a valid netmask."
+
+#~ msgid "ports must be between %d and %d"
+#~ msgstr "ports must be between %d and %d"
+
+#~ msgid ""
+#~ "%s: Unable to query modules - '%s'\n"
+#~ "Either modules are disabled or your kernel is too old.\n"
+#~ msgstr ""
+#~ "%s: Unable to query modules - '%s'\n"
+#~ "Either modules are disabled or your kernel is too old.\n"
+
+#~ msgid "%s: Unable to find "
+#~ msgstr "%s: Unable to find "
+
+#~ msgid ""
+#~ "!\n"
+#~ "Ensure that it has been loaded.\n"
+#~ msgstr ""
+#~ "!\n"
+#~ "Ensure that it has been loaded.\n"
+
+#~ msgid "%s: Could not allocate memory for subdomain mount point\n"
+#~ msgstr "%s: Could not allocate memory for subdomain mount point\n"
+
+#~ msgid ""
+#~ "Default allow subdomains are no longer supported, sorry. (domain: %s^%s)"
+#~ msgstr ""
+#~ "Default allow subdomains are no longer supported, sorry. (domain: %s^%s)"
+
+#~ msgid "md5 signature given without execute privilege."
+#~ msgstr "md5 signature given without execute privilege."
+
+#~ msgid ""
+#~ "Negative subdomain entries are no longer supported, sorry. (entry: %s)"
+#~ msgstr ""
+#~ "Negative subdomain entries are no longer supported, sorry. (entry: %s)"
+
+#~ msgid "Exec qualifier 'u' must be followed by 'x'"
+#~ msgstr "Exec qualifier 'u' must be followed by 'x'"
+
+#~ msgid "Exec qualifier 'u' invalid, conflicting qualifier already specified"
+#~ msgstr "Exec qualifier 'u' invalid, conflicting qualifier already specified"
+
+#~ msgid "Exec qualifier 'p' must be followed by 'x'"
+#~ msgstr "Exec qualifier 'p' must be followed by 'x'"
+
+#~ msgid "Exec qualifier 'p' invalid, conflicting qualifier already specified"
+#~ msgstr "Exec qualifier 'p' invalid, conflicting qualifier already specified"
+
+#~ msgid "%s: Subdomain '%s' defined, but no parent '%s'.\n"
+#~ msgstr "%s: Subdomain '%s' defined, but no parent '%s'.\n"
+
+#~ msgid "%s: Two SubDomains defined for '%s'.\n"
+#~ msgstr "%s: Two SubDomains defined for '%s'.\n"
+
+#, fuzzy
+#~ msgid "Profile for %s already exists - skipping."
+#~ msgstr "Profile already exists\n"

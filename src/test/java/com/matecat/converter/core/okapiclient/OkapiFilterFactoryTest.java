@@ -9,14 +9,12 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Reneses on 7/23/15.
- */
+
 public class OkapiFilterFactoryTest {
 
     /**
      * Check that the list of supported formats and the filters available
-     * are synchronized.
+     * are synchronized; and that it's possible to get it without exceptions
      */
     @Test
     public void testFormatsSynchronized() throws Exception {
@@ -37,4 +35,5 @@ public class OkapiFilterFactoryTest {
                     }
                 });
     }
+
 }

@@ -1,13 +1,11 @@
 package com.matecat.converter.core;
 
-import com.fasterxml.jackson.databind.deser.Deserializers;
-import com.matecat.converter.core.encoding.Encoding;
 import com.matecat.converter.core.encoding.ICUEncodingDetector;
 import com.matecat.converter.core.encoding.IEncodingDetector;
 import com.matecat.converter.core.format.Format;
 import com.matecat.converter.core.format.FormatNotSupportedException;
 import com.matecat.converter.core.format.converters.AbstractFormatConverter;
-import com.matecat.converter.core.format.converters.loc.LOCFormatConverter;
+import com.matecat.converter.core.format.converters.Converters;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 import org.apache.commons.io.FileUtils;
@@ -20,38 +18,42 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
-
 /**
- * Xliff Generator
- * This is the main class of the converter's core. It is used to generate an Xliff.
+ * Xliff Processor
+ *
+ * Processor of Xliff files, allowing:
+ *  1. Extraction of the embedded pack (original file and manifest)
+ *  2. Extraction of source and target languages
  */
-public class XliffReverser {
+public class XliffProcessor {
 
-    // Required properties
+    // File we are processing
     private File xlf;
+
+    // Embedded pack
+    private OkapiPack pack;
+
+    // Inner properties
     private Format originalFormat;
-
-    // Other module's instances
-    private List<AbstractFormatConverter> converters = new ArrayList<>();
-    private IEncodingDetector encodingDetector = new ICUEncodingDetector();
-    private OkapiClient okapiClient = new OkapiClient();
+    private Locale sourceLanguage, targetLanguage;
 
 
-    public XliffReverser(File xlf) {
+    /**
+     * Construct the processor given the XLF
+     * @param xlf Xliff file we are going to process
+     */
+    public XliffProcessor(final File xlf) {
 
         // Check that the input file is not null
         if (xlf == null  ||  !xlf.exists()  ||  xlf.isDirectory())
@@ -67,9 +69,108 @@ public class XliffReverser {
     }
 
 
-    // First element: original file
-    // Save to the same directory
-    public void extract() {
+    /**
+     * Get source language
+     * @return Source language
+     */
+    public Locale getSourceLanguage() {
+        if (sourceLanguage == null)
+            extractLanguages();
+        return sourceLanguage;
+    }
+
+
+    /**
+     * Get target language
+     * @return Target language
+     */
+    public Locale getTargetLanguage() {
+        if (targetLanguage == null)
+            extractLanguages();
+        return targetLanguage;
+    }
+
+
+    /**
+     * Extract language from the XLF
+     */
+    private void extractLanguages() {
+        try {
+            // Parse the XML document
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(xlf);
+            Element firstFile = (Element) document.getDocumentElement().getElementsByTagName("file").item(0);
+
+            // Extract the languages
+            this.sourceLanguage = new Locale(firstFile.getAttribute("source-language"));
+            this.targetLanguage = new Locale(firstFile.getAttribute("target-language"));
+        }
+        catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new RuntimeException("It was not possible to extract the source and target languages. Corrupted xlf?");
+        }
+    }
+
+
+    /**
+     * Get the original file embedded into the XLF
+     * @return Original file
+     */
+    public File getOriginalFile() {
+
+        // Reconstruct the pack
+        if (pack == null)
+            reconstructPack();
+
+        // Get the original file
+        File originalFile = pack.getOriginalFile();
+
+        // If it does not have its original format, try to convert it
+        if (Format.getFormat(originalFile) != originalFormat) {
+            try {
+                originalFile = new Converters().convert(originalFile, originalFormat);
+            }
+            catch (FormatNotSupportedException ignored)  {}
+        }
+
+        // Return it
+        return originalFile;
+
+    }
+
+
+    /**
+     * Get the derived file
+     * This is produced using the original file, the manifest and the XLF
+     * @return Derived file
+     */
+    public File getDerivedFile() {
+
+        // Reconstruct the pack
+        if (pack == null)
+            reconstructPack();
+
+        // Generate the derived file
+        File derivedFile = OkapiClient.generateDerivedFile(pack);
+
+        // If it does not have its original format, try to convert it
+        if (Format.getFormat(derivedFile) != originalFormat) {
+            try {
+                derivedFile = new Converters().convert(derivedFile, originalFormat);
+            }
+            catch (FormatNotSupportedException ignored)  {}
+        }
+
+        // Return it
+        return derivedFile;
+
+    }
+
+
+
+
+
+    private void reconstructPack() {
 
         try {
 
@@ -93,6 +194,10 @@ public class XliffReverser {
             // Extract the original format
             extractOriginalFormat(fileElement);
 
+            // Extract the languages
+            this.sourceLanguage = new Locale(fileElement.getAttribute("source-language"));
+            this.targetLanguage = new Locale(fileElement.getAttribute("target-language"));
+
             // Reconstruct the manifest
             Element manifestElement = (Element) fileElement.getNextSibling();
             reconstructManifest(packFolder, manifestElement);
@@ -101,10 +206,10 @@ public class XliffReverser {
             reconstructOriginalXlf(packFolder, document, fileElement, manifestElement);
 
             // Generate the pack (which will check the extracted files)
-            OkapiPack pack = new OkapiPack(packFolder);
+            this.pack = new OkapiPack(packFolder);
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("It was not possible to reconstruct the pack from the Xliff");
         }
 
     }
@@ -229,11 +334,7 @@ public class XliffReverser {
             StreamResult streamResult = new StreamResult(xlfOutputPath);
             transformer.transform(domSource, streamResult);
 
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (TransformerException | IOException e) {
             e.printStackTrace();
         }
     }

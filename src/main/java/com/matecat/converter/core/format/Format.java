@@ -22,7 +22,8 @@ public enum Format {
     HTML, HTM, XHTML, PHP, JSON, TXML, YML, RKM,
     XLIFF, SDLXLIFF, TMX, TTX, ITD, XLF,
     MIF, INX, IDML, ICML, XTG, TAG, DITA,
-    PROPERTIES, RC, RESX, SGM, SGML, STRINGS, PO, XLW, XLSB;
+    PROPERTIES, RC, RESX, SGM, SGML, STRINGS, PO, XLW, XLSB,
+    ARCHIVE, XINI, TS;
 
     // Generate a dictionary mapping the extension to its enum constant
     private static Map<String, Format> supportedFormats;
@@ -88,4 +89,5 @@ public enum Format {
     public String toString() {
         return name().toLowerCase();
     }
+
 }

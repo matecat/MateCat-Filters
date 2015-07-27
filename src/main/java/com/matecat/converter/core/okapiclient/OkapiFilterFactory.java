@@ -2,6 +2,7 @@ package com.matecat.converter.core.okapiclient;
 
 import com.matecat.converter.core.format.Format;
 import net.sf.okapi.common.filters.IFilter;
+import net.sf.okapi.filters.archive.ArchiveFilter;
 import net.sf.okapi.filters.html.HtmlFilter;
 import net.sf.okapi.filters.idml.IDMLFilter;
 import net.sf.okapi.filters.json.JSONFilter;
@@ -15,10 +16,18 @@ import net.sf.okapi.filters.po.POFilter;
 import net.sf.okapi.filters.properties.PropertiesFilter;
 import net.sf.okapi.filters.railsyaml.RailsYamlFilter;
 import net.sf.okapi.filters.rainbowkit.RainbowKitFilter;
-import net.sf.okapi.filters.txml.Parameters;
+import net.sf.okapi.filters.regex.RegexFilter;
+import net.sf.okapi.filters.table.csv.CommaSeparatedValuesFilter;
+import net.sf.okapi.filters.ts.TsFilter;
+import net.sf.okapi.filters.ttx.TTXFilter;
 import net.sf.okapi.filters.txml.TXMLFilter;
+import net.sf.okapi.filters.xini.XINIFilter;
 import net.sf.okapi.filters.xliff.XLIFFFilter;
+import net.sf.okapi.filters.xmlstream.XmlStreamFilter;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +36,15 @@ import java.util.Set;
  * Created by Reneses on 7/22/15.
  */
 public class OkapiFilterFactory {
+
+    // Path of the configurations
+    private static final String configurationsPath = OkapiFilterFactory.class
+            .getResource(File.separator + "okapi" + File.separator + "configurations").getPath() + File.separator;
+
+    private static final String XML_CONFIG_FILENAME = "okf_xmlstream-custom.fprm";
+    private static final String STRINGS_CONFIG_FILENAME = "okf_macStrings.fprm";
+    private static final String HTML_CONFIG_FILENAME = "okf_html-custom.fprm";
+    private static final String DITA_CONFIG_FILENAME = "okf_xmlstream@dita-custom.fprm";
 
     // Formats supported by the filter factory
     protected static Set<Format> supportedFormats;
@@ -52,73 +70,74 @@ public class OkapiFilterFactory {
                 Format.TXML,
                 Format.YML,
                 Format.RKM,
-                Format.MIF));
+                Format.MIF,
+                Format.XML,
+                Format.DITA,
+                Format.CSV,
+                Format.XINI,
+                Format.TTX,
+                Format.TS,
+                Format.PO,
+                Format.STRINGS,
+                Format.ARCHIVE
+        ));
     }
 
+
+    /**
+     * Check if Okapi supports a format
+     * @param format Format
+     * @return True if it's supported, false otherwise
+     */
     protected static boolean isSupported(Format format) {
         return supportedFormats.contains(format);
     }
 
 
+    /**
+     * Get the corresponding filter for a given format
+     * @param format
+     * @return
+     */
     protected static IFilter getFilter(Format format) {
-
-        // Get the corresponding filter depending on the format
         switch (format) {
-
             case DOCX:
             case PPTX:
-            case XLSX:
-                return getOpenXMLFilter();
-
-            case TXT:
-                return getPlainTextFilter();
-
+            case XLSX:      return getOpenXMLFilter();
             case HTML:
             case XHTML:
-            case HTM:
-                return getHtmlFilter();
-
+            case HTM:       return getHtmlFilter();
             case ODP:
             case ODS:
-            case ODT:
-                return getOpenOfficeFilter();
-
-            case PHP: // TODO add to Matecat
-                return getPhpFilter();
-
-            case PROPERTIES:
-                return getPropertiesFilter();
-
-            case PO:
-                return getPoFilter();
-
+            case ODT:       return getOpenOfficeFilter();
             case XLF:
-            case XLIFF:
-                return getXliffFilter();
-
-            case JSON: // TODO add to Matecat
-                return getJsonFilter();
-
-            case IDML:
-                return getIdmlFilter();
-
-            case TXML: // TODO add to Matecat
-                return getTxmlFilter();
-
-            case YML: // TODO add to Matecat
-                return getYmlFilter();
-
-            case RKM: // TODO add to Matecat
-                return getRkmFilter();
-
-            case MIF:
-                return getMifFilter();
-
-            default:
-                throw new RuntimeException("There is no filter configured for the format: " + format);
+            case XLIFF:     return getXliffFilter();
+            case TXT:       return getPlainTextFilter();
+            case PHP:       return getPhpFilter();          // TODO add to Matecat
+            case PROPERTIES:return getPropertiesFilter();
+            case PO:        return getPoFilter();
+            case JSON:      return getJsonFilter();         // TODO add to Matecat
+            case IDML:      return getIdmlFilter();
+            case TXML:      return getTxmlFilter();         // TODO add to Matecat
+            case YML:       return getYmlFilter();          // TODO add to Matecat
+            case RKM:       return getRkmFilter();          // TODO add to Matecat
+            case MIF:       return getMifFilter();
+            case XML:       return getXmlFilter();
+            case DITA:      return getDitaFilter();
+            case CSV:       return getCSVFilter();
+            case ARCHIVE:   return getArchiveFilter();
+            case XINI:      return getXiniFilter();
+            case TTX:       return getTTXFilter();
+            case TS:        return getTSFilter();
+            case STRINGS:   return getStringsFilter();
+            default: throw new RuntimeException("There is no filter configured for the format: " + format);
         }
     }
 
+
+    /*
+     * FILTERS
+     */
     private static OpenXMLFilter getOpenXMLFilter() {
         OpenXMLFilter filter = new OpenXMLFilter();
         ConditionalParameters conditionalParameters = (ConditionalParameters) filter.getParameters();
@@ -129,21 +148,24 @@ public class OkapiFilterFactory {
         conditionalParameters.setTranslatePowerpointMasters(false);
         conditionalParameters.setTranslateWordHeadersFooters(true);
         conditionalParameters.setTranslateWordHidden(false);
-        filter.setParameters(conditionalParameters);
         return filter;
     }
 
     private static PlainTextFilter getPlainTextFilter() {
         PlainTextFilter filter = new PlainTextFilter();
         // net.sf.okapi.filters.plaintext.Parameters params = (net.sf.okapi.filters.plaintext.Parameters) filter.getParameters();
-        // filter.setParameters(params);
         return filter;
     }
 
     private static HtmlFilter getHtmlFilter() {
         HtmlFilter filter = new HtmlFilter();
-        // net.sf.okapi.filters.html.Parameters params = (Parameters) filter.getParameters();
-        // filter.setParameters(params);
+        try {
+            net.sf.okapi.filters.html.Parameters params = (net.sf.okapi.filters.html.Parameters) filter.getParameters();
+            String config = FileUtils.readFileToString(new File(configurationsPath + HTML_CONFIG_FILENAME));
+            params.fromString(config);
+        } catch (IOException e) {
+            System.err.println("Dita custom configuration could not be loaded");
+        }
         return filter;
     }
 
@@ -153,14 +175,12 @@ public class OkapiFilterFactory {
         // params.setConvertSpacesTabs(false);
         // params.setExtractNotes(false);
         // params.setExtractReferences(false);
-        // filter.setParameters(params);
         return filter;
     }
 
     private static PHPContentFilter getPhpFilter() {
         PHPContentFilter filter = new PHPContentFilter();
         // net.sf.okapi.filters.php.Parameters params = (net.sf.okapi.filters.php.Parameters) filter.getParameters();
-        // filter.setParameters(params);
         return filter;
     }
 
@@ -171,7 +191,6 @@ public class OkapiFilterFactory {
         // params.setEscapeExtendedChars();
         // params.setCommentsAreNotes();
         // params.setConvertLFandTab();
-        // filter.setParameters(params);
         return filter;
     }
 
@@ -184,6 +203,13 @@ public class OkapiFilterFactory {
         return filter;
     }
 
+    private static TsFilter getTSFilter() {
+        TsFilter filter = new TsFilter();
+        // net.sf.okapi.filters.ts.Parameters params = (net.sf.okapi.filters.ts.Parameters) filter.getParameters();
+        // params.setEscapeGT();
+        // params.setDecodeByteValues();
+        return filter;
+    }
     private static XLIFFFilter getXliffFilter() {
         XLIFFFilter filter = new XLIFFFilter();
         // net.sf.okapi.filters.xliff.Parameters params = (net.sf.okapi.filters.xliff.Parameters) filter.getParameters();
@@ -229,7 +255,6 @@ public class OkapiFilterFactory {
         TXMLFilter filter = new TXMLFilter();
         // net.sf.okapi.filters.txml.Parameters params = (net.sf.okapi.filters.txml.Parameters) filter.getParameters();
         // params.setAllowEmptyOutputTarget();
-        // filter.setParameters(params);
         return filter;
     }
 
@@ -237,15 +262,11 @@ public class OkapiFilterFactory {
         RailsYamlFilter filter = new RailsYamlFilter();
         // net.sf.okapi.filters.railsyaml.Parameters params = (net.sf.okapi.filters.railsyaml.Parameters) filter.getParameters();
         // params.setEscapeNonAscii();
-        // filter.setParameters(params);
         return filter;
     }
 
     private static RainbowKitFilter getRkmFilter() {
-        RainbowKitFilter filter = new RainbowKitFilter();
-        // net.sf.okapi.filters.rainbowkit.Parameters params = (net.sf.okapi.filters.rainbowkit.Parameters) filter.getParameters();
-        // filter.setParameters(params);
-        return filter;
+        return new RainbowKitFilter();
     }
 
     private static MIFFilter getMifFilter() {
@@ -258,13 +279,65 @@ public class OkapiFilterFactory {
         // params.setExtractMasterPages();
         // params.setExtractReferencePages();
         // params.setExtractVariables();
-        // filter.setParameters(params);
         return filter;
     }
 
+    private static CommaSeparatedValuesFilter getCSVFilter() {
+        return new CommaSeparatedValuesFilter();
+    }
 
+    private static ArchiveFilter getArchiveFilter() {
+        return new ArchiveFilter();
+    }
 
+    private static XINIFilter getXiniFilter() {
+        XINIFilter filter = new XINIFilter();
+        //net.sf.okapi.filters.xini.Parameters params = (net.sf.okapi.filters.xini.Parameters) filter.getParameters();
+        //params.setUseOkapiSegmentation();
+        return filter;
+    }
 
+    private static TTXFilter getTTXFilter() {
+        TTXFilter filter = new TTXFilter();
+        //net.sf.okapi.filters.ttx.Parameters params = (net.sf.okapi.filters.ttx.Parameters) filter.getParameters();
+        //params.setEscapeGT();
+        return filter;
+    }
 
+    private static RegexFilter getStringsFilter() {
+        RegexFilter filter = new RegexFilter();
+        try {
+            net.sf.okapi.filters.regex.Parameters params = (net.sf.okapi.filters.regex.Parameters) filter.getParameters();
+            String config = FileUtils.readFileToString(new File(configurationsPath + STRINGS_CONFIG_FILENAME));
+            params.fromString(config);
+        } catch (IOException e) {
+            System.err.println("Strings custom configuration could not be loaded");
+        }
+        return filter;
+    }
+
+    private static XmlStreamFilter getXmlFilter() {
+        XmlStreamFilter filter = new XmlStreamFilter();
+        try {
+            net.sf.okapi.filters.xmlstream.Parameters params = (net.sf.okapi.filters.xmlstream.Parameters) filter.getParameters();
+            String config = FileUtils.readFileToString(new File(configurationsPath + XML_CONFIG_FILENAME));
+            params.fromString(config);
+        } catch (IOException e) {
+            System.err.println("XML custom configuration could not be loaded");
+        }
+        return filter;
+    }
+
+    private static XmlStreamFilter getDitaFilter() {
+        XmlStreamFilter filter = new XmlStreamFilter();
+        try {
+            net.sf.okapi.filters.xmlstream.Parameters params = (net.sf.okapi.filters.xmlstream.Parameters) filter.getParameters();
+            String config = FileUtils.readFileToString(new File(configurationsPath + DITA_CONFIG_FILENAME));
+            params.fromString(config);
+        } catch (IOException e) {
+            System.err.println("Dita custom configuration could not be loaded");
+        }
+        return filter;
+    }
 
 }

@@ -26,7 +26,7 @@ public class XliffBuilderTest {
     public void setUp() throws Exception {
 
         // Load files
-        pack = new OkapiPack(new File(getClass().getResource(File.separator + "samplepack").getPath()));
+        pack = new OkapiPack(new File(getClass().getResource(File.separator + "samplepack" + File.separator + "incomplete").getPath()));
 
     }
 

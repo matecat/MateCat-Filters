@@ -1,0 +1,110 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+           "http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd" [
+    <!ENTITY % MATHML.prefixed "INCLUDE">
+]>
+<!-- From TALLmanifest_to_SCE-page-structure.xsl.--><html xmlns="http://www.w3.org/1999/xhtml" xmlns:m="http://www.w3.org/1998/Math/MathML"><head><title>6.8 Making movies in MATLAB</title>
+<meta content="application/xhtml+xml; charset=UTF-8" http-equiv="Content-Type"/><script type="text/javascript" src="../common/styleswitcher.js">
+</script><script type="text/javascript" src="../common/utils.js">
+</script><style type="text/css">@import "../common/ahem.css";</style>
+<link href="../common/sce-layout.css" rel="stylesheet" title="Short Course Environment" type="text/css"/><link href="../common/sce-txt.css" rel="stylesheet" title="Short Course Environment" type="text/css"/><link href="../common/sce-borders-colours.css" rel="stylesheet" title="Short Course Environment" type="text/css"/>
+
+<link href="../common/sce-layout.css" rel="alternate stylesheet" title="High contrast" type="text/css"/><link href="../common/sce-txt.css" rel="alternate stylesheet" title="High contrast" type="text/css"/><link href="../common/hc-borders-colours.css" rel="alternate stylesheet" title="High contrast" type="text/css"/>
+<link href="../common/sce-layout.css" rel="alternate stylesheet" title="Low contrast" type="text/css"/><link href="../common/sce-txt.css" rel="alternate stylesheet" title="Low contrast" type="text/css"/><link href="../common/lc-borders-colours.css" rel="alternate stylesheet" title="Low contrast" type="text/css"/>
+<link href="../common/txtsmall.css" rel="alternate stylesheet" title="small" type="text/css"/><link href="../common/txtbig.css" rel="alternate stylesheet" title="big" type="text/css"/>
+<link href="../common/print.css" media="print" rel="stylesheet" type="text/css"/>
+<!--[if IE]><link media="screen" type="text/css" rel="stylesheet" href="../common/ie-fix.css"/><![endif]--><link href="../common/debug.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="../common/favicon.ico" type="image/vnd.microsoft.icon"/>
+<link href="#contentstart" title="Page content" rel="bookmark"/><link href="#SCE-coursenav" title="Unit navigation" rel="bookmark"/>
+</head>
+<body onload="useStyleAgain('SCEstyle'); useStyleSwitcher('SCE-namedstyle');"><div><a id="skipnav" href="#contentstart"><img class="noborder" height="16" width="16" title="Skip past navigation, to content." alt="Skip navigation." src="../common/skip.gif"/></a><div id="ahem">This site will look best in a browser that supports web standards, but it is accessible to any browser or Internet device. We recommend the <a href="http://www.mozilla.org/products/firefox/">Mozilla Firefox</a> browser.</div>
+<div id="style-switcher-block"><form onsubmit="return false;" action="index.php" method="get" id="style-switcher"><fieldset><label for="style-switcher-select">Page style:</label><select onchange="var tmpVal=this.selectedIndex;eval(this.options[tmpVal].value);this.options[tmpVal].selected=true;rememberStyle('SCEstyle', 999);rememberStyleSwitcher('SCE-namedstyle', 999);if(window.opera&amp;&amp;document.getElementById('extraStyled')){document.getElementById('extraStyled').style.marginTop='0px';document.getElementById('extraStyled').style.marginTop='10px';}" id="style-switcher-select">
+<option value="changeStyle('Short Course Environment', 'small');">Small</option><option selected="selected" value="changeStyle('Short Course Environment');">Default</option><option value="changeStyle('Short Course Environment', 'big');">Big</option><option value="changeStyle('High contrast', 'small');">High contrast, small</option><option value="changeStyle('High contrast');">High contrast</option><option value="changeStyle('High contrast', 'big');">High contrast, big</option><option value="changeStyle('Low contrast', 'small');">Low contrast, small</option><option value="changeStyle('Low contrast');">Low contrast</option><option value="changeStyle('Low contrast', 'big');">Low contrast, big</option><option value="changeStyle();">No style</option>
+</select></fieldset></form></div>
+<img id="SCE-institutionLogoPrint" src="../common/oxlogo-150dpi.png" alt="University of Oxford" class="noborder"/><span id="parentSection">Software engineering and scientific computing</span></div>
+<div id="controlblock">
+<div id="SCE-coursenav"><h2 id="coursenavtitle">Unit navigation</h2>
+<ul class="spine">
+<li><a href="Introduction.xhtml">6.1 Introduction</a></li>
+<li><a href="FormattingCodePart1.xhtml">6.2 Formatting code: Part 1</a></li>
+<li><a href="FormattingCodePart2Comments.xhtml">6.3 Formatting code: Part 2 – Comments</a></li>
+<li><a href="FormattingCodePart3Layout.xhtml">6.4 Formatting code: Part 3 – Layout</a></li>
+<li><a href="GraphicalUserInterfacesGUIsPart1.xhtml">6.5 Graphical user interfaces (GUIs): Part 1</a></li>
+<li><a href="GraphicalUserInterfacesGUIsPart2.xhtml">6.6 Graphical user interfaces (GUIs): Part 2</a></li>
+<li><a href="Exercises1.xhtml">6.7 Exercises 1</a></li>
+<li><a class="current" href="MakingMoviesInMATLAB.xhtml">6.8 Making movies in MATLAB</a></li>
+<li><a href="SpeedingUpCodePart1.xhtml">6.9 Speeding up code: Part 1</a></li>
+<li><a href="SpeedingUpCodePart2.xhtml">6.10 Speeding up code: Part 2</a></li>
+<li><a href="Exercises2.xhtml">6.11 Exercises 2</a></li>
+</ul></div></div>
+<div id="SCE-contentarea"><h1 id="contentstart">6.8 Making movies in MATLAB</h1><div class="general">
+		<p>If you are going to make a presentation then you may want to make a movie that you can include within it. The following example will show how to use the commands</p>
+		<code style="font-size:larger">
+			<p>getframe </p>
+			<p>movie </p>
+			<p>movie2avi </p>
+		</code>
+		<p>to make a movie in MATLAB. Before going through the walkthrough look at the help files for the above commands. </p>
+		<div class="activity">
+			<h3 id="N1006B">Walkthrough</h3>
+			<p>Here we are going to make a movie of a wave propagating through a membrane. </p>
+			<p>First, we clear all the variables and close all the open figures. We then make a 2D surface that represents the membrane.</p>
+<code style="font-size:larger">
+			<pre>clear; close <span style="color:purple">all</span>;
+
+x=linspace(0,1,100);
+[X,Y] = meshgrid(x,x);
+</pre>
+</code>
+			<p>The command <code style="font-size:larger">‘getframe’</code> will save the content of the currently selected figure as a frame, which we use to create a movie in the following loop</p>
+<div class="example">
+<code style="font-size:larger">
+			<pre>N=100; <span style="color:green">% Number of frames</span>
+<span style="color:blue">for</span> i = 1:N
+    <span style="color:green">% Example of plot</span>
+    Z = sin(2*pi*(X-i/N)).*sin(2*pi*(Y-i/N));
+    surf(X,Y,Z)
+
+    <span style="color:green">% Store the frame</span>
+    M(i)=getframe(gcf); <span style="color:green">% leaving gcf out crops the frame in the movie.</span>
+<span style="color:blue">end</span></pre>
+</code>
+</div>
+			<p>The variable <code style="font-size:larger">‘M’</code> is the movie. To view the movie in MATLAB you can use the command </p>
+			<code style="font-size:larger">movie(M)</code>
+			<p>Various options can be passed to <code style="font-size:larger">‘movie’</code>. For example, to change the frame rate, look at the help files for more information. You will notice that some of it may appear cropped when you play the movie back, because of the size of the figure window. Don’t panic. It is not really cropped and you will see this when you save the movie to file. To get round this problem, you can first open a new figure and maximise it before running the <code style="font-size:larger">‘movie’</code> command. </p>
+			<p>To save the movie to file you can use the command </p>
+			<code style="font-size:larger">movie2avi(M,<span style="color:purple">'WaveMovie.avi'</span>);</code>
+			<p>which saves the movie as the file <span style="color:purple">
+					<code style="font-size:larger">‘WaveMovie.avi’</code>
+				</span> in the current working directory. The movie produced is below. </p>
+				<div class="MMflash"><p class="title"/><!-- Size info: W: 560, H: 460, WIDTH: 560, HEIGHT: 460--><object class="msie" height="460" width="560" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,24,0" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="N100D4-activex"><param value="Matlab6_8.swf" name="movie"/><param value="high" name="quality"/><!--[if !IE]> <--><object class="w3c" height="460" width="560" id="N100D4" type="application/x-shockwave-flash" data="Matlab6_8.swf"><param value="high" name="quality"/><param value="http://www.macromedia.com/go/getflashplayer" name="pluginurl"/>
+                You need the Flash player plugin to view this - download it from the <a href="http://www.adobe.com/products/flashplayer/">Adobe Flash Player</a> website.
+    </object><!--> <![endif]--></object><p class="caption">Click on the play button to animate</p></div>
+			<p>Again there are many options you can pass to <code style="font-size:larger">‘movie2avi’</code> to change the frame rate or the type of compression used. Look at the help files for more information. </p>
+			<p>Once it is all brought together, the above code yields the following file that you can modify to create your own movies. </p>
+			<div class="example">
+<code style="font-size:larger">
+				<pre>clear; close <span style="color:purple">all</span>;
+
+<span style="color:green">% Creates a 2D Mesh to plot surface</span>
+x=linspace(0,1,100);
+[X,Y] = meshgrid(x,x);
+
+N=100; <span style="color:green">% Number of frames</span>
+<span style="color:blue">for</span> i = 1:N
+    <span style="color:green">% Example of plot</span>
+    Z = sin(2*pi*(X-i/N)).*sin(2*pi*(Y-i/N));
+    surf(X,Y,Z)
+
+    <span style="color:green">% Store the frame</span>
+    M(i)=getframe(gcf); <span style="color:green">% leaving gcf out crops the frame in the movie.</span>
+<span style="color:blue">end</span>
+<span style="color:green">% Output the movie as an avi file</span>
+movie2avi(M,<span style="color:purple">'WaveMovie.avi'</span>);
+</pre>
+</code>
+			</div>
+			<p>Download code as <a target="MakeMoviem" href="MakeMovie.m" onclick="window.open('MakeMovie.m','MakeMoviem','width=750,height=450,location=yes,menubar=yes,scrollbars=yes,toolbar=yes,personalbar=yes,status=yes,resizable=yes'); return false;">MakeMovie.m</a> file.</p>
+		</div>
+	<span class="toplink"><a title="Go to the top of this page" href="#skipnav">top</a></span></div><div id="SCE-prevnext"><a title="Previous page" href="Exercises1.xhtml"><img class="noborder" alt="" height="16" width="16" src="../common/prev.gif"/> Exercises 1</a> | <a href="../index.xhtml" title="Go up to the MATLAB index"><img class="noborder" alt="Go up" height="16" width="16" src="../common/up.gif"/>MATLAB</a> | <a title="Next page" href="SpeedingUpCodePart1.xhtml">Speeding up code: Part 1 <img class="noborder" alt="" height="16" width="16" src="../common/next.gif"/></a></div></div>
+<div id="SCE-footer"/></body></html>

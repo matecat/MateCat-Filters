@@ -4,14 +4,12 @@ import com.matecat.converter.core.encoding.Encoding;
 import com.matecat.converter.core.encoding.ICUEncodingDetector;
 import com.matecat.converter.core.encoding.IEncodingDetector;
 import com.matecat.converter.core.format.Format;
-import com.matecat.converter.core.format.converters.AbstractFormatConverter;
-import com.matecat.converter.core.format.converters.loc.LOCFormatConverter;
+import com.matecat.converter.core.format.FormatNotSupportedException;
+import com.matecat.converter.core.format.converters.Converters;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -26,9 +24,8 @@ public class XliffGenerator {
     private File file;
 
     // Other module's instances
-    private List<AbstractFormatConverter> converters = new ArrayList<>();
     private IEncodingDetector encodingDetector = new ICUEncodingDetector();
-    private OkapiClient okapiClient = new OkapiClient();
+    private Converters converters = new Converters();
 
 
     /**
@@ -52,21 +49,12 @@ public class XliffGenerator {
         this.targetLanguage = targetLanguage;
         this.file = file;
 
-        // Init the converters
-        initConverters();
-    }
-
-
-    /**
-     * Init the converters
-     */
-    private void initConverters() {
-        converters.add(new LOCFormatConverter());
     }
 
 
     /**
      * Generate the Xliff file from the stored inputs
+     * @throws FormatNotSupportedException if the file is not supported and cannot be converted to supported file
      * @return Xliff file
      */
     public File generate() {
@@ -77,45 +65,16 @@ public class XliffGenerator {
 
         // 1. If the file it's not supported, convert it
         if (!OkapiClient.isSupported(originalFormat))
-            file = convertFile(this.file);
+            file = converters.convert(this.file, converters.getDefaultConversion(originalFormat));
 
         // 2. Detect the encoding
         Encoding encoding = encodingDetector.detect(file);
 
         // 3. Send to Okapi
-        OkapiPack okapiPack = okapiClient.execute(sourceLanguage, targetLanguage, encoding, file);
+        OkapiPack okapiPack = OkapiClient.generatePack(sourceLanguage, targetLanguage, encoding, file);
 
         // 4. Generate and return the xliff
         return XliffBuilder.build(okapiPack, originalFormat);
-    }
-
-
-    /**
-     * // TODO throw an exception if not?
-     * If any of the converters can convert the file, do it
-     * @param file File to convert if possible
-     * @return Converted file if possible, original file otherwise
-     */
-    private File convertFile(File file) {
-
-        // Input format
-        Format inputFormat = Format.getFormat(file);
-
-        // Check every converter converter
-        for (AbstractFormatConverter converter : converters) {
-
-            // If the converter can convert the file
-            if (converter.isConvertible(inputFormat)) {
-
-                // Obtain the preferred conversion and convert it
-                Format outputFormat = converter.getDefaultConversion(inputFormat);
-                return converter.convert(file, outputFormat);
-            }
-        }
-
-        // Return the original file if it was not converted
-        return file;
-
     }
 
 }

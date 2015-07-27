@@ -1,0 +1,31 @@
+<!DOCTYPE Scene>
+<scene>
+ <entity id="1" sync="1">
+  <component type="EC_Name" sync="true">
+   <attribute value="alien" name="name"/>
+   <attribute value="" name="description"/>
+  </component>
+  <component type="EC_Placeable" sync="true">
+   <attribute value="-55.000000,13.000000,-77.269997,0.000000,-80.000000,0.000000,1.000000,1.000000,1.000000" name="Transform"/>
+   <attribute value="false" name="Show bounding box"/>
+   <attribute value="true" name="Visible"/>
+   <attribute value="1" name="Selection layer"/>
+   <attribute value="" name="Parent entity ref"/>
+   <attribute value="" name="Parent bone name"/>
+  </component>
+  <component type="EC_AnimationController" sync="true">
+   <attribute value="" name="Animation state"/>
+  </component>
+  <component type="EC_Mesh" sync="true">
+   <attribute value="0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000" name="Transform"/>
+   <attribute value="alien.mesh" name="Mesh ref"/>
+   <attribute value="alien.skeleton" name="Skeleton ref"/>
+   <attribute value="ALIEN.material" name="Mesh materials"/>
+   <attribute value="0" name="Draw distance"/>
+   <attribute value="false" name="Cast shadows"/>
+  </component>
+  <component type="EC_DynamicComponent" sync="true" name="prop">
+   <attribute value="ground" name="type"/>
+  </component>
+ </entity>
+</scene>

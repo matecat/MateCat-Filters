@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "technicalContent/dtd/concept.dtd" [
+
+<!-- Begin Document Specific Declarations -->
+
+
+<!-- End Document Specific Declarations -->
+
+]>
+
+<?Fm Condition DITA-Prolog AsIs NO_OVERRIDE hide AsIs?>
+<?Fm Condition DITA-Comment AsIs NO_OVERRIDE hide AsIs?>
+<?Fm Condition FM8_SYSTEM_HIDEELEMENT Dark%20Grey NO_OVERRIDE hide AsIs?>
+<?Fm Condition FM8_TRACK_CHANGES_ADDED Forest%20Green SINGLE_UNDERLINE show AsIs?>
+<?Fm Condition FM8_TRACK_CHANGES_DELETED Red STRIKETHROUGH show AsIs?>
+
+<?Fm BoolCondExpr "" State 0?>
+<?Fm TagBoolCondExpr Default%20Expression?>
+
+
+<?Fm TrackChange Off PreviewState PREVIEW_OFF_TRACK_CHANGE ?>
+<concept id = "id151KH0J0K5Z"
+    xmlns:ditaarch = "http://dita.oasis-open.org/architecture/2005/">
+<title>My Customers</title>
+<conbody><p>My Customers is designed for user to manage customers. </p>
+<ul><li><p>Create a customer:</p></li>
+<li><p>Search a customer </p></li>
+<li><p>Analyze financial needs for a customer before proposal</p></li>
+<li><p>Create a proposal for a customer</p></li></ul></conbody></concept>

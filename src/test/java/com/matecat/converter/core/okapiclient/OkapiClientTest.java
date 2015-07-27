@@ -8,13 +8,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
+// TODO: fix xml
+// TODO: fix derived
 public class OkapiClientTest {
 
     private void testFile(String filename) throws IOException {
         File file = new File(getClass().getResource(File.separator + "okapi" + File.separator + filename).getPath());
-        OkapiClient client = new OkapiClient();
-        OkapiPack pack = client.execute(Locale.ENGLISH, Locale.ENGLISH, Encoding.getDefault(), file);
-        FileUtils.deleteDirectory(pack.getPackFolder());
+        OkapiPack pack = OkapiClient.generatePack(Locale.ENGLISH, Locale.ENGLISH, Encoding.getDefault(), file);
+        OkapiClient.generateDerivedFile(pack);
+        pack.delete();
     }
 
     @Test
@@ -41,5 +43,91 @@ public class OkapiClientTest {
     public void testHTML() throws Exception {
         testFile("test.html");
     }
+
+    @Test
+    public void testHTM() throws Exception {
+        testFile("test.htm");
+    }
+
+    @Test
+    public void testXHTML() throws Exception {
+        testFile("test.xhtml");
+    }
+
+    @Test
+    public void testODT() throws Exception {
+        testFile("test.odt");
+    }
+
+    @Test
+    public void testODP() throws Exception {
+        testFile("test.odp");
+    }
+
+    @Test
+    public void testODS() throws Exception {
+        testFile("test.ods");
+    }
+
+    @Test
+    public void testPHP() throws Exception {
+        testFile("test.php");
+    }
+
+    @Test
+    public void testPO() throws Exception {
+        testFile("test.po");
+    }
+
+    @Test
+    public void testJSON() throws Exception {
+        testFile("test.json");
+    }
+
+    @Test
+    public void testPROPERTIES() throws Exception {
+        testFile("test.properties");
+    }
+
+    @Test
+    public void testIDML() throws Exception {
+        testFile("test.idml");
+    }
+
+    @Test
+    public void testTXML() throws Exception {
+        testFile("test.txml");
+    }
+
+    @Test
+    public void testYML() throws Exception {
+        testFile("test.yml");
+    }
+
+    @Test
+    public void testXML() throws Exception {
+        testFile("test.xml");
+    }
+
+    @Test
+    public void testDITA() throws Exception {
+        testFile("test.dita");
+    }
+
+    @Test
+    public void testSTRINGS() throws Exception {
+        testFile("test.strings");
+    }
+
+    @Test
+    public void testCSV() throws Exception {
+        testFile("test.csv");
+    }
+
+    @Test
+    public void testMIF() throws Exception {
+        testFile("test.mif");
+    }
+
 
 }

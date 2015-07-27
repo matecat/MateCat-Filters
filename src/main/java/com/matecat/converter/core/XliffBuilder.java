@@ -85,7 +85,7 @@ public class XliffBuilder {
 
         // Insert the filename, the encoded manifest and the encoded file into the xlf
         File xlf = pack.getXlf();
-        String outputPath = pack.getPath() + File.separator + filename + ".xlf";
+        String outputPath = pack.getPackFolder().getParentFile().getPath() + File.separator + filename + ".xlf";
         return createXliff(outputPath, xlf, filename, originalFormat, encodedFile, encodedManifest);
 
     }
