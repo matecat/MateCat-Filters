@@ -38,7 +38,6 @@ public class GenerateDerivedFileResource {
     /**
      * Generate the derived file from the xlf
      * @param fileInputStream Xlf
-     * @param contentDispositionHeader Xlf
      * @return Derived file
      */
     @POST
@@ -46,20 +45,20 @@ public class GenerateDerivedFileResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces("application/json")
     public Response convert(
-            @FormDataParam("file") InputStream fileInputStream,
-            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
-
-        // Filename
-        String filename = FilenameUtils.getName(contentDispositionHeader.getFileName());
+            @FormDataParam("file") InputStream fileInputStream) {
 
         // Logging
-        LOGGER.info(String.format("# [DERIVATION REQUEST] %s", filename));
+        LOGGER.info("# [DERIVATION REQUEST]");
 
         try {
 
+            // Check that the input file is not null
+            if (fileInputStream == null)
+                throw new IllegalArgumentException("The input file has not been sent");
+
             // Create the project
-            Project project = ProjectFactory.createProject(filename, fileInputStream);
-            LOGGER.info(String.format("# PROJECT [%s]: %s", filename, project.getFolder().getPath()));
+            Project project = ProjectFactory.createProject("to-derived.xlf", fileInputStream);
+            LOGGER.info(String.format("# PROJECT: %s", project.getFolder().getPath()));
 
             // Retrieve the xlf
             File derivedFile = new XliffProcessor(project.getFile()).getDerivedFile();
@@ -74,12 +73,15 @@ public class GenerateDerivedFileResource {
             project.delete();
 
             // Return the response
+            LOGGER.info("# [DERIVATION REQUEST FINISHED]\n");
             return response;
 
         }
 
         // If there is any error, return it
         catch (Exception e) {
+            LOGGER.severe(String.format("# [DERIVATION REQUEST FAILED] %s\n", e.getMessage()));
+            e.printStackTrace();
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(JSONResponseFactory.getError(e.getMessage()))

@@ -1,10 +1,7 @@
 package com.matecat.converter.core;
 
-import com.matecat.converter.core.encoding.ICUEncodingDetector;
-import com.matecat.converter.core.encoding.IEncodingDetector;
 import com.matecat.converter.core.format.Format;
 import com.matecat.converter.core.format.FormatNotSupportedException;
-import com.matecat.converter.core.format.converters.AbstractFormatConverter;
 import com.matecat.converter.core.format.converters.Converters;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
@@ -24,10 +21,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 import java.util.Locale;
+
 
 /**
  * Xliff Processor
@@ -167,9 +163,9 @@ public class XliffProcessor {
     }
 
 
-
-
-
+    /**
+     * Reconstruct the original Okapi result pack from the embedded files
+     */
     private void reconstructPack() {
 
         try {
@@ -215,9 +211,11 @@ public class XliffProcessor {
     }
 
 
+    /**
+     * Extract the original format from the embedded information
+     * @param fileElement XML element from the file
+     */
     private void extractOriginalFormat(Element fileElement) {
-
-        // Try to obtain the format from the data type
         try {
             String filename = fileElement.getAttribute("original");
             this.originalFormat = Format.getFormat(filename);
@@ -225,10 +223,14 @@ public class XliffProcessor {
         catch (Exception e1) {
             throw new RuntimeException("The encoded file has no extension");
         }
-
     }
 
 
+    /**
+     * Get the original filename from the embedded information
+     * @param fileElement XML element from the file
+     * @return Filename
+     */
     private String getFilename(Element fileElement) {
 
         // Filename
@@ -248,6 +250,12 @@ public class XliffProcessor {
 
     }
 
+
+    /**
+     * Extract the original file and save it in the pack
+     * @param packFolder Pack's folder
+     * @param fileElement XML element containing the file
+     */
     private void reconstructOriginalFile(File packFolder, Element fileElement) {
 
         try {
@@ -279,6 +287,12 @@ public class XliffProcessor {
         }
     }
 
+
+    /**
+     * Reconstruct the manifest and save it in the pack
+     * @param packFolder Pack's folder
+     * @param manifestElement XML element containing the manifest
+     */
     private void reconstructManifest(File packFolder, Element manifestElement) {
 
         try {
@@ -302,6 +316,17 @@ public class XliffProcessor {
         }
     }
 
+
+    /**
+     * Reconstruct the original XLF used to derive this XLF; and save it into the work folder
+     * inside the pack
+     *
+     * This is done by simply removing the file and manifest XML elements.
+     * @param packFolder Pack's folder
+     * @param document XML document
+     * @param fileElement XML element containing the file
+     * @param manifestElement XML element containing the manifest
+     */
     private void reconstructOriginalXlf(File packFolder, Document document, Element fileElement, Element manifestElement) {
 
         try {

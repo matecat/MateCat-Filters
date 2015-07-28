@@ -56,10 +56,13 @@ public class ConvertToXliffResource {
         // Filename
         String filename = FilenameUtils.getName(contentDispositionHeader.getFileName());
 
-        // Logging
         LOGGER.info(String.format("# [CONVERSION REQUEST] %s: %s to %s", filename, sourceLanguageCode, targetLanguageCode));
 
         try {
+
+            // Check that the input file is not null
+            if (fileInputStream == null)
+                throw new IllegalArgumentException("The input file has not been sent");
 
             // Parse the codes
             Locale sourceLanguage = parseLanguage(sourceLanguageCode);
@@ -82,12 +85,15 @@ public class ConvertToXliffResource {
             project.delete();
 
             // Return the response
+            LOGGER.info(String.format("# [CONVERSION REQUEST FINISHED] %s: %s to %s\n", filename, sourceLanguageCode, targetLanguageCode));
             return response;
 
         }
 
         // If there is any error, return it
         catch (Exception e) {
+            LOGGER.severe(String.format("# [CONVERSION REQUEST FAILED] %s\n", e.getMessage()));
+            e.printStackTrace();
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(JSONResponseFactory.getError(e.getMessage()))

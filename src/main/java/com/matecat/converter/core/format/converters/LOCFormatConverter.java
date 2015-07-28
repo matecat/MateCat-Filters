@@ -1,13 +1,13 @@
-package com.matecat.converter.core.format.converters.loc;
+package com.matecat.converter.core.format.converters;
 
 import com.matecat.converter.core.format.FormatNotSupportedException;
 import com.matecat.converter.core.format.Format;
-import com.matecat.converter.core.format.converters.SocketFormatConverter;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -40,8 +40,8 @@ public class LOCFormatConverter extends SocketFormatConverter {
     private static final String HOST;
     private static final Integer PORT;
     static {
-        try (InputStream inputStream = new FileInputStream(
-                LOCFormatConverter.class.getResource(File.separator + "LOC.properties").getFile())) {
+
+        try (InputStream inputStream = LOCFormatConverter.class.getResourceAsStream(File.separator + "LOC.properties")) {
             Properties LOCConfig = new Properties();
             LOCConfig.load(inputStream);
             HOST = LOCConfig.getProperty("host");
@@ -145,7 +145,7 @@ public class LOCFormatConverter extends SocketFormatConverter {
      * {@inheritDoc}
      */
     @Override
-    public Format getDefaultConversion(Format inputFormat) {
+    public Format getPreferredConversion(Format inputFormat) {
         if (!isConvertible(inputFormat))
             throw new FormatNotSupportedException(inputFormat);
         return conversionsMapping.get(inputFormat).iterator().next();

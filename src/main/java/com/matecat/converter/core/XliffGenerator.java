@@ -65,7 +65,7 @@ public class XliffGenerator {
 
         // 1. If the file it's not supported, convert it
         if (!OkapiClient.isSupported(originalFormat))
-            file = converters.convert(this.file, converters.getDefaultConversion(originalFormat));
+            file = converters.convert(this.file, converters.getPreferredConversion(originalFormat));
 
         // 2. Detect the encoding
         Encoding encoding = encodingDetector.detect(file);

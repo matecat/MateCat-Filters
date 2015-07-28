@@ -3,10 +3,14 @@ package com.matecat.converter.server.exceptions;
 import java.io.IOException;
 
 /**
- * Created by Reneses on 7/24/15.
+ * Internal server exception
  */
 public class ServerException extends IOException {
 
+    /**
+     * Call the super constructor, passing a message
+     * @param msg Message
+     */
     public ServerException(String msg) {
         super(msg);
     }

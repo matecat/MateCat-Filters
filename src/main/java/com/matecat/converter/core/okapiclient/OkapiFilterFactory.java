@@ -138,6 +138,7 @@ public class OkapiFilterFactory {
     /*
      * FILTERS
      */
+
     private static OpenXMLFilter getOpenXMLFilter() {
         OpenXMLFilter filter = new OpenXMLFilter();
         ConditionalParameters conditionalParameters = (ConditionalParameters) filter.getParameters();

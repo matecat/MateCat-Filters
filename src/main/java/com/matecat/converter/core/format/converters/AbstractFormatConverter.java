@@ -14,6 +14,7 @@ public abstract class AbstractFormatConverter {
 
     /**
      * Convert a file to a given format
+     *
      * @param file Input file
      * @param outputFormat Format we want to convert the file to
      * @return Converted file
@@ -22,6 +23,7 @@ public abstract class AbstractFormatConverter {
 
     /**
      * Check if the converted admits a format
+     *
      * @param inputFormat Format we want to convert
      * @return True if it's convertible, false otherwise
      */
@@ -29,6 +31,7 @@ public abstract class AbstractFormatConverter {
 
     /**
      * Check if the specified conversion is available
+     *
      * @param inputFormat Format we want to convert
      * @param outputFormat Format we want to convert to
      * @return True if it's convertible, false otherwise
@@ -37,10 +40,12 @@ public abstract class AbstractFormatConverter {
 
 
     /**
-     * Get the default format that the input format will be converted to
+     * Get the preferred format that the input format will be converted to
+     * (if the format can be converted into more than one format)
+     *
      * @param inputFormat Format we are going to convert
      * @return Format it will be converted to by default
      */
-    public abstract Format getDefaultConversion(Format inputFormat);
+    public abstract Format getPreferredConversion(Format inputFormat);
 
 }

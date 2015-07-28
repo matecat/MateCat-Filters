@@ -1,8 +1,6 @@
 package com.matecat.converter.server.rest;
 
-import net.sf.okapi.filters.json.JSONFilter;
 import org.json.simple.JSONObject;
-import sun.misc.BASE64Encoder;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +8,9 @@ import java.nio.file.Files;
 import java.util.Base64;
 
 /**
- * TODO: Replace the JSON response by the contents of the file. This class will be deleted
+ * Factory which creates JSON messages to use as http responses
+ *
+ * TODO: Replace the JSON response by the contents of the file. This class will be deleted.
  */
 public class JSONResponseFactory {
 

@@ -1,12 +1,14 @@
 package com.matecat.converter.server.exceptions;
 
-import java.io.IOException;
-
 /**
- * Created by Reneses on 7/27/15.
+ * Exception occurred in the process of project creating
  */
 public class ProjectCreationException extends RuntimeException {
 
+    /**
+     * Call to the parent constructor supplying a message
+     * @param msg Message
+     */
     public ProjectCreationException(String msg) {
         super(msg);
     }

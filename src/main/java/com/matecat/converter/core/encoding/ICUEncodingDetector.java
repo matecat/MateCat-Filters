@@ -10,6 +10,7 @@ import java.nio.file.Files;
 
 /**
  * Encoding detector which uses the <a href="http://site.icu-project.org">ICU library</a>
+ * It detects the following encodings: http://userguide.icu-project.org/conversion/detection#TOC-Detected-Encodings
  */
 public class ICUEncodingDetector implements IEncodingDetector {
 

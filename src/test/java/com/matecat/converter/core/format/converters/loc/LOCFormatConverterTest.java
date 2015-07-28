@@ -1,6 +1,7 @@
 package com.matecat.converter.core.format.converters.loc;
 
 import com.matecat.converter.core.format.Format;
+import com.matecat.converter.core.format.converters.LOCFormatConverter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class LOCFormatConverterTest {
         Arrays.stream(Format.values()).forEach(
                 format -> {
                     if (converter.isConvertible(format)) {
-                        Format defaultConversion = converter.getDefaultConversion(format);
+                        Format defaultConversion = converter.getPreferredConversion(format);
                         assertNotNull(defaultConversion);
                         assertTrue(converter.isConvertible(format, defaultConversion));
                     }

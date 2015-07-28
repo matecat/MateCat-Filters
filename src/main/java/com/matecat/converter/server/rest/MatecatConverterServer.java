@@ -15,18 +15,32 @@ import java.net.InetAddress;
 import java.util.logging.Logger;
 
 
+/**
+ * Matecat converter server
+ */
 public class MatecatConverterServer {
 
+    // Default and used port
     private static final int DEFAULT_PORT = 8082;
     private int serverPort;
 
+
+    /**
+     * Constructor which will use the default port
+     * @throws Exception
+     */
     public MatecatConverterServer() throws Exception {
         this(DEFAULT_PORT);
     }
 
+    /**
+     * Constructor admitting a configured port
+     * @param serverPort Port to use
+     * @throws Exception
+     */
     public MatecatConverterServer(int serverPort) throws Exception {
         this.serverPort = serverPort;
-        Server server = configureServer();
+        Server server = initServer();
         server.start();
         String ip = InetAddress.getLocalHost().getHostAddress();
         Logger.getLogger("Server").info( "\n" +
@@ -39,7 +53,12 @@ public class MatecatConverterServer {
 
     }
 
-    private Server configureServer() {
+
+    /**
+     * Initialize the resources and other aspects of the server
+     * @return Server instance
+     */
+    private Server initServer() {
         ResourceConfig resourceConfig = new ResourceConfig();
         resourceConfig.packages(ConvertToXliffResource.class.getPackage().getName());
         resourceConfig.packages(GenerateDerivedFileResource.class.getPackage().getName());

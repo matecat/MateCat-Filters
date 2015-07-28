@@ -2,7 +2,6 @@ package com.matecat.converter.core.format.converters;
 
 import com.matecat.converter.core.format.Format;
 import com.matecat.converter.core.format.FormatNotSupportedException;
-import com.matecat.converter.core.format.converters.loc.LOCFormatConverter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -70,10 +69,10 @@ public class Converters extends AbstractFormatConverter {
      * {@inheritDoc}
      */
     @Override
-    public Format getDefaultConversion(Format inputFormat) {
+    public Format getPreferredConversion(Format inputFormat) {
         for (AbstractFormatConverter converter : converters)
             if (converter.isConvertible(inputFormat))
-                return converter.getDefaultConversion(inputFormat);
+                return converter.getPreferredConversion(inputFormat);
         throw new FormatNotSupportedException(inputFormat);
     }
 }
