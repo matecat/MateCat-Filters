@@ -243,9 +243,9 @@
                             <Class-Path>resources/</Class-Path>
                         </manifestEntries>
                     </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <descriptors>
+                        <descriptor>src/assembly/jar-with-dependencies-custom.xml</descriptor>
+                    </descriptors>
                 </configuration>
                 <executions>
                     <execution>

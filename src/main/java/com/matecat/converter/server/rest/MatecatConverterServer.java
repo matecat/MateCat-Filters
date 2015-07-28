@@ -35,8 +35,9 @@ public class MatecatConverterServer {
     public MatecatConverterServer() {
         try {
             int port = Integer.parseInt(Configuration.getProperty(PORT_PROPERTY));
-            if (port < 0)
+            if (port <= 0)
                 throw new Exception();
+            this.serverPort = port;
             init();
         }
         catch (Exception e) {
