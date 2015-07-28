@@ -1,13 +1,10 @@
 package com.matecat.converter.core.format.converters;
 
-import com.matecat.converter.core.format.FormatNotSupportedException;
 import com.matecat.converter.core.format.Format;
+import com.matecat.converter.core.format.FormatNotSupportedException;
+import com.matecat.converter.core.util.Configuration;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -33,19 +30,16 @@ import java.util.*;
 public class LOCFormatConverter extends SocketFormatConverter {
 
     /*
-     * Load the configuration properties (LOC.properties)
-     * This configuration file may contain at least both 'host' and 'port' properties
-     * If the file is not
+     * Load the LOC Server configuration from the configuration file
      */
+    private static final String HOST_PROPERTY = "loc-host";
+    private static final String PORT_PROPERTY = "loc-port";
     private static final String HOST;
     private static final Integer PORT;
     static {
-
-        try (InputStream inputStream = LOCFormatConverter.class.getResourceAsStream(File.separator + "LOC.properties")) {
-            Properties LOCConfig = new Properties();
-            LOCConfig.load(inputStream);
-            HOST = LOCConfig.getProperty("host");
-            PORT = Integer.valueOf(LOCConfig.getProperty("port"));
+        try {
+            HOST = Configuration.getProperty(HOST_PROPERTY);
+            PORT = Integer.parseInt(Configuration.getProperty(PORT_PROPERTY));
             if (HOST == null  ||  HOST.equals("")  ||  PORT < 0)
                 throw new IOException();
         }

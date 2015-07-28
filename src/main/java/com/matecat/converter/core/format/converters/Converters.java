@@ -26,6 +26,7 @@ public class Converters extends AbstractFormatConverter {
 
     /**
      * Construct the class initializing the given converters
+     * @param converters List containing converters
      */
     protected Converters(List<AbstractFormatConverter> converters) {
         this.converters = converters;

@@ -8,14 +8,10 @@ import net.sf.okapi.common.Util;
 import net.sf.okapi.common.filters.FilterConfigurationMapper;
 import net.sf.okapi.common.filters.IFilter;
 import net.sf.okapi.common.filters.IFilterConfigurationMapper;
-import net.sf.okapi.common.pipeline.IPipelineStep;
 import net.sf.okapi.common.pipelinedriver.BatchItemContext;
 import net.sf.okapi.common.pipelinedriver.IPipelineDriver;
 import net.sf.okapi.common.pipelinedriver.PipelineDriver;
 import net.sf.okapi.common.resource.RawDocument;
-import net.sf.okapi.filters.html.HtmlFilter;
-import net.sf.okapi.filters.openxml.OpenXMLFilter;
-import net.sf.okapi.filters.plaintext.PlainTextFilter;
 import net.sf.okapi.filters.rainbowkit.RainbowKitFilter;
 import net.sf.okapi.steps.common.RawDocumentToFilterEventsStep;
 import net.sf.okapi.steps.rainbowkit.creation.ExtractionStep;
@@ -24,9 +20,7 @@ import net.sf.okapi.steps.segmentation.SegmentationStep;
 
 import java.io.File;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -51,7 +45,7 @@ public class OkapiClient {
     /**
      * Initialization of the default segmentation rules and its folder
      */
-    public static final String SEGMENTATION_FOLDER_NAME = "segmentation";
+    public static final String SEGMENTATION_FOLDER_NAME = "okapi" + File.separator + "segmentation";
     public static final String DEFAULT_SEGMENTATION_FILENAME = "default.srx";
     private static final File segmentationFolder, defaultSegmentation;
     static {
