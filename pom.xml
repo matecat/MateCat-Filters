@@ -29,6 +29,11 @@
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.12</version>
+        </dependency>
 
         <!-- SERVER -->
         <dependency>
@@ -219,7 +224,7 @@
                 <configuration>
                     <outputDirectory>target/jar</outputDirectory>
                     <excludes>
-                        <exclude>**/*.properties</exclude>
+                        <exclude>**/config.properties</exclude>
                         <exclude>**/okapi/**</exclude>
                     </excludes>
                     <archive>
@@ -274,7 +279,7 @@
                                 <resource>
                                     <directory>src/main/config</directory>
                                     <includes>
-                                        <include>**/*</include>
+                                        <include>**/config.properties</include>
                                     </includes>
                                 </resource>
                                 <resource>

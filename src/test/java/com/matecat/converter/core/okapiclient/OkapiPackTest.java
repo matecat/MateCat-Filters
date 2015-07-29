@@ -1,13 +1,10 @@
 package com.matecat.converter.core.okapiclient;
 
-import com.matecat.converter.core.encoding.Encoding;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.Locale;
 
 import static org.junit.Assert.*;
 

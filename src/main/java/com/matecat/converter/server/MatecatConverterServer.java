@@ -1,9 +1,9 @@
-package com.matecat.converter.server.rest;
+package com.matecat.converter.server;
 
 import com.matecat.converter.core.util.Configuration;
-import com.matecat.converter.server.rest.resources.ConvertToXliffResource;
-import com.matecat.converter.server.rest.resources.ExtractOriginalFileResource;
-import com.matecat.converter.server.rest.resources.GenerateDerivedFileResource;
+import com.matecat.converter.server.resources.ConvertToXliffResource;
+import com.matecat.converter.server.resources.ExtractOriginalFileResource;
+import com.matecat.converter.server.resources.GenerateDerivedFileResource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -11,16 +11,20 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.BindException;
 import java.net.InetAddress;
-import java.util.logging.Logger;
 
 
 /**
  * Matecat converter server
  */
 public class MatecatConverterServer {
+
+    // Logger
+    private static final Logger LOGGER = LoggerFactory.getLogger(MatecatConverterServer.class);
 
     // Port property name in the configuration file
     public static final String PORT_PROPERTY = "server-port";
@@ -66,21 +70,24 @@ public class MatecatConverterServer {
             Server server = initServer();
             server.start();
             String ip = InetAddress.getLocalHost().getHostAddress();
-            Logger.getLogger("Server").info("\n" +
+            System.out.println("\n" +
                     "############################################\n" +
                     "###   MATECAT CONVERTER SERVER STARTED\n" +
                     "###   > IP: " + ip + "\n" +
                     "###   > PORT: " + serverPort + "\n" +
                     "############################################\n");
+            LOGGER.info("Server started at {}:{}", ip, serverPort);
             server.join();
         }
         catch (BindException e) {
-            throw new RuntimeException("The port " + serverPort + " is already in use");
+            LOGGER.error("The port " + serverPort + " is already in use", e);
+            System.exit(-1);
         }
         catch (InterruptedException e) {
+            LOGGER.error("The server has been interrupted", e);
             throw new RuntimeException("The server has been interrupted");
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Unknown internal server problem", e);
             throw new RuntimeException("Unknown internal server problem");
         }
     }

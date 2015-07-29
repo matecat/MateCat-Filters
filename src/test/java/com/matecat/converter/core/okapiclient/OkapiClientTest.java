@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-// TODO: fix xml
-// TODO: fix derived
 public class OkapiClientTest {
 
     private void testFile(String filename) throws IOException {

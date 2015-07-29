@@ -48,7 +48,7 @@ import java.util.Base64;
  *      <body></body>
  * </file>
  */
-public class XliffBuilder {
+class XliffBuilder {
 
     /**
      * Build the XLIFF, manifest and original file into a new Xliff

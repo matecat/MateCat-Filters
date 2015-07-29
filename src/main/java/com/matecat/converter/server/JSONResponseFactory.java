@@ -1,4 +1,4 @@
-package com.matecat.converter.server.rest;
+package com.matecat.converter.server;
 
 import org.json.simple.JSONObject;
 

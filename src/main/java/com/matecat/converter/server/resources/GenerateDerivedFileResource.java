@@ -1,12 +1,12 @@
-package com.matecat.converter.server.rest.resources;
+package com.matecat.converter.server.resources;
 
 import com.matecat.converter.core.XliffProcessor;
 import com.matecat.converter.core.project.Project;
 import com.matecat.converter.core.project.ProjectFactory;
-import com.matecat.converter.server.rest.JSONResponseFactory;
-import org.apache.commons.io.FilenameUtils;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import com.matecat.converter.server.JSONResponseFactory;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -16,7 +16,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.InputStream;
-import java.util.logging.Logger;
 
 
 /**
@@ -33,7 +32,7 @@ import java.util.logging.Logger;
 public class GenerateDerivedFileResource {
 
     // Logger
-    private static Logger LOGGER = Logger.getLogger(GenerateDerivedFileResource.class.getName());
+    private static Logger LOGGER = LoggerFactory.getLogger(ConvertToXliffResource.class);
 
     /**
      * Generate the derived file from the xlf
@@ -48,7 +47,7 @@ public class GenerateDerivedFileResource {
             @FormDataParam("file") InputStream fileInputStream) {
 
         // Logging
-        LOGGER.info("# [DERIVATION REQUEST]");
+        LOGGER.info("[DERIVATION REQUEST]");
 
         try {
 
@@ -58,7 +57,7 @@ public class GenerateDerivedFileResource {
 
             // Create the project
             Project project = ProjectFactory.createProject("to-derived.xlf", fileInputStream);
-            LOGGER.info(String.format("# PROJECT: %s", project.getFolder().getPath()));
+            LOGGER.info("[PROJECT CREATED] Saved in {}", project.getFolder().getPath());
 
             // Retrieve the xlf
             File derivedFile = new XliffProcessor(project.getFile()).getDerivedFile();
@@ -73,15 +72,14 @@ public class GenerateDerivedFileResource {
             project.delete();
 
             // Return the response
-            LOGGER.info("# [DERIVATION REQUEST FINISHED]\n");
+            LOGGER.info("[DERIVATION REQUEST FINISHED]");
             return response;
 
         }
 
         // If there is any error, return it
         catch (Exception e) {
-            LOGGER.severe(String.format("# [DERIVATION REQUEST FAILED] %s\n", e.getMessage()));
-            e.printStackTrace();
+            LOGGER.error("[DERIVATION REQUEST FAILED] {}", e.getMessage(), e);
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(JSONResponseFactory.getError(e.getMessage()))

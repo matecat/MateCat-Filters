@@ -7,9 +7,6 @@ import java.util.Locale;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Reneses on 7/22/15.
- */
 public class XliffGeneratorTest {
 
 

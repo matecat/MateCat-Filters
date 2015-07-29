@@ -12,11 +12,19 @@ import net.sf.okapi.common.pipelinedriver.BatchItemContext;
 import net.sf.okapi.common.pipelinedriver.IPipelineDriver;
 import net.sf.okapi.common.pipelinedriver.PipelineDriver;
 import net.sf.okapi.common.resource.RawDocument;
+import net.sf.okapi.filters.html.HtmlFilter;
+import net.sf.okapi.filters.openxml.OpenXMLFilter;
+import net.sf.okapi.filters.plaintext.PlainTextFilter;
 import net.sf.okapi.filters.rainbowkit.RainbowKitFilter;
+import net.sf.okapi.filters.table.TableFilter;
+import net.sf.okapi.filters.table.csv.CommaSeparatedValuesFilter;
 import net.sf.okapi.steps.common.RawDocumentToFilterEventsStep;
 import net.sf.okapi.steps.rainbowkit.creation.ExtractionStep;
 import net.sf.okapi.steps.rainbowkit.postprocess.MergingStep;
+import net.sf.okapi.steps.rainbowkit.postprocess.Parameters;
 import net.sf.okapi.steps.segmentation.SegmentationStep;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URL;
@@ -34,6 +42,9 @@ import static com.matecat.converter.core.format.Format.*;
  * the derived (translated) file.
  */
 public class OkapiClient {
+
+    // Logger
+    private static Logger LOGGER = LoggerFactory.getLogger(OkapiClient.class);
 
     /**
      * Private constructor (static class)
@@ -128,16 +139,7 @@ public class OkapiClient {
         // Create the pipeline driver
         IPipelineDriver driver = new PipelineDriver();
 
-        // Create a filter configuration map
-        IFilterConfigurationMapper fcMapper = new FilterConfigurationMapper();
-        fcMapper.addConfigurations(RainbowKitFilter.class.getName());
-        //fcMapper.addConfigurations(OpenXMLFilter.class.getName());
-        //fcMapper.addConfigurations(HtmlFilter.class.getName());
-
-        // Set the filter configuration map to use with the driver
-        driver.setFilterConfigurationMapper(fcMapper);
-
-        // Configure root
+        // Set output
         driver.setRootDirectories(root, root);
         driver.setOutputDirectory(root);
 
@@ -167,6 +169,25 @@ public class OkapiClient {
         net.sf.okapi.steps.rainbowkit.creation.Parameters extParams = (net.sf.okapi.steps.rainbowkit.creation.Parameters) extStep.getParameters();
         extParams.setPackageName(OkapiPack.PACK_FILENAME);
         return extStep;
+    }
+
+    private static IFilterConfigurationMapper createFilterConfigurationMapper() {
+        return createFilterConfigurationMapper(null);
+    }
+
+    private static IFilterConfigurationMapper createFilterConfigurationMapper(IFilter filter) {
+
+        // Create a filter configuration map and add mandatory configurations
+        IFilterConfigurationMapper fcMapper = new FilterConfigurationMapper();
+        fcMapper.addConfigurations(RainbowKitFilter.class.getName());
+        fcMapper.addConfigurations(HtmlFilter.class.getName());
+        fcMapper.addConfigurations(TableFilter.class.getName());
+
+        // Add custom configurations
+        // TODO check behaviour for custom configurations
+        fcMapper.addConfigurations(filter.getClass().getName());
+
+        return fcMapper;
     }
 
 
@@ -207,6 +228,9 @@ public class OkapiClient {
         filteringStep.setFilter(filter);
         driver.addStep(filteringStep);
 
+        // Set the filter configuration map to use with the driver
+        driver.setFilterConfigurationMapper(createFilterConfigurationMapper(filter));
+
         // Segmentation step
         driver.addStep(createSegmentationStep(sourceLanguage));
 
@@ -214,11 +238,12 @@ public class OkapiClient {
         driver.addStep(createExtractionStep());
 
         // Add the input file to the driver
-        RawDocument rawDoc = new RawDocument(file.toURI(), encoding.getCode(), new LocaleId(sourceLanguage), new LocaleId(targetLanguage));
+        RawDocument rawDoc = new RawDocument(file.toURI(), encoding.getCode(), new LocaleId(sourceLanguage), new LocaleId(targetLanguage), filter.getName());
 
         // Output file (useless but needed)
         String basename = Util.getFilename(file.getPath(), false);
-        String outputPath = packFolder.getPath() + File.separator + basename + ".out" + Util.getExtension(file.getPath());
+        //String outputPath = packFolder.getPath() + File.separator + basename + ".out" + Util.getExtension(file.getPath());
+        String outputPath = packFolder.getParentFile().getPath() + File.separator + basename + ".out" + Util.getExtension(file.getPath());
         File outputFile = new File(outputPath);
 
         // Create batch and run it
@@ -243,8 +268,12 @@ public class OkapiClient {
 
         try {
 
+            // Create pipeline
             String root = pack.getPackFolder().getParent();
             IPipelineDriver driver = createOkapiPipelineDriver(root);
+            driver.setFilterConfigurationMapper(
+                    createFilterConfigurationMapper(
+                            OkapiFilterFactory.getFilter(Format.getFormat(pack.getOriginalFile()))));
 
             // Add the extraction step
             driver.addStep(new RawDocumentToFilterEventsStep());
@@ -266,14 +295,12 @@ public class OkapiClient {
             // Run the pipeline
             driver.processBatch();
 
-            // Ensure that the derived file has been created (if not, an exception will be thrown by the pack
-            File derivedFile = pack.getDerivedFile();
-
-            // Return it
-            return derivedFile;
+            // Return the derived file
+            return pack.getDerivedFile();
         }
         catch ( Throwable e ) {
-            throw new RuntimeException("It was not possible to obtaint he derived file from " + pack.getOriginalFile().getName());
+            LOGGER.error("It was not possible to obtain the derived file from " + pack.getOriginalFile().getName(), e);
+            throw new RuntimeException("It was not possible to obtain the derived file from " + pack.getOriginalFile().getName());
         }
     }
 

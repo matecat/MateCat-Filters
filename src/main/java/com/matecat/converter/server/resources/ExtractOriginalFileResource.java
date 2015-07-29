@@ -1,19 +1,18 @@
-package com.matecat.converter.server.rest.resources;
+package com.matecat.converter.server.resources;
 
 import com.matecat.converter.core.XliffProcessor;
 import com.matecat.converter.core.project.Project;
 import com.matecat.converter.core.project.ProjectFactory;
-import com.matecat.converter.server.rest.JSONResponseFactory;
-import org.apache.commons.io.FilenameUtils;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import com.matecat.converter.server.JSONResponseFactory;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.InputStream;
-import java.util.logging.Logger;
 
 
 /**
@@ -30,7 +29,8 @@ import java.util.logging.Logger;
 public class ExtractOriginalFileResource {
 
     // Logger
-    private static Logger LOGGER = Logger.getLogger("OriginalResource");
+    private static Logger LOGGER = LoggerFactory.getLogger(ConvertToXliffResource.class);
+
 
     /**
      * Extract the original file from the xlf
@@ -44,7 +44,7 @@ public class ExtractOriginalFileResource {
     public Response convert(@FormDataParam("file") InputStream fileInputStream) {
 
         // Logging
-        LOGGER.info("# [EXTRACTION REQUEST]");
+        LOGGER.info("[EXTRACTION REQUEST]");
 
         try {
 
@@ -54,7 +54,7 @@ public class ExtractOriginalFileResource {
 
             // Create the project
             Project project = ProjectFactory.createProject("to-original.xlf", fileInputStream);
-            LOGGER.info(String.format("# PROJECT: %s", project.getFolder().getPath()));
+            LOGGER.info("[PROJECT CREATED] Saved in {}", project.getFolder().getPath());
 
             // Retrieve the xlf
             File originalFile = new XliffProcessor(project.getFile()).getOriginalFile();
@@ -69,15 +69,14 @@ public class ExtractOriginalFileResource {
             project.delete();
 
             // Return the response
-            LOGGER.info("# [EXTRACTION REQUEST FINISHED]\n");
+            LOGGER.info("[EXTRACTION REQUEST FINISHED]");
             return response;
 
         }
 
         // If there is any error, return it
         catch (Exception e) {
-            LOGGER.severe(String.format("# [EXTRACTION REQUEST FAILED] %s\n", e.getMessage()));
-            e.printStackTrace();
+            LOGGER.error("[EXTRACTION REQUEST FAILED] {}", e.getMessage(), e);
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(JSONResponseFactory.getError(e.getMessage()))

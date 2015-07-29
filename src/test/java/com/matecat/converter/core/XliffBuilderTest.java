@@ -16,7 +16,7 @@ import java.util.Base64;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by Reneses on 7/17/15.
+ * Xliff Builder Test
  */
 public class XliffBuilderTest {
 

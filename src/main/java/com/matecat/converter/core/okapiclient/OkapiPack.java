@@ -2,6 +2,7 @@ package com.matecat.converter.core.okapiclient;
 
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -143,8 +144,11 @@ public class OkapiPack {
         if (originalFile == null)
             throw new IllegalStateException("The pack has been deleted");
         // Lazy generation
-        if (derivedFile == null)
-            derivedFile = new File(pack.getPath() + File.separator + DONE_DIRECTORY_NAME + File.separator + originalFile.getName());
+        if (derivedFile == null) {
+            String basename = FilenameUtils.getBaseName(originalFile.getName());
+            String extension = FilenameUtils.getExtension(originalFile.getName());
+            derivedFile = new File(pack.getPath() + File.separator + DONE_DIRECTORY_NAME + File.separator + basename + ".out." + extension);
+        }
         // Check that it has been retrieved properly and return it
         if (!derivedFile.exists())
             throw new RuntimeException("The pack has not derived file to obtain (process it with Okapi first)");

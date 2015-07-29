@@ -11,9 +11,6 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-/**
- * LOC Converter test
- */
 public class LOCFormatConverterTest {
 
     private LOCFormatConverter converter;
