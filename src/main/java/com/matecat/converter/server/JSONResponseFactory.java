@@ -14,10 +14,14 @@ import java.util.Base64;
  */
 public class JSONResponseFactory {
 
+    public static final String IS_SUCCESS = "isSuccess";
+    public static final String ERROR_MESSAGE = "errorMessage";
+    public static final String DOCUMENT_CONTENT = "documentContent";
+
     public static String getError(String errorMessage) {
         JSONObject output = new JSONObject();
-        output.put("isSuccess", false);
-        output.put("errorMessage", errorMessage);
+        output.put(IS_SUCCESS, false);
+        output.put(ERROR_MESSAGE, errorMessage);
         return output.toJSONString();
     }
 
@@ -25,8 +29,8 @@ public class JSONResponseFactory {
         try {
             String encodedDocument = Base64.getEncoder().encodeToString(Files.readAllBytes(file.toPath()));
             JSONObject output = new JSONObject();
-            output.put("isSuccess", true);
-            output.put("documentContent", encodedDocument);
+            output.put(IS_SUCCESS, true);
+            output.put(DOCUMENT_CONTENT, encodedDocument);
             return output.toJSONString();
         } catch (IOException e) {
             e.printStackTrace();

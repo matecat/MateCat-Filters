@@ -35,6 +35,20 @@
             <version>1.7.12</version>
         </dependency>
 
+        <!-- TEST CLIENT -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.2.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.2.2</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- SERVER -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
