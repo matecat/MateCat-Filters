@@ -8,6 +8,8 @@ import com.matecat.converter.core.format.FormatNotSupportedException;
 import com.matecat.converter.core.format.converters.Converters;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Locale;
@@ -17,6 +19,9 @@ import java.util.Locale;
  * This is the main class of the converter's core. It is used to generate an Xliff.
  */
 public class XliffGenerator {
+
+    // Logger
+    private static Logger LOGGER = LoggerFactory.getLogger(XliffGenerator.class);
 
     // Required properties
     private Locale sourceLanguage;
@@ -64,8 +69,11 @@ public class XliffGenerator {
         File file = this.file;
 
         // 1. If the file it's not supported, convert it
-        if (!OkapiClient.isSupported(originalFormat))
-            file = converters.convert(this.file, converters.getPreferredConversion(originalFormat));
+        if (!OkapiClient.isSupported(originalFormat)) {
+            Format outputFormat = converters.getPreferredConversion(originalFormat);
+            LOGGER.info("Converting file from {} to {}", originalFormat, outputFormat);
+            file = converters.convert(this.file, outputFormat);
+        }
 
         // 2. Detect the encoding
         Encoding encoding = encodingDetector.detect(file);

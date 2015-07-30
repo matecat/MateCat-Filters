@@ -258,7 +258,7 @@ public abstract class SocketFormatConverter extends AbstractFormatConverter {
             // Connect, set parameters and send the file
             connect();
             write(inputFormat);
-            //write(outputFormat); // TODO
+            write(outputFormat);
             write(file);
 
             // Receive status code

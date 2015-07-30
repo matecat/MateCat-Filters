@@ -26,6 +26,8 @@ import java.util.*;
  *  - png -> docx (OCR processing)
  *  - jpg -> docx (OCR processing)
  *  - tiff -> docx (OCR processing)
+ *  - docx -> pdf
+ *  - docx -> rtf
  */
 public class LOCFormatConverter extends SocketFormatConverter {
 
@@ -63,7 +65,9 @@ public class LOCFormatConverter extends SocketFormatConverter {
                 Format.PDF,    // 9
                 Format.PNG,    // 10
                 Format.JPG,    // 11
-                Format.TIFF    // 12
+                Format.TIFF,   // 12
+                Format.XLSX,   // 13
+                Format.PPTX    // 14
         );
 
 
@@ -88,6 +92,7 @@ public class LOCFormatConverter extends SocketFormatConverter {
         temp.get(Format.JPG).add(Format.DOCX);
         temp.get(Format.PNG).add(Format.DOCX);
         temp.get(Format.TIFF).add(Format.DOCX);
+        temp.get(Format.DOCX).add(Format.RTF);
 
         // Store an unmodifiable map
         conversionsMapping = Collections.unmodifiableMap(temp);

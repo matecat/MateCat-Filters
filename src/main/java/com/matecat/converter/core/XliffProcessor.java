@@ -7,6 +7,8 @@ import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -33,6 +35,9 @@ import java.util.Locale;
  *  2. Extraction of source and target languages
  */
 public class XliffProcessor {
+
+    // Logger
+    private static Logger LOGGER = LoggerFactory.getLogger(XliffProcessor.class);
 
     // File we are processing
     private File xlf;
@@ -122,12 +127,7 @@ public class XliffProcessor {
         File originalFile = pack.getOriginalFile();
 
         // If it does not have its original format, try to convert it
-        if (Format.getFormat(originalFile) != originalFormat) {
-            try {
-                originalFile = new Converters().convert(originalFile, originalFormat);
-            }
-            catch (FormatNotSupportedException ignored)  {}
-        }
+        originalFile = convertToOriginalFormat(originalFile, originalFormat);
 
         // Return it
         return originalFile;
@@ -150,16 +150,30 @@ public class XliffProcessor {
         File derivedFile = OkapiClient.generateDerivedFile(pack);
 
         // If it does not have its original format, try to convert it
-        if (Format.getFormat(derivedFile) != originalFormat) {
-            try {
-                derivedFile = new Converters().convert(derivedFile, originalFormat);
-            }
-            catch (FormatNotSupportedException ignored)  {}
-        }
+        derivedFile = convertToOriginalFormat(derivedFile, originalFormat);
 
         // Return it
         return derivedFile;
 
+    }
+
+
+    /**
+     * Try to convert a file to its original format
+     * @param file File
+     * @param originalFormat Original format
+     * @return Converted file if possible, input file otherwise
+     */
+    private static File convertToOriginalFormat(File file, Format originalFormat) {
+        Format currentFormat = Format.getFormat(file);
+        if (currentFormat != originalFormat) {
+            Converters converters = new Converters();
+            if (converters.isConvertible(currentFormat, originalFormat)) {
+                LOGGER.info("Converting file from {} to {}", currentFormat, originalFormat);
+                return new Converters().convert(file, originalFormat);
+            }
+        }
+        return file;
     }
 
 
@@ -267,7 +281,6 @@ public class XliffProcessor {
             Element internalFileElement = (Element) fileElement.getFirstChild().getFirstChild().getFirstChild();
             String encodedFile = internalFileElement.getTextContent();
             byte[] originalFileBytes = Base64.getDecoder().decode(encodedFile);
-            //String form = internalFileElement.getAttribute("form");
 
             // Create original folder
             File originalFolder = new File(packFolder.getPath() + File.separator + OkapiPack.ORIGINAL_DIRECTORY_NAME);
