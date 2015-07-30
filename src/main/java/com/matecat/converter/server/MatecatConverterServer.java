@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.BindException;
 import java.net.InetAddress;
+import java.util.Properties;
 
 
 /**
@@ -31,6 +32,9 @@ public class MatecatConverterServer {
 
     // Used port
     private int serverPort;
+
+    // Server
+    private Server server;
 
 
     /**
@@ -63,11 +67,41 @@ public class MatecatConverterServer {
 
 
     /**
+     * Stop the server
+     */
+    public void stop() {
+        try {
+            server.stop();
+        } catch (Exception e) {
+            LOGGER.error("It was not possible to stop the server", e);
+        }
+    }
+
+
+    /**
+     * Check if the server has been started (this is, ready to receive requests)
+     * @return True if started, false otherwise
+     */
+    public boolean isStarted() {
+        return server.isStarted();
+    }
+
+
+    /**
+     * Check if the server is stopped
+     * @return True if stopped, false otherwise
+     */
+    public boolean isStopped() {
+        return server.isStopped();
+    }
+
+
+    /**
      * Init the server
      */
     private void init() {
         try {
-            Server server = initServer();
+            initServer();
             server.start();
             String ip = InetAddress.getLocalHost().getHostAddress();
             System.out.println("\n" +
@@ -77,7 +111,7 @@ public class MatecatConverterServer {
                     "###   > PORT: " + serverPort + "\n" +
                     "############################################\n");
             LOGGER.info("Server started at {}:{}", ip, serverPort);
-            server.join();
+            //server.join();
         }
         catch (BindException e) {
             LOGGER.error("The port " + serverPort + " is already in use", e);
@@ -95,9 +129,10 @@ public class MatecatConverterServer {
 
     /**
      * Initialize the resources and other aspects of the server
-     * @return Server instance
      */
-    private Server initServer() {
+    private void initServer() {
+
+        // Configure the server
         ResourceConfig resourceConfig = new ResourceConfig();
         resourceConfig.packages(ConvertToXliffResource.class.getPackage().getName());
         resourceConfig.packages(GenerateDerivedFileResource.class.getPackage().getName());
@@ -106,12 +141,13 @@ public class MatecatConverterServer {
         resourceConfig.register(MultiPartFeature.class);
         ServletContainer servletContainer = new ServletContainer(resourceConfig);
         ServletHolder sh = new ServletHolder(servletContainer);
-        Server server = new Server(serverPort);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         context.addServlet(sh, "/*");
+
+        // Initiate it
+        this.server = new Server(serverPort);
         server.setHandler(context);
-        return server;
     }
 
 }
