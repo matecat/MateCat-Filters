@@ -188,7 +188,7 @@ class XliffBuilder {
         Format format = Format.getFormat(filename);
         if (originalFormat != null  &&  originalFormat != format)  {
             String basename = FilenameUtils.getBaseName(filename);
-            filename = String.format("%s.%s", basename,format);
+            filename = String.format("%s.%s", basename,originalFormat);
         }
 
         // Create the new file element which will contain the original file
