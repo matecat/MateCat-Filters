@@ -1,5 +1,6 @@
 #!/bin/bash      
-    
+clear
+
 printf "\n"
 echo "############################################################"
 echo "####           MATECAT CONVERTER  BUILD SCRIPT         #####"  
@@ -18,6 +19,7 @@ cd target/jar/
 FILENAME=$(find *.jar | head -1)
 cat > server.sh << EOT
 	#!/bin/bash
+	clear
 	java -jar $FILENAME 
 EOT
 echo "done"
