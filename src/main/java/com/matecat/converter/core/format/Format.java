@@ -1,10 +1,10 @@
 package com.matecat.converter.core.format;
 
+import jersey.repackaged.com.google.common.collect.Lists;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 
@@ -26,7 +26,7 @@ public enum Format {
     ARCHIVE, XINI, TS;
 
     // Generate a dictionary mapping the extension to its enum constant
-    private static Map<String, Format> supportedFormats;
+    private static final Map<String, Format> supportedFormats;
     static {
         supportedFormats = new HashMap<>();
         Stream.of(Format.values())
@@ -34,6 +34,25 @@ public enum Format {
                     String ext = format.toString();
                     supportedFormats.put(ext, format);
                 });
+    }
+
+    // Plain text formats
+    private static final Set<Format> textFormats;
+    static {
+        textFormats = new HashSet<>(Arrays.asList(
+                TXT, CSV, XML, HTML, HTM, XHTML, PHP, JSON, TXML, YML, XLIFF,
+                SDLXLIFF, DITA, IDML, RESX, STRINGS, PO, ARCHIVE, PROPERTIES
+        ));
+    }
+
+
+    /**
+     * Check whether a format is plain text or not
+     * @param format Format
+     * @return True if plain text, false otherwise
+     */
+    public static boolean isPlainTextFormat(Format format) {
+        return textFormats.contains(format);
     }
 
 

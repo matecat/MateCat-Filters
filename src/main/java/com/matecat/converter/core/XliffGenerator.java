@@ -76,7 +76,8 @@ public class XliffGenerator {
         }
 
         // 2. Detect the encoding
-        Encoding encoding = encodingDetector.detect(file);
+        Encoding encoding = Format.isPlainTextFormat(Format.getFormat(file))?
+                encodingDetector.detect(file) : Encoding.getDefault();
 
         // 3. Send to Okapi
         OkapiPack okapiPack = OkapiClient.generatePack(sourceLanguage, targetLanguage, encoding, file);
