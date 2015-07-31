@@ -172,10 +172,11 @@ public class OkapiClient {
         return extStep;
     }
 
-    private static IFilterConfigurationMapper createFilterConfigurationMapper() {
-        return createFilterConfigurationMapper(null);
-    }
-
+    /**
+     * Create a filter configuration mapper
+     * @param filter Filter being used
+     * @return Configuration mapper, including common configurations and the corresponding to the current filter
+     */
     private static IFilterConfigurationMapper createFilterConfigurationMapper(IFilter filter) {
 
         // Create a filter configuration map and add mandatory configurations
@@ -185,7 +186,6 @@ public class OkapiClient {
         fcMapper.addConfigurations(TableFilter.class.getName());
 
         // Add custom configurations
-        // TODO check behaviour for custom configurations
         fcMapper.addConfigurations(filter.getClass().getName());
 
         return fcMapper;
