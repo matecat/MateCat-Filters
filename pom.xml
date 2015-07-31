@@ -307,18 +307,61 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>purge-local-dependencies</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>purge-local-repository</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>net.sf.okapi:okapi-core</include>
+                                <include>net.sf.okapi.steps:okapi-step-common</include>
+                                <include>net.sf.okapi.steps:okapi-step-segmentation</include>
+                                <include>net.sf.okapi.steps:okapi-step-rainbowkit</include>
+                                <include>net.sf.okapi.filters:okapi-filter-rainbowkit</include>
+                                <include>net.sf.okapi.filters:okapi-filter-xliff</include>
+                                <include>net.sf.okapi.filters:okapi-filter-po</include>
+                                <include>net.sf.okapi.filters:okapi-filter-xini</include>
+                                <include>net.sf.okapi.filters:okapi-filter-plaintext</include>
+                                <include>net.sf.okapi.filters:okapi-filter-regex</include>
+                                <include>net.sf.okapi.filters:okapi-filter-openxml</include>
+                                <include>net.htmlparser.jericho:jericho-html:3.4-dev</include>
+                                <include>net.sf.okapi.filters:okapi-filter-idml</include>
+                                <include>net.sf.okapi.filters:okapi-filter-html</include>
+                                <include>net.sf.okapi.filters:okapi-filter-openoffice</include>
+                                <include>net.sf.okapi.filters:okapi-filter-php</include>
+                                <include>net.sf.okapi.filters:okapi-filter-properties</include>
+                                <include>net.sf.okapi.filters:okapi-filter-json</include>
+                                <include>net.sf.okapi.filters:okapi-filter-txml</include>
+                                <include>net.sf.okapi.filters:okapi-filter-railsyaml</include>
+                                <include>net.sf.okapi.filters:okapi-filter-mif</include>
+                                <include>net.sf.okapi.filters:okapi-filter-xmlstream</include>
+                                <include>net.sf.okapi.filters:okapi-filter-table</include>
+                                <include>net.sf.okapi.filters:okapi-filter-archive</include>
+                                <include>net.sf.okapi.filters:okapi-filter-ttx</include>
+                                <include>net.sf.okapi.filters:okapi-filter-ts</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
     <repositories>
         <repository>
-                <id>okapi-release</id>
-                <name>Okapi Release</name>
-                <url>http://repository-okapi.forge.cloudbees.com/release/</url>
-                <snapshots>
-                    <enabled>false</enabled>
-                </snapshots>
-            </repository>
+            <id>okapi-release</id>
+            <name>Okapi Release</name>
+            <url>http://repository-okapi.forge.cloudbees.com/release/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>okapi-dev</id>
             <name>Okapi Snapshot</name>
@@ -328,5 +371,4 @@
             </snapshots>
         </repository>
     </repositories>
-
 </project>
