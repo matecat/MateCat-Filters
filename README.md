@@ -2,7 +2,7 @@
 
 Matecat Converter is a free open-source [Matecat](https://www.matecat.com) module which offers file conversions from multiple formats to Xliff (.xlf). Even though its usage is not mandatory, it substancially improves the user experience of the site. 
 
-_Note: if your purpose is just to use this module within Matecat, and not to modify it, you can directly connect to our server (it's free):_ __http://[TODO SERVER ADDRESS: TODO SERVER PORT]__
+_Note: if your purpose is just to use this module within Matecat, and not to modify it, you can directly connect to our server (it's free!):_ __http://[TODO SERVER ADDRESS: TODO SERVER PORT]__
 
 ## Main features
 
@@ -54,11 +54,13 @@ curl --form "file=@file.format" \
 To build a runnable jar go to the `/deployment` folder, and follow the instructions correspondig to your operating system. The deployment requires Maven.
 
 #### UNIX 
-Execute the following commands from the terminal:
-
+First, check that the building script is executable, by running the following command in the Terminal:
 ```
-chmod 755 build.sh
-./build.sh
+chmod +rx build
+```
+Then, you can execute the script doing double click on it, or by typing:
+```
+./build
 ```
 #### WINDOWS
 Execute the following commands from the CMD:
@@ -71,17 +73,14 @@ mvn -DskipTests=true package
 ## Server Execution
 To run the server go to the folder where the building has taken place, by default `/target/jar`, and follow the instructions correspondig to your operating system. The execution of the server requires Java 8.
 
-#### UNIX
-Execute the following command from the terminal:
-
-```
-./server.sh
-```
-
-#### Windows
-Execute the following command from the CMD:
+_Note. If you build the server manually in Windows, you will not have a `server` nor a `server.bat` file. If this is the case, execute the following command in the Terminal / CMD:_
 
 ```
 java -jar [NAME OF THE JAR INCLUDING EXTENSION]
 ```
 
+#### UNIX
+Double click on the file `server` (without extension)
+
+#### Windows
+Double click on the file `server.bat`.
