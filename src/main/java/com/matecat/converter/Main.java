@@ -20,7 +20,7 @@ public class Main {
 		do {
 			command = sc.nextLine();
 		}
-		while (!command.equals("quit")  &&  !command.equals("exit"));
+		while (!command.toLowerCase().equals("quit")  &&  !command.toLowerCase().equals("exit"));
 
 		// Stop the server
 		server.stop();
