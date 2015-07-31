@@ -37,7 +37,7 @@ public class ExtractOriginalFileResourceTest {
     @Test
     public void testOriginalSuccess() throws Exception {
 
-        File fileToUpload = new File(getClass().getResource(File.separator + "server" + File.separator + "test.docx.xlf").getPath());
+        File fileToUpload = new File(getClass().getResource("/server/test.docx.xlf").getPath());
 
         // Send request
         HttpClient httpclient = new DefaultHttpClient();

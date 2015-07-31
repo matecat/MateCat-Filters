@@ -39,7 +39,7 @@ public class OkapiFilterFactory {
 
     // Path of the configurations
     private static final String configurationsPath = OkapiFilterFactory.class
-            .getResource(File.separator + "okapi" + File.separator + "configurations").getPath() + File.separator;
+            .getResource("/okapi/configurations").getPath() + File.separator;
 
     private static final String XML_CONFIG_FILENAME = "okf_xmlstream-custom.fprm";
     private static final String STRINGS_CONFIG_FILENAME = "okf_macStrings.fprm";
@@ -141,7 +141,7 @@ public class OkapiFilterFactory {
 
     private static OpenXMLFilter getOpenXMLFilter() {
         OpenXMLFilter filter = new OpenXMLFilter();
-        ConditionalParameters conditionalParameters = (ConditionalParameters) filter.getParameters();
+        net.sf.okapi.filters.openxml.ConditionalParameters conditionalParameters = ( net.sf.okapi.filters.openxml.ConditionalParameters) filter.getParameters();
         conditionalParameters.setCleanupAggressively(true);
         conditionalParameters.setTranslateWordExcludeGraphicMetaData(true);
         conditionalParameters.setTranslateDocProperties(false);

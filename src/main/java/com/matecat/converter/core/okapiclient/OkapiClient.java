@@ -56,12 +56,13 @@ public class OkapiClient {
     /**
      * Initialization of the default segmentation rules and its folder
      */
-    public static final String SEGMENTATION_FOLDER_NAME = "okapi" + File.separator + "segmentation";
+    public static final String OKAPI_FOLDER_NAME = "okapi";
+    public static final String SEGMENTATION_FOLDER_NAME = "segmentation";
     public static final String DEFAULT_SEGMENTATION_FILENAME = "default.srx";
     private static final File segmentationFolder, defaultSegmentation;
     static {
         // Load segmentation folder
-        URL segmentationFolderURL =  OkapiClient.class.getResource(File.separator + SEGMENTATION_FOLDER_NAME);
+        URL segmentationFolderURL =  OkapiClient.class.getResource("/" + OKAPI_FOLDER_NAME + "/" + SEGMENTATION_FOLDER_NAME);
         if (segmentationFolderURL == null)
             throw new RuntimeException("The folder containing the segmentation rules was not found (is it installed?)");
         segmentationFolder = new File(segmentationFolderURL.getPath());
@@ -242,7 +243,6 @@ public class OkapiClient {
 
         // Output file (useless but needed)
         String basename = Util.getFilename(file.getPath(), false);
-        //String outputPath = packFolder.getPath() + File.separator + basename + ".out" + Util.getExtension(file.getPath());
         String outputPath = packFolder.getParentFile().getPath() + File.separator + basename + ".out" + Util.getExtension(file.getPath());
         File outputFile = new File(outputPath);
 

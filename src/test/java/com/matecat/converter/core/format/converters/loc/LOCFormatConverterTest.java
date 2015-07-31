@@ -44,7 +44,7 @@ public class LOCFormatConverterTest {
     public void testConvertDoc() throws Exception {
 
         // Convert the file
-        File oviedo = new File(getClass().getResource(File.separator + "converter/Oviedo.doc").toURI());
+        File oviedo = new File(getClass().getResource("/converter/Oviedo.doc").toURI());
         LOCFormatConverter converter = new LOCFormatConverter();
         convertedFile = converter.convert(oviedo, Format.DOCX);
 

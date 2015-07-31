@@ -22,7 +22,7 @@ public class XliffProcessorTest {
      */
     @Test
     public void testGetOriginalFile() throws Exception {
-        File xlf = new File(getClass().getResource(File.separator + "extraction" + File.separator + "test.docx.xlf").getPath());
+        File xlf = new File(getClass().getResource("/extraction/test.docx.xlf").getPath());
         new XliffProcessor(xlf).getOriginalFile();
     }
 
@@ -39,7 +39,7 @@ public class XliffProcessorTest {
         final String DERIVED = "TEXT _AFTER_ TRANSLATION";
 
         // Create text file
-        File folder = new File(getClass().getResource(File.separator + "derivation").getPath());
+        File folder = new File(getClass().getResource("/derivation").getPath());
         File input = new File(folder.getPath() + File.separator + "test.txt");
         FileUtils.writeStringToFile(input, ORIGINAL);
 

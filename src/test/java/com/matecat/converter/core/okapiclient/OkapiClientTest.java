@@ -12,7 +12,7 @@ import java.util.Locale;
 public class OkapiClientTest {
 
     private void testFile(String filename) throws IOException {
-        File file = new File(getClass().getResource(File.separator + "okapi" + File.separator + filename).getPath());
+        File file = new File(getClass().getResource("/okapi/" + filename).getPath());
         OkapiPack pack = OkapiClient.generatePack(Locale.ENGLISH, Locale.ENGLISH, Encoding.getDefault(), file);
         OkapiClient.generateDerivedFile(pack);
         pack.delete();

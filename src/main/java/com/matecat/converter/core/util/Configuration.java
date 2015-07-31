@@ -14,7 +14,7 @@ public class Configuration {
     // Initialize properties
     private static final Properties properties;
     static {
-        try (InputStream inputStream = Configuration.class.getResourceAsStream(File.separator + "config.properties")) {
+        try (InputStream inputStream = Configuration.class.getResourceAsStream("/config.properties")) {
             properties = new Properties();
             properties.load(inputStream);
         }

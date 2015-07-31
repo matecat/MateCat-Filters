@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.Base64;
 
@@ -26,7 +27,7 @@ public class XliffBuilderTest {
     public void setUp() throws Exception {
 
         // Load files
-        pack = new OkapiPack(new File(getClass().getResource(File.separator + "samplepack" + File.separator + "incomplete").getPath()));
+        pack = new OkapiPack(new File(getClass().getResource("/samplepack/incomplete").getPath()));
 
     }
 

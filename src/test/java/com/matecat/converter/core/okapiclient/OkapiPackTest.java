@@ -16,8 +16,8 @@ public class OkapiPackTest {
 
     @Before
     public void setUp() throws Exception {
-        incompleteSamplePack = new File(getClass().getResource(File.separator + "samplepack" + File.separator + "incomplete").getPath());
-        completeSamplePack = new File(getClass().getResource(File.separator + "samplepack" + File.separator + "complete").getPath());
+        incompleteSamplePack = new File(getClass().getResource("/samplepack/incomplete").getPath());
+        completeSamplePack = new File(getClass().getResource("/samplepack/complete").getPath());
     }
 
     @Test

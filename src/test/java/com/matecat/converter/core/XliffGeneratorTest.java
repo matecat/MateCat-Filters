@@ -18,7 +18,7 @@ public class XliffGeneratorTest {
     @Test
     public void testGenerate() throws Exception {
 
-        File file = new File(getClass().getResource(File.separator + "generation" + File.separator + "test.docx").getPath());
+        File file = new File(getClass().getResource("/generation/test.docx").getPath());
         XliffGenerator generator = new XliffGenerator(Locale.ENGLISH, Locale.ENGLISH, file);
         File xlf = generator.generate();
         assertNotNull(xlf);

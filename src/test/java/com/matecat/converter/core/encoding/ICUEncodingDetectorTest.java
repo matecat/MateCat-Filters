@@ -18,7 +18,7 @@ public class ICUEncodingDetectorTest {
     }
 
     private File getTestFile(String name) throws URISyntaxException {
-        return new File(getClass().getResource(File.separator + "encoding" + File.separator + name).toURI());
+        return new File(getClass().getResource("/encoding/" + name).toURI());
     }
 
     @Test

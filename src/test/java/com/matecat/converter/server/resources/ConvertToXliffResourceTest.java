@@ -45,7 +45,7 @@ public class ConvertToXliffResourceTest {
     @Test
     public void testConvertSuccess() throws Exception {
 
-        File fileToUpload = new File(getClass().getResource(File.separator + "server" + File.separator + "test.docx").getPath());
+        File fileToUpload = new File(getClass().getResource("/server/test.docx").getPath());
 
         // Send request
         HttpClient httpclient = new DefaultHttpClient();
