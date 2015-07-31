@@ -43,13 +43,14 @@ printf "Making UNIX scripts executable... "
 chmod 755 server
 echo "done! 😄"
 
-# printf "Building Windows script... "
-#cat > server.bat <<- EOT
-#	@ECHO OFF
-#	CLS
-#	java -jar $FILENAME 
-#EOT
-#echo "done!"
+printf "Building Windows script... "
+cat > server.bat <<- EOT
+	@ECHO OFF
+	CLS
+	java -jar $FILENAME
+	PAUSE 
+EOT
+echo "done!"
 
 printf "\nBuild completed at: "
 echo $(pwd)!
