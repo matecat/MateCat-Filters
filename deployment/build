@@ -29,7 +29,7 @@ echo "done! 😄"
 printf "Building UNIX script... "
 cd target/jar/
 JARDIR=$(pwd)
-FILENAME=$(find *.jar | head -1)
+FILENAME=$(find *.jar | tail -1)
 cat > server <<- 'EOT'
 	#!/bin/bash
 	clear
