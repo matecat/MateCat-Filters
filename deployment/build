@@ -1,0 +1,57 @@
+#!/bin/bash      
+clear
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+cd $DIR
+
+printf "\n"
+echo "############################################################"
+echo "####           MATECAT CONVERTER  BUILD SCRIPT         #####"  
+echo "############################################################"
+printf "\n"
+
+printf "Checking dependences... "
+mvn -help 2> /tmp/maven-error > /dev/null
+if [ -s /tmp/maven-error ]
+	then
+		echo "Maven is needed to build the server, install it and try again"
+		rm /tmp/maven-error
+		exit -1
+fi
+echo "done! 😄"
+rm /tmp/maven-error
+
+printf "Executing maven... "
+cd ..
+mvn clean > /dev/null
+mvn -DskipTests=true package > /dev/null
+echo "done! 😄"
+
+printf "Building UNIX script... "
+cd target/jar/
+JARDIR=$(pwd)
+FILENAME=$(find *.jar | head -1)
+cat > server <<- 'EOT'
+	#!/bin/bash
+	clear
+	DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+	cd $DIR
+EOT
+echo "java -jar $FILENAME" >> server
+echo "done!" 😄
+
+printf "Making UNIX scripts executable... "
+chmod 755 server
+echo "done! 😄"
+
+# printf "Building Windows script... "
+#cat > server.bat <<- EOT
+#	@ECHO OFF
+#	CLS
+#	java -jar $FILENAME 
+#EOT
+#echo "done!"
+
+printf "\nBuild completed at: "
+echo $(pwd)!
+
+printf "\n"
