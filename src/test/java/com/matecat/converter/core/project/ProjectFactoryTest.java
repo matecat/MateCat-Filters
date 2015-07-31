@@ -1,0 +1,49 @@
+package com.matecat.converter.core.project;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+import static org.junit.Assert.*;
+
+/**
+ * Created by Reneses on 7/31/15.
+ */
+public class ProjectFactoryTest {
+
+    private File file;
+    private Project project, project2;
+
+    @Before
+    public void setUp() throws Exception {
+        file = new File(getClass().getResource("/project/test.docx").getPath());
+        project = ProjectFactory.createProject(file.getName(), new FileInputStream(file));
+        project2 = ProjectFactory.createProject(file.getName(), new FileInputStream(file));
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        project.delete();
+        project2.delete();
+    }
+
+    @Test
+    public void testCreation() throws Exception {
+        assertTrue(project.getFolder().exists());
+        assertTrue(project.getFolder().isDirectory());
+        assertTrue(project.getFile().exists());
+        assertFalse(project.getFile().isDirectory());
+        assertEquals(file.getName(), project.getFile().getName());
+        assertEquals(file.getTotalSpace(), project.getFile().getTotalSpace());
+    }
+
+    @Test
+    public void testCreateMultipleProjects() throws Exception {
+        assertNotSame(project.getFile().getPath(), project2.getFile().getPath());
+    }
+
+}

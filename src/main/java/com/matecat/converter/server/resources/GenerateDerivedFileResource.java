@@ -57,7 +57,6 @@ public class GenerateDerivedFileResource {
 
             // Create the project
             Project project = ProjectFactory.createProject("to-derived.xlf", fileInputStream);
-            LOGGER.info("[PROJECT CREATED] Saved in {}", project.getFolder().getPath());
 
             // Retrieve the xlf
             File derivedFile = new XliffProcessor(project.getFile()).getDerivedFile();

@@ -54,7 +54,6 @@ public class ExtractOriginalFileResource {
 
             // Create the project
             Project project = ProjectFactory.createProject("to-original.xlf", fileInputStream);
-            LOGGER.info("[PROJECT CREATED] Saved in {}", project.getFolder().getPath());
 
             // Retrieve the xlf
             File originalFile = new XliffProcessor(project.getFile()).getOriginalFile();

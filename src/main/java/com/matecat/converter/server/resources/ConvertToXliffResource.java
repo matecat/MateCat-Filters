@@ -70,7 +70,6 @@ public class ConvertToXliffResource {
 
             // Create the project
             Project project = ProjectFactory.createProject(filename, fileInputStream);
-            LOGGER.info("[PROJECT CREATED] {} save in {}", filename, project.getFolder().getPath());
 
             // Retrieve the xlf
             File xlf = new XliffGenerator(sourceLanguage, targetLanguage, project.getFile()).generate();
