@@ -53,6 +53,6 @@ EOT
 echo "done!"
 
 printf "\nBuild completed at: "
-echo $(pwd)!
+echo $(pwd)
 
 printf "\n"
