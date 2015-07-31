@@ -55,4 +55,11 @@ public class ICUEncodingDetectorTest {
         Encoding match = detector.detect(testFile);
         assertEquals("ISO-8859-1", match.getCode());
     }
+
+    @Test
+    public void testDetectBinary() throws Exception {
+        File testFile = getTestFile("test.docx");
+        Encoding match = detector.detect(testFile);
+        assertEquals(Encoding.DEFAULT, match.getCode());
+    }
 }
