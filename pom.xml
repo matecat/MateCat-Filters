@@ -53,29 +53,28 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>RELEASE</version>
+            <version>9.3.1.v20150714</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
-            <version>RELEASE</version>
+            <version>9.3.1.v20150714</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet-core</artifactId>
-            <version>RELEASE</version>
+            <version>2.19</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
-            <version>RELEASE</version>
+            <version>2.19</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-multipart</artifactId>
-            <version>RELEASE</version>
+            <version>2.19</version>
         </dependency>
-
 
         <!-- OKAPI CORE -->
         <dependency>
@@ -331,7 +330,6 @@
                                 <include>net.sf.okapi.filters:okapi-filter-plaintext</include>
                                 <include>net.sf.okapi.filters:okapi-filter-regex</include>
                                 <include>net.sf.okapi.filters:okapi-filter-openxml</include>
-                                <include>net.htmlparser.jericho:jericho-html:3.4-dev</include>
                                 <include>net.sf.okapi.filters:okapi-filter-idml</include>
                                 <include>net.sf.okapi.filters:okapi-filter-html</include>
                                 <include>net.sf.okapi.filters:okapi-filter-openoffice</include>
@@ -355,20 +353,26 @@
     </build>
     <repositories>
         <repository>
-            <id>okapi-release</id>
-            <name>Okapi Release</name>
-            <url>http://repository-okapi.forge.cloudbees.com/release/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
             <id>okapi-dev</id>
             <name>Okapi Snapshot</name>
             <url>file://${basedir}/okapi</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>okapi-release</id>
+            <name>Okapi Release</name>
+            <url>http://repository-okapi.forge.cloudbees.com/release/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
     </repositories>
 </project>
