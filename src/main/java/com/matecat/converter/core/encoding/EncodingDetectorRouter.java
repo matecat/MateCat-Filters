@@ -5,6 +5,13 @@ import com.matecat.converter.core.format.Format;
 
 import java.io.File;
 
+
+/**
+ * Encoding detector router
+ *
+ * This class is the entry point for every file we want to detect the charset in. It send them to the
+ * corresponding detectors, returning the result.
+ */
 public class EncodingDetectorRouter implements IEncodingDetector {
 
     /**

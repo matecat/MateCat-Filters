@@ -41,6 +41,12 @@ public class HTMLEncodingDetector implements IEncodingDetector {
         return detect(file, null);
     }
 
+    /**
+     * Detect the encoding of a file
+     * @param file File
+     * @param suspectedEncoding Encoding we think the file can had, used to read it and parse it
+     * @return Encoding
+     */
     public Encoding detect(File file, Encoding suspectedEncoding) {
 
         // Check that the file is valid
@@ -67,6 +73,11 @@ public class HTMLEncodingDetector implements IEncodingDetector {
         return (suspectedEncoding != null)? suspectedEncoding : new Encoding(DEFAULT_HTML_ENCODING);
     }
 
+    /**
+     * Detect the encoding matching HTML tags
+     * @param content File content
+     * @return Encoding found, or null if there is no tag present
+     */
     private Encoding detect(String content) {
 
         // First, parse for HTML5
