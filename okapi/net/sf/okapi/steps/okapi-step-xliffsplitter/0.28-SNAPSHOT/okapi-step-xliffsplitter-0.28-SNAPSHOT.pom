@@ -20,6 +20,11 @@
 			<groupId>net.htmlparser.jericho</groupId>
 			<artifactId>jericho-html</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>net.sf.okapi.steps</groupId>
+            <artifactId>okapi-step-wordcount</artifactId>
+            <version>${project.version}</version>
+        </dependency>        
     </dependencies>
 </project>
 

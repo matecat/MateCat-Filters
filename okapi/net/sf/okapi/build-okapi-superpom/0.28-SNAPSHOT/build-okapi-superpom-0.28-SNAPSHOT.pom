@@ -27,13 +27,13 @@
 
 	<repositories>
 		<repository>
+			<id>swt-repo</id>
+			<url>https://raw.githubusercontent.com/maven-eclipse/swt-repo/master/</url>
+		</repository>
+		<repository>
 			<id>okapi</id>
 			<name>okapi-repository</name>
 			<url>https://bitbucket.org/okapiframework/maven-repo/raw/master/</url>
-		</repository>
-		<repository>
-			<id>swt-repo</id>
-			<url>https://swt-repo.googlecode.com/svn/repo/</url>
 		</repository>
 		<repository>
 			<id>okapi-xliff</id>
@@ -48,10 +48,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<org.slf4j.version>1.7.7</org.slf4j.version>
+		<org.slf4j.version>1.7.12</org.slf4j.version>
 		<org.apache.axis.version>1.4</org.apache.axis.version>
 		<org.apache.httpcomponents.version>4.2.2</org.apache.httpcomponents.version>
-		<org.eclipse.swt.version>4.3</org.eclipse.swt.version>
+		<org.eclipse.swt.version>4.4</org.eclipse.swt.version>
 		<org.jboss.weld.version>1.1.10-Final</org.jboss.weld.version>
 		<org.jboss.weld.api.version>1.1.Final</org.jboss.weld.api.version>
 		<org.jboss.weld.logging.version>1.0.0-CR1-SP1</org.jboss.weld.logging.version>
@@ -94,7 +94,7 @@
 			<dependency>
 				<groupId>com.ibm.icu</groupId>
 				<artifactId>icu4j</artifactId>
-				<version>51.1</version>
+				<version>55.1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.thaiopensource</groupId>
@@ -134,7 +134,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.11</version>
+				<version>4.12</version>
 			</dependency>
 			<dependency>
 				<groupId>net.htmlparser.jericho</groupId>
@@ -144,7 +144,7 @@
 			<dependency>
 				<groupId>net.java.dev.javacc</groupId>
 				<artifactId>javacc</artifactId>
-				<version>4.1</version>
+				<version>6.1.2 </version>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.jacob-project</groupId>
@@ -154,7 +154,7 @@
 			<dependency>
 				<groupId>net.sf.okapi.lib</groupId>
 				<artifactId>okapi-lib-xliff2</artifactId>
-				<version>1.0</version>
+				<version>1.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.trove4j</groupId>
@@ -346,7 +346,7 @@
 			<dependency>
 				<groupId>org.yaml</groupId>
 				<artifactId>snakeyaml</artifactId>
-				<version>1.13</version>
+				<version>1.15</version>
 			</dependency>
 			<dependency>
 				<groupId>xstream</groupId>

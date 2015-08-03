@@ -1,3 +1,4 @@
 #NOTE: This is an internal implementation file, its format can be changed without prior notice.
-#Tue Jul 21 17:13:36 CEST 2015
+#Mon Aug 03 18:03:23 CEST 2015
 build-test-utilities-0.28-SNAPSHOT.pom>=
+build-test-utilities-0.28-SNAPSHOT-tests.jar>=

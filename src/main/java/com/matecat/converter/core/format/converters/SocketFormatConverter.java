@@ -96,9 +96,12 @@ public abstract class SocketFormatConverter extends AbstractFormatConverter {
      * @throws IOException
      */
     private void close() throws IOException {
-        inputStream.close();
-        outputStream.close();
-        server.close();
+        if (inputStream != null)
+            inputStream.close();
+        if (outputStream != null)
+            outputStream.close();
+        if (server != null)
+            server.close();
     }
 
 

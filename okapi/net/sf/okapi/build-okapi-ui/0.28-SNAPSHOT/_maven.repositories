@@ -1,3 +1,4 @@
 #NOTE: This is an internal implementation file, its format can be changed without prior notice.
-#Tue Jul 21 17:13:21 CEST 2015
+#Mon Aug 03 18:03:18 CEST 2015
 build-okapi-ui-0.28-SNAPSHOT.pom>=
+build-okapi-ui-0.28-SNAPSHOT-tests.jar>=
