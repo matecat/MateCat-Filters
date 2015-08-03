@@ -15,7 +15,7 @@ import java.nio.file.Files;
 public class ICUEncodingDetector implements IEncodingDetector {
 
     // Minimum confidence needed to accept the match
-    public static final int CONFIDENCE_THRESHOLD = 50;
+    //public static final int CONFIDENCE_THRESHOLD = 50;
 
     /**
      * {@inheritDoc}
@@ -32,8 +32,8 @@ public class ICUEncodingDetector implements IEncodingDetector {
             byte[] bytes = Files.readAllBytes(file.toPath());
             detector.setText(bytes);
             CharsetMatch match = detector.detect();
-            if (match.getConfidence() < CONFIDENCE_THRESHOLD)   // If we are not sure about it
-                return Encoding.getDefault();                   // return the default encoding
+            //if (match.getConfidence() < CONFIDENCE_THRESHOLD)   // If we are not sure about it
+            //    return Encoding.getDefault();                   // return the default encoding
             return new Encoding(match.getName());
         }
 
