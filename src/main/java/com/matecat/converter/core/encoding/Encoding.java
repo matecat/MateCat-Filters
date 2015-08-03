@@ -11,7 +11,7 @@ public class Encoding {
     public static final String DEFAULT = "UTF-8";
 
     // Encoding code
-    String code;
+    private String code;
 
 
     /**

@@ -1,6 +1,7 @@
 package com.matecat.converter.core;
 
 import com.matecat.converter.core.encoding.Encoding;
+import com.matecat.converter.core.encoding.EncodingDetectorRouter;
 import com.matecat.converter.core.encoding.ICUEncodingDetector;
 import com.matecat.converter.core.encoding.IEncodingDetector;
 import com.matecat.converter.core.format.Format;
@@ -29,7 +30,7 @@ public class XliffGenerator {
     private File file;
 
     // Other module's instances
-    private IEncodingDetector encodingDetector = new ICUEncodingDetector();
+    private IEncodingDetector encodingDetector = new EncodingDetectorRouter();
     private Converters converters = new Converters();
 
 
@@ -76,8 +77,7 @@ public class XliffGenerator {
         }
 
         // 2. Detect the encoding
-        Encoding encoding = Format.isPlainTextFormat(Format.getFormat(file))?
-                encodingDetector.detect(file) : Encoding.getDefault();
+        Encoding encoding = encodingDetector.detect(file);
 
         // 3. Send to Okapi
         OkapiPack okapiPack = OkapiClient.generatePack(sourceLanguage, targetLanguage, encoding, file);

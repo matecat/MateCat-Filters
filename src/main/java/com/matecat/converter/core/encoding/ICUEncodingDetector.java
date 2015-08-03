@@ -20,6 +20,7 @@ public class ICUEncodingDetector implements IEncodingDetector {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Encoding detect(File file) {
 
         // Check that the file is valid
