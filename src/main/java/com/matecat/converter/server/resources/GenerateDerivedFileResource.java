@@ -15,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 
@@ -48,6 +49,8 @@ public class GenerateDerivedFileResource {
         // Logging
         LOGGER.info("[DERIVATION REQUEST]");
 
+        Project project = null;
+        Response response = null;
         try {
 
             // Check that the input file is not null
@@ -55,34 +58,39 @@ public class GenerateDerivedFileResource {
                 throw new IllegalArgumentException("The input file has not been sent");
 
             // Create the project
-            Project project = ProjectFactory.createProject("to-derived.xlf", fileInputStream);
+            project = ProjectFactory.createProject("to-derived.xlf", fileInputStream);
 
             // Retrieve the xlf
             File derivedFile = new XliffProcessor(project.getFile()).getDerivedFile();
 
             // Create response
-            Response response = Response
+            response = Response
                     .status(Response.Status.OK)
                     .entity(JSONResponseFactory.getSuccess(derivedFile))
                     .build();
-
-            // Remove and return the response
-            project.close();
-
-            // Return the response
             LOGGER.info("[DERIVATION REQUEST FINISHED]");
-            return response;
-
         }
 
         // If there is any error, return it
         catch (Exception e) {
-            LOGGER.error("[DERIVATION REQUEST FAILED] {}", e.getMessage(), e);
-            return Response
+            response = Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(JSONResponseFactory.getError(e.getMessage()))
                     .build();
+            LOGGER.error("[DERIVATION REQUEST FAILED] {}", e.getMessage(), e);
         }
+
+        // Close the project and streams
+        finally {
+            if (fileInputStream != null)
+                try {
+                    fileInputStream.close();
+                } catch (IOException ignored) {}
+            if (project != null)
+                project.close();
+        }
+
+        return response;
 
     }
 

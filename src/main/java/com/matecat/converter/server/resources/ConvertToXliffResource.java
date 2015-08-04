@@ -15,6 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -58,6 +59,8 @@ public class ConvertToXliffResource {
         String filename = FilenameUtils.getName(contentDispositionHeader.getFileName());
         LOGGER.info("[CONVERSION REQUEST] {}: {} to {}", filename, sourceLanguageCode, targetLanguageCode);
 
+        Project project = null;
+        Response response = null;
         try {
 
             // Check that the input file is not null
@@ -69,35 +72,39 @@ public class ConvertToXliffResource {
             Locale targetLanguage = parseLanguage(targetLanguageCode);
 
             // Create the project
-            Project project = ProjectFactory.createProject(filename, fileInputStream);
+            project = ProjectFactory.createProject(filename, fileInputStream);
 
             // Retrieve the xlf
             File xlf = new XliffGenerator(sourceLanguage, targetLanguage, project.getFile()).generate();
 
             // Create response
-            Response response = Response
+            response = Response
                     .status(Response.Status.OK)
                     .entity(JSONResponseFactory.getSuccess(xlf))
                     .build();
-
-            // Remove and return the response
-            project.close();
-
-            // Return the response
             LOGGER.info("[CONVERSION REQUEST FINISHED]");
-            return response;
-
         }
 
         // If there is any error, return it
         catch (Exception e) {
-            LOGGER.error("[CONVERSION REQUEST FAILED] {}", e.getMessage(), e);
-            return Response
+            response =  Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(JSONResponseFactory.getError(e.getMessage()))
                     .build();
+            LOGGER.error("[CONVERSION REQUEST FAILED] {}", e.getMessage(), e);
         }
 
+        // Close the project and streams
+        finally {
+            if (fileInputStream != null)
+                try {
+                    fileInputStream.close();
+                } catch (IOException ignored) {}
+            if (project != null)
+                project.close();
+        }
+
+        return response;
     }
 
 
