@@ -1,7 +1,6 @@
 package com.matecat.converter.core.project;
 
 import com.matecat.converter.core.util.Configuration;
-import com.matecat.converter.server.exceptions.ProjectCreationException;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.Objects;
 
 
 /**
@@ -27,7 +25,7 @@ public class ProjectFactory {
     static {
         // Try to get the defined folder
         String storagePath = Configuration.getProperty(FOLDER_PROPERTY);
-        if (!storagePath.equals("")) {
+        if (storagePath != null  &&  !storagePath.equals("")) {
             LOGGER.info("Storage path configuration found: {}", storagePath);
             File folder = new File(storagePath);
             if (folder.exists() && folder.isDirectory() && folder.canRead() && folder.canWrite()) {
