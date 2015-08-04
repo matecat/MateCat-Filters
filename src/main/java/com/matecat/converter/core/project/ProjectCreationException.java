@@ -1,4 +1,4 @@
-package com.matecat.converter.server.exceptions;
+package com.matecat.converter.core.project;
 
 /**
  * Exception occurred in the process of project creating
