@@ -1,9 +1,11 @@
 package com.matecat.converter.server;
 
+import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.util.Configuration;
 import com.matecat.converter.server.resources.ConvertToXliffResource;
 import com.matecat.converter.server.resources.ExtractOriginalFileResource;
 import com.matecat.converter.server.resources.GenerateDerivedFileResource;
+import org.apache.log4j.Level;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -21,7 +23,9 @@ import java.net.BindException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.LogManager;
 
 
 /**
@@ -147,7 +151,6 @@ public class MatecatConverterServer {
                     "###   >        PORT: " + serverPort + "\n" +
                     "################################################\n");
             LOGGER.info("Server started at {}:{} / {}:{}", getExternalIP(), serverPort, getLocalIP(), serverPort);
-            //server.join();
         }
         catch (BindException e) {
             LOGGER.error("The port " + serverPort + " is already in use", e);
