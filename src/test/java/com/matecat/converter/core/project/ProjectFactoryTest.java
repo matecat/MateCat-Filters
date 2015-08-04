@@ -6,13 +6,9 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Reneses on 7/31/15.
- */
 public class ProjectFactoryTest {
 
     private File file;
@@ -27,8 +23,8 @@ public class ProjectFactoryTest {
 
     @After
     public void tearDown() throws Exception {
-        project.delete();
-        project2.delete();
+        project.close();
+        project2.close();
     }
 
     @Test
