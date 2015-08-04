@@ -38,7 +38,6 @@ public class ExtractOriginalFileResource {
      * @return Original file
      */
     @POST
-    @Path("/")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces("application/json")
     public Response convert(@FormDataParam("file") InputStream fileInputStream) {

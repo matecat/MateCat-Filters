@@ -40,7 +40,6 @@ public class GenerateDerivedFileResource {
      * @return Derived file
      */
     @POST
-    @Path("/")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces("application/json")
     public Response convert(
