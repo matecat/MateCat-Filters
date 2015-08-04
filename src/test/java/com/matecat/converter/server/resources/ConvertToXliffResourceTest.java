@@ -2,28 +2,22 @@ package com.matecat.converter.server.resources;
 
 import com.matecat.converter.server.JSONResponseFactory;
 import com.matecat.converter.server.MatecatConverterServer;
-import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import sun.misc.BASE64Encoder;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.net.HttpRetryException;
 import java.util.Base64;
 
 import static org.junit.Assert.*;
