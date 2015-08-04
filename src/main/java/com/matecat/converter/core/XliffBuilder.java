@@ -2,9 +2,11 @@ package com.matecat.converter.core;
 
 import com.matecat.converter.core.format.Format;
 import com.matecat.converter.core.okapiclient.OkapiPack;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -18,6 +20,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.util.Base64;
 
@@ -125,9 +128,10 @@ class XliffBuilder {
         try {
 
             // Parse the XML document
+            String xlfContent = FileUtils.readFileToString(baseXLF).replaceAll("[\\n\\t]","");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(baseXLF);
+            Document document = documentBuilder.parse(new InputSource(new StringReader(xlfContent)));
             Element root = document.getDocumentElement();
 
             // Retrieve the source and target language
