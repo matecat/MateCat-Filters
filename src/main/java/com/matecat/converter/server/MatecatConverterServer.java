@@ -14,8 +14,13 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.BindException;
 import java.net.InetAddress;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 
@@ -35,6 +40,7 @@ public class MatecatConverterServer {
 
     // Server
     private Server server;
+    private String localIP, externalIP;
 
 
     /**
@@ -97,20 +103,50 @@ public class MatecatConverterServer {
 
 
     /**
+     * Get external IP
+     * @return External IP
+     */
+    private String getExternalIP() {
+        if (externalIP == null) {
+            try {
+                URL whatismyip = new URL("http://checkip.amazonaws.com");
+                BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
+                externalIP = in.readLine();
+            } catch (IOException ignored) {}
+        }
+        return externalIP;
+    }
+
+
+    /**
+     * Get local IP
+     * @return Local IP
+     */
+    private String getLocalIP() {
+        if (localIP == null) {
+            try {
+                localIP = InetAddress.getLocalHost().getHostAddress();
+            }
+            catch (IOException ignored) {}
+        }
+        return localIP;
+    }
+
+    /**
      * Init the server
      */
     private void init() {
         try {
             initServer();
             server.start();
-            String ip = InetAddress.getLocalHost().getHostAddress();
             System.out.println("\n" +
-                    "############################################\n" +
+                    "################################################\n" +
                     "###   MATECAT CONVERTER SERVER STARTED\n" +
-                    "###   > IP: " + ip + "\n" +
-                    "###   > PORT: " + serverPort + "\n" +
-                    "############################################\n");
-            LOGGER.info("Server started at {}:{}", ip, serverPort);
+                    "###   > EXTERNAL IP: " + getExternalIP() + "\n" +
+                    "###   >    LOCAL IP: " + getLocalIP() + "\n" +
+                    "###   >        PORT: " + serverPort + "\n" +
+                    "################################################\n");
+            LOGGER.info("Server started at {}:{} / {}:{}", getExternalIP(), serverPort, getLocalIP(), serverPort);
             //server.join();
         }
         catch (BindException e) {
