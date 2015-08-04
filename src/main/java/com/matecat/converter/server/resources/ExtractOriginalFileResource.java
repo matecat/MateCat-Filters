@@ -64,7 +64,7 @@ public class ExtractOriginalFileResource {
                     .build();
 
             // Remove and return the response
-            project.delete();
+            project.close();
 
             // Return the response
             LOGGER.info("[EXTRACTION REQUEST FINISHED]");

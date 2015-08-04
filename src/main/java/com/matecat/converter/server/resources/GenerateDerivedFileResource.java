@@ -67,7 +67,7 @@ public class GenerateDerivedFileResource {
                     .build();
 
             // Remove and return the response
-            project.delete();
+            project.close();
 
             // Return the response
             LOGGER.info("[DERIVATION REQUEST FINISHED]");

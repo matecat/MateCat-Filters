@@ -1,5 +1,6 @@
 package com.matecat.converter.core.project;
 
+import com.matecat.converter.core.util.Configuration;
 import com.matecat.converter.server.exceptions.ProjectCreationException;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Objects;
 
 
 /**
@@ -18,6 +20,28 @@ public class ProjectFactory {
 
     // Logger
     private static Logger LOGGER = LoggerFactory.getLogger(ProjectFactory.class);
+
+    // Storage folder
+    private static final String FOLDER_PROPERTY = "storage-folder";
+    private static final File STORAGE_FOLDER;
+    static {
+        // Try to get the defined folder
+        String storagePath = Configuration.getProperty(FOLDER_PROPERTY);
+        if (!storagePath.equals("")) {
+            LOGGER.info("Storage path configuration found: {}", storagePath);
+            File folder = new File(storagePath);
+            if (folder.exists() && folder.isDirectory() && folder.canRead() && folder.canWrite()) {
+                STORAGE_FOLDER = folder;
+            }
+            else {
+                LOGGER.error("The storage path '{}' is not valid; OS' temp default folder will be used", storagePath);
+                STORAGE_FOLDER = null;
+            }
+        }
+        else {
+            STORAGE_FOLDER = null;
+        }
+    }
 
     /**
      * Private constructor to make the class static
@@ -32,8 +56,11 @@ public class ProjectFactory {
      */
     public static Project createProject(String filename, InputStream uploadedInputStream) {
         try {
-            // Create temporal directory
-            File folder = Files.createTempDirectory("matecat-converter-").toFile();
+
+            // Load the folder
+            File folder = STORAGE_FOLDER != null ?
+                    Files.createTempDirectory(STORAGE_FOLDER.toPath(), "").toFile()
+                    : Files.createTempDirectory("matecat-converter-").toFile();
 
             // Save the file inside the temporal
             File file = new File(folder.getPath() + File.separator + filename);

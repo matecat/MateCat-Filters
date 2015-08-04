@@ -1,5 +1,6 @@
 package com.matecat.converter.core.project;
 
+import com.matecat.converter.core.util.Configuration;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -16,6 +17,10 @@ import java.io.IOException;
  * @see ProjectFactory
  */
 public class Project {
+
+    // Delete on close
+    private static final String DELETE_PROPERTY = "delete-on-close";
+    private static final boolean DELETE_ON_CLOSE = !Configuration.getProperty(DELETE_PROPERTY).equals("false");
 
     // Inner properties
     private File folder;
@@ -51,19 +56,21 @@ public class Project {
     }
 
     /**
-     * Delete the project
+     * Close the project
      *
-     * will delete all the files contained in the project, and remove all the inner references to them.
+     * This will remove all the inner references to the file, and remove the folder depending on the configuration
      * One this method is executed, it's not possible to use the project again.
      */
-    public void delete() {
-        try {
-            FileUtils.deleteDirectory(folder);
-            this.folder = null;
-            this.file = null;
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void close() {
+        if (DELETE_ON_CLOSE) {
+            try {
+                FileUtils.deleteDirectory(folder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        this.folder = null;
+        this.file = null;
     }
 
 }

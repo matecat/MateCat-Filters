@@ -81,7 +81,7 @@ public class ConvertToXliffResource {
                     .build();
 
             // Remove and return the response
-            project.delete();
+            project.close();
 
             // Return the response
             LOGGER.info("[CONVERSION REQUEST FINISHED]");
