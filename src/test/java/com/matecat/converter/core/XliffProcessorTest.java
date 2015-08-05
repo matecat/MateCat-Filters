@@ -51,13 +51,13 @@ public class XliffProcessorTest {
         FileUtils.deleteDirectory(pack);
 
         // Alter the translation
-        String xlfContent = FileUtils.readFileToString(xlf);
+        String xlfContent = FileUtils.readFileToString(xlf, "UTF-8");
         String newXlfContent = xlfContent.replaceAll(ORIGINAL + "</mrk></target>", DERIVED + "</mrk></target>");
         FileUtils.writeStringToFile(xlf, newXlfContent);
 
         // Generate derived and check
         File output = new XliffProcessor(xlf).getDerivedFile();
-        String content = FileUtils.readFileToString(output);
+        String content = FileUtils.readFileToString(output, "UTF-8");
         assertEquals(DERIVED, content);
 
     }
