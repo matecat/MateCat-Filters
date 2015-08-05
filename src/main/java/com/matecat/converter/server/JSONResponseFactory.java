@@ -17,6 +17,7 @@ public class JSONResponseFactory {
     public static final String IS_SUCCESS = "isSuccess";
     public static final String ERROR_MESSAGE = "errorMessage";
     public static final String DOCUMENT_CONTENT = "documentContent";
+    public static final String FILENAME = "filename";
 
     public static String getError(String errorMessage) {
         JSONObject output = new JSONObject();
@@ -31,6 +32,7 @@ public class JSONResponseFactory {
             JSONObject output = new JSONObject();
             output.put(IS_SUCCESS, true);
             output.put(DOCUMENT_CONTENT, encodedDocument);
+            output.put(FILENAME, file.getName());
             return output.toJSONString();
         } catch (IOException e) {
             e.printStackTrace();
