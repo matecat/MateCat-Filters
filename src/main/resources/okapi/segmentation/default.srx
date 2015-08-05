@@ -5,8 +5,7 @@
 <formathandle type="start" include="no"></formathandle>
 <formathandle type="end" include="yes"></formathandle>
 <formathandle type="isolated" include="no"></formathandle>
-<!-- <okpsrx:options oneSegmentIncludesAll="no" trimLeadingWhitespaces="yes" trimTrailingWhitespaces="yes" useJavaRegex="no" treatIsolatedCodesAsWhitespace="yes"></okpsrx:options> -->
-<okpsrx:options oneSegmentIncludesAll="no" trimLeadingWhitespaces="yes" trimTrailingWhitespaces="yes" useJavaRegex="no"></okpsrx:options>
+<okpsrx:options oneSegmentIncludesAll="no" trimLeadingWhitespaces="yes" trimTrailingWhitespaces="yes" useJavaRegex="yes" treatIsolatedCodesAsWhitespace="no"></okpsrx:options>
 <okpsrx:sample language="EN" useMappedRules="yes">                                     ## LEADING SPACES ##
 
 Example.) examp
