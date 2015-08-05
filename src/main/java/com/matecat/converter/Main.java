@@ -1,6 +1,7 @@
 package com.matecat.converter;
 
 import com.matecat.converter.server.MatecatConverterServer;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
@@ -24,6 +25,7 @@ public class Main {
 
 		// Stop the server
 		server.stop();
+        LoggerFactory.getLogger(Main.class).info("The user has manually stopped the server");
 		System.out.println("\nGood bye!");
 
 	}

@@ -83,7 +83,7 @@ public class ConvertToXliffResource {
                     .status(Response.Status.OK)
                     .entity(JSONResponseFactory.getSuccess(xlf))
                     .build();
-            LOGGER.info("[CONVERSION REQUEST FINISHED]");
+            LOGGER.info("[CONVERSION FINISHED] {}: {} to {}", filename, sourceLanguageCode, targetLanguageCode);
         }
 
         // If there is any error, return it
