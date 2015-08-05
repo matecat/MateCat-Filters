@@ -162,7 +162,7 @@ public class OkapiFilterFactory {
         HtmlFilter filter = new HtmlFilter();
         try {
             net.sf.okapi.filters.html.Parameters params = (net.sf.okapi.filters.html.Parameters) filter.getParameters();
-            String config = FileUtils.readFileToString(new File(configurationsPath + HTML_CONFIG_FILENAME));
+            String config = FileUtils.readFileToString(new File(configurationsPath + HTML_CONFIG_FILENAME), "UTF-8");
             params.fromString(config);
         } catch (IOException e) {
             System.err.println("Dita custom configuration could not be loaded");
@@ -309,7 +309,7 @@ public class OkapiFilterFactory {
         RegexFilter filter = new RegexFilter();
         try {
             net.sf.okapi.filters.regex.Parameters params = (net.sf.okapi.filters.regex.Parameters) filter.getParameters();
-            String config = FileUtils.readFileToString(new File(configurationsPath + STRINGS_CONFIG_FILENAME));
+            String config = FileUtils.readFileToString(new File(configurationsPath + STRINGS_CONFIG_FILENAME), "UTF-8");
             params.fromString(config);
         } catch (IOException e) {
             System.err.println("Strings custom configuration could not be loaded");
@@ -321,7 +321,7 @@ public class OkapiFilterFactory {
         XmlStreamFilter filter = new XmlStreamFilter();
         try {
             net.sf.okapi.filters.xmlstream.Parameters params = (net.sf.okapi.filters.xmlstream.Parameters) filter.getParameters();
-            String config = FileUtils.readFileToString(new File(configurationsPath + XML_CONFIG_FILENAME));
+            String config = FileUtils.readFileToString(new File(configurationsPath + XML_CONFIG_FILENAME), "UTF-8");
             params.fromString(config);
         } catch (IOException e) {
             System.err.println("XML custom configuration could not be loaded");
@@ -333,7 +333,7 @@ public class OkapiFilterFactory {
         XmlStreamFilter filter = new XmlStreamFilter();
         try {
             net.sf.okapi.filters.xmlstream.Parameters params = (net.sf.okapi.filters.xmlstream.Parameters) filter.getParameters();
-            String config = FileUtils.readFileToString(new File(configurationsPath + DITA_CONFIG_FILENAME));
+            String config = FileUtils.readFileToString(new File(configurationsPath + DITA_CONFIG_FILENAME), "UTF-8");
             params.fromString(config);
         } catch (IOException e) {
             System.err.println("Dita custom configuration could not be loaded");

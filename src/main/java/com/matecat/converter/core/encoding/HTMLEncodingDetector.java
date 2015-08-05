@@ -62,7 +62,7 @@ public class HTMLEncodingDetector implements IEncodingDetector {
         try {
             String content = suspectedEncoding != null ?
                     FileUtils.readFileToString(file, suspectedEncoding.getCode())
-                    : FileUtils.readFileToString(file);
+                    : FileUtils.readFileToString(file, "UTF-8");
             Encoding encoding = detect(content);
             if (encoding != null)
                 return encoding;

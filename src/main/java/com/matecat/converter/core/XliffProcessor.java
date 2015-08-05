@@ -100,7 +100,7 @@ public class XliffProcessor {
     private void extractLanguages() {
         try {
             // Parse the XML document
-            String xlfContent = FileUtils.readFileToString(xlf).replaceAll("[\\n\\t]","");
+            String xlfContent = FileUtils.readFileToString(xlf, "UTF-8").replaceAll("[\\n\\t]","");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(new InputSource(new StringReader(xlfContent)));
@@ -195,7 +195,7 @@ public class XliffProcessor {
                 packFolder.mkdir();
 
             // Parse the XML document
-            String xlfContent = FileUtils.readFileToString(xlf).replaceAll("[\\n\\t]","");
+            String xlfContent = FileUtils.readFileToString(xlf, "UTF-8").replaceAll("[\\n\\t]","");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(new InputSource(new StringReader(xlfContent)));
