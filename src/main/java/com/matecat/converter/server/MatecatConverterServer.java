@@ -116,6 +116,7 @@ public class MatecatConverterServer {
                 URL whatismyip = new URL("http://checkip.amazonaws.com");
                 BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
                 externalIP = in.readLine();
+                in.close();
             } catch (IOException ignored) {}
         }
         return externalIP;
@@ -141,8 +142,10 @@ public class MatecatConverterServer {
      */
     private void init() {
         try {
+            LOGGER.info("Starting server at port {}", serverPort);
             initServer();
             server.start();
+            LOGGER.info("Server started at {}:{} / {}:{}", getExternalIP(), serverPort, getLocalIP(), serverPort);
             System.out.println("\n" +
                     "################################################\n" +
                     "###   MATECAT CONVERTER SERVER STARTED\n" +
@@ -150,10 +153,9 @@ public class MatecatConverterServer {
                     "###   >    LOCAL IP: " + getLocalIP() + "\n" +
                     "###   >        PORT: " + serverPort + "\n" +
                     "################################################\n");
-            LOGGER.info("Server started at {}:{} / {}:{}", getExternalIP(), serverPort, getLocalIP(), serverPort);
         }
         catch (BindException e) {
-            LOGGER.error("The port " + serverPort + " is already in use", e);
+            LOGGER.error("The port " + serverPort + " is already in use");
             System.exit(-1);
         }
         catch (InterruptedException e) {

@@ -1,6 +1,7 @@
 package com.matecat.converter.server.resources;
 
 import com.matecat.converter.core.XliffGenerator;
+import com.matecat.converter.core.format.FormatNotSupportedException;
 import com.matecat.converter.core.project.Project;
 import com.matecat.converter.core.project.ProjectFactory;
 import com.matecat.converter.server.exceptions.ServerException;
@@ -91,7 +92,10 @@ public class ConvertToXliffResource {
                     .status(Response.Status.BAD_REQUEST)
                     .entity(JSONResponseFactory.getError(e.getMessage()))
                     .build();
-            LOGGER.error("[CONVERSION REQUEST FAILED] {}", e.getMessage(), e);
+            if (e instanceof FormatNotSupportedException)
+                LOGGER.error("[CONVERSION REQUEST FAILED] {}", e.getMessage());
+            else
+                LOGGER.error("[CONVERSION REQUEST FAILED] {}", e.getMessage(), e);
         }
 
         // Close the project and streams
