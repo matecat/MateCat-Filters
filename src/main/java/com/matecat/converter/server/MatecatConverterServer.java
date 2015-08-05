@@ -1,11 +1,10 @@
 package com.matecat.converter.server;
 
-import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.util.Configuration;
 import com.matecat.converter.server.resources.ConvertToXliffResource;
 import com.matecat.converter.server.resources.ExtractOriginalFileResource;
 import com.matecat.converter.server.resources.GenerateDerivedFileResource;
-import org.apache.log4j.Level;
+import com.matecat.converter.server.resources.TestConnectionResource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -22,10 +21,6 @@ import java.io.InputStreamReader;
 import java.net.BindException;
 import java.net.InetAddress;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.Enumeration;
-import java.util.Properties;
-import java.util.logging.LogManager;
 
 
 /**
@@ -178,6 +173,7 @@ public class MatecatConverterServer {
         resourceConfig.packages(ConvertToXliffResource.class.getPackage().getName());
         resourceConfig.packages(GenerateDerivedFileResource.class.getPackage().getName());
         resourceConfig.packages(ExtractOriginalFileResource.class.getPackage().getName());
+        resourceConfig.packages(TestConnectionResource.class.getPackage().getName());
         resourceConfig.register(JacksonFeature.class);
         resourceConfig.register(MultiPartFeature.class);
         ServletContainer servletContainer = new ServletContainer(resourceConfig);
