@@ -33,7 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by Reneses on 7/22/15.
+ * Filter factory
  */
 public class OkapiFilterFactory {
 

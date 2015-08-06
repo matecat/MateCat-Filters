@@ -9,7 +9,7 @@ import java.io.File;
 public interface IEncodingDetector {
 
     /**
-     * Detech the encoding used in a file
+     * Detect the encoding used in a file
      * @param file File to process
      * @return Encoding used
      */

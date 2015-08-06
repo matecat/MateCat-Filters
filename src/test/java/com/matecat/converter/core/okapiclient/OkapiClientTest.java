@@ -1,8 +1,6 @@
 package com.matecat.converter.core.okapiclient;
 
-import com.matecat.converter.core.XliffGenerator;
 import com.matecat.converter.core.encoding.Encoding;
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import java.io.File;
