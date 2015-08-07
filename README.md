@@ -17,9 +17,11 @@ In addition to that, it also frees Matecat of the following responsabilities:
 * Interaction with the [Okapi Framework](http://www.opentag.com/okapi/wiki/)
 
 
-## Usage
+## Test client
+![Client preview](http://i59.tinypic.com/2nba9l0.png)
+Once the server is running, the easiest way to test it is using the embedded client. It can be accessed at `http://localhost:{SERVER-PORT}`. By default, the address is `http://localhost:8082`. 
 
-
+_Note: whereas the client it has been proven in several browser, we do recommend the usage of Google Chrome._
 
 ## Changelog
 
