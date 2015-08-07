@@ -201,7 +201,7 @@
         
         // Process
         function process() {
-            if (filenameUploaded.split('.').pop() != 'xlf') {
+            if (option != CONVERT  &&  filenameUploaded.split('.').pop() != 'xlf') {
                 showError('Please, upload a xliff (.xlf) file!')
             }
             else {
