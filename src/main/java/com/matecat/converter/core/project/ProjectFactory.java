@@ -26,13 +26,13 @@ public class ProjectFactory {
         // Try to get the defined folder
         String storagePath = Configuration.getProperty(FOLDER_PROPERTY);
         if (storagePath != null  &&  !storagePath.equals("")) {
-            LOGGER.info("Storage path configuration found: {}", storagePath);
+            LOGGER.info("[GLOBAL] Storage path configuration found: {}", storagePath);
             File folder = new File(storagePath);
             if (folder.exists() && folder.isDirectory() && folder.canRead() && folder.canWrite()) {
                 STORAGE_FOLDER = folder;
             }
             else {
-                LOGGER.error("The storage path '{}' is not valid; OS' temp default folder will be used", storagePath);
+                LOGGER.error("[GLOBAL] The storage path '{}' is not valid; OS' temp default folder will be used", storagePath);
                 STORAGE_FOLDER = null;
             }
         }

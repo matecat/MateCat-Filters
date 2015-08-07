@@ -137,10 +137,10 @@ public class MatecatConverterServer {
      */
     private void init() {
         try {
-            LOGGER.info("Starting server at port {}", serverPort);
+            LOGGER.info("[GLOBAL] Starting server at port {}", serverPort);
             initServer();
             server.start();
-            LOGGER.info("Server started at {}:{} / {}:{}", getExternalIP(), serverPort, getLocalIP(), serverPort);
+            LOGGER.info("[GLOBAL] Server started at {}:{} / {}:{}", getExternalIP(), serverPort, getLocalIP(), serverPort);
             System.out.println("\n" +
                     "################################################\n" +
                     "###   MATECAT CONVERTER SERVER STARTED\n" +
@@ -150,14 +150,14 @@ public class MatecatConverterServer {
                     "################################################\n");
         }
         catch (BindException e) {
-            LOGGER.error("The port " + serverPort + " is already in use");
+            LOGGER.error("[GLOBAL] The port " + serverPort + " is already in use");
             System.exit(-1);
         }
         catch (InterruptedException e) {
-            LOGGER.error("The server has been interrupted", e);
+            LOGGER.error("[GLOBAL] The server has been interrupted", e);
             throw new RuntimeException("The server has been interrupted");
         } catch (Exception e) {
-            LOGGER.error("Unknown internal server problem", e);
+            LOGGER.error("[GLOBAL] Unknown internal server problem", e);
             throw new RuntimeException("Unknown internal server problem");
         }
     }
