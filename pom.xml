@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.matecat</groupId>
     <artifactId>converter</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
     <packaging>jar</packaging>
     <name>Matecat Converter</name>
 
@@ -457,6 +457,9 @@
                                     <includes>
                                         <include>**/*</include>
                                     </includes>
+                                    <excludes>
+                                        <exclude>**/client/*</exclude>
+                                    </excludes>
                                 </resource>
                             </resources>
                         </configuration>
