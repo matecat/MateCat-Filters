@@ -1,5 +1,5 @@
 assumeWellformed: true
-preserve_whitespace: false
+preserve_whitespace: true
 attributes:
   xml:lang:
     ruleTypes: [ATTRIBUTE_WRITABLE]
