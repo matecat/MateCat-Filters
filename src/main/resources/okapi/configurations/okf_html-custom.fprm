@@ -1,5 +1,5 @@
 assumeWellformed: false
-preserve_whitespace: false
+preserve_whitespace: true
 attributes:
   dir:
     ruleTypes: [ATTRIBUTE_WRITABLE]
