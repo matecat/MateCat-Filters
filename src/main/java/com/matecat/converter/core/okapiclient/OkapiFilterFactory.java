@@ -1,7 +1,9 @@
 package com.matecat.converter.core.okapiclient;
 
 import com.matecat.converter.core.format.Format;
+import net.sf.okapi.common.filters.FilterConfigurationMapper;
 import net.sf.okapi.common.filters.IFilter;
+import net.sf.okapi.common.filters.IFilterConfigurationMapper;
 import net.sf.okapi.filters.archive.ArchiveFilter;
 import net.sf.okapi.filters.html.HtmlFilter;
 import net.sf.okapi.filters.idml.IDMLFilter;
@@ -326,6 +328,9 @@ public class OkapiFilterFactory {
         } catch (IOException e) {
             System.err.println("XML custom configuration could not be loaded");
         }
+        IFilterConfigurationMapper cm = new FilterConfigurationMapper();
+        cm.addConfigurations(HtmlFilter.class.getName());
+        filter.setFilterConfigurationMapper(cm);
         return filter;
     }
 
