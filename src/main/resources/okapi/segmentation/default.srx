@@ -9,7 +9,7 @@
     form a whole <mrk>, that MateCAT shows as an empty segment. Avoiding trimming
     here no "empty" segments are produced, and spaces are still trimmed by MateCAT
     with the strip_external function.-->
-    <okpsrx:options oneSegmentIncludesAll="no" trimLeadingWhitespaces="no" trimTrailingWhitespaces="no" useJavaRegex="no"/>
+    <okpsrx:options oneSegmentIncludesAll="no" trimLeadingWhitespaces="no" trimTrailingWhitespaces="no" useJavaRegex="yes"/>
     <okpsrx:sample language="en" useMappedRules="yes">Abbreviation: hello dott. Jones!
 Url: http://www.web.com/web.web?v=v&amp;v=v
 List:

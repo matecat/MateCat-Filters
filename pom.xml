@@ -11,6 +11,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <!--
+        The official Okapi repository hosts only Okapi releases.
+        If you specify a "snapshot" version in the following tag, be
+        sure to have it installed in you Maven locally. You can do
+        it by downloading the code and running "maven clean install"
+        on it. Check the pom.xml of the code you are compiling to
+        know the version you are installing in your local Maven repo.
+        -->
         <okapi.version>0.28-SNAPSHOT</okapi.version>
     </properties>
 
@@ -368,44 +376,24 @@
 
     <build>
         <resources>
+            <!--The code now tries reading resources using the File class.
+            This doesn't work for resources packed inside a JAR. Here is
+            the fix: http://stackoverflow.com/a/26719666
+            The idea is keeping these resources outside the JAR.-->
             <resource>
-                <targetPath>.</targetPath>
                 <directory>src/main/config</directory>
+                <excludes>
+                    <exclude>config.properties</exclude>
+                </excludes>
             </resource>
             <resource>
-                <targetPath>.</targetPath>
                 <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*</include>
-                </includes>
+                <excludes>
+                    <exclude>**/*</exclude>
+                </excludes>
             </resource>
         </resources>
         <plugins>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <outputDirectory>target/jar</outputDirectory>
-                    <excludes>
-                        <exclude>**/config.properties</exclude>
-                        <exclude>**/okapi/**</exclude>
-                    </excludes>
-                    <archive>
-                        <manifestEntries>
-                            <Class-Path>resources/</Class-Path>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
@@ -413,6 +401,7 @@
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
+                            <addClasspath>true</addClasspath>
                             <mainClass>com.matecat.converter.Main</mainClass>
                         </manifest>
                         <manifestEntries>
@@ -434,9 +423,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.3</version>
                 <executions>
                     <execution>
                         <id>copy-info</id>
@@ -485,38 +472,9 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.10</version>
-                <executions>
-                    <execution>
-                        <id>purge-local-dependencies</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>purge-local-repository</goal>
-                        </goals>
-                        <configuration>
-                            <skip>true</skip>
-                            <snapshotsOnly>true</snapshotsOnly>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
     <repositories>
-        <repository>
-            <id>okapi-dev</id>
-            <name>Okapi Snapshot</name>
-            <url>file://${basedir}/okapi</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
         <repository>
             <id>okapi-release</id>
             <name>Okapi Release</name>
