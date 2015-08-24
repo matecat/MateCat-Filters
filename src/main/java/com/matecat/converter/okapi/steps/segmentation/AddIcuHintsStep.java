@@ -49,7 +49,6 @@ public class AddIcuHintsStep extends BasePipelineStep {
                 int curCodedTextIndex = 0;
                 int curCleanTextIndex = 0;
 
-//                System.out.println("Original seg:\n" + textFragment.getCodedText());
                 for (int boundary = sentenceIterator.next(); boundary != BreakIterator.DONE; boundary = sentenceIterator.next()) {
                     // ICU puts always a boundary at the end of the string: skip it
                     if (boundary == cleanText.length()) continue;
@@ -92,7 +91,6 @@ public class AddIcuHintsStep extends BasePipelineStep {
                 // Add the remaining text from the last sentence boundary to the end of the string
                 codedTextWithHints
                         .append(codedText, curCodedTextIndex, codedText.length - curCodedTextIndex);
-//                System.out.println("Augmented seg:\n" + augmentedCodedText.toString());
                 // Replace the segment with the new augmented one
                 textFragment.setCodedText(codedTextWithHints.toString());
             }
