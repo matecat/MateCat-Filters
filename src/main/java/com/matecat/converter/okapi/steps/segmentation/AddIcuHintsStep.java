@@ -33,10 +33,14 @@ public class AddIcuHintsStep extends BasePipelineStep {
                 // The sentence iterator will be executed on a clean version of the
                 // text, without codes. This because codes chars can interfere with
                 // the ICU sentence boundary detection.
-                // I also transform all strange whitespaces in normal ones, to easily
-                // trim them out. This covers also newlines: ICU breaks on newlines,
-                // but we don't want this, so we treat newlines as normal whitespaces.
-                final String cleanText = textFragment.getText().replaceAll(UNICODE_WHITESPACES, " ");
+                final String cleanText = textFragment.getText()
+                        // I also transform all strange whitespaces in normal ones, to easily
+                        // trim them out. This covers also newlines: ICU breaks on newlines,
+                        // but we don't want this, so we treat newlines as normal whitespaces.
+                        .replaceAll(UNICODE_WHITESPACES, " ")
+                        // Finally I replace all the "horizontal ellipsis" with simple periods,
+                        // because ICU is not breaking on them, but it should.
+                        .replace('\u2026', '.');
                 sentenceIterator.setText(cleanText);
                 // This will contain the final segment with marked sentences boundaries
                 final StringBuilder codedTextWithHints = new StringBuilder();
