@@ -46,17 +46,16 @@ Then, you can execute the script doing double click on it, or by typing:
 Execute the following commands from the CMD:
 
 ```
-mvn clean
-mvn -DskipTests=true package
+mvn -DskipTests=true clean compile package
 ```
 
 ## Server Execution
-To run the server go to the folder where the building has taken place, by default `/target/jar`, and follow the instructions correspondig to your operating system. The execution of the server requires Java 8.
+To run the server go to the folder where the building has taken place, by default `/target/package`, and follow the instructions correspondig to your operating system. The execution of the server requires Java 8.
 
 _Note. If you build the server manually in Windows, you will not have a `server` nor a `server.bat` file. If this is the case, execute the following command in the Terminal / CMD:_
 
 ```
-java -jar [NAME OF THE JAR INCLUDING EXTENSION]
+java -cp "resources;[NAME OF THE JAR INCLUDING EXTENSION]" com.matecat.converter.Main
 ```
 
 #### UNIX

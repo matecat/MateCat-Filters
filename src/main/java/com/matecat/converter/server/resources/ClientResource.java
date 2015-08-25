@@ -20,7 +20,7 @@ public class ClientResource {
     private static final String CLIENT_HTML;
     static {
         try {
-            CLIENT_HTML = IOUtils.toString(ClientResource.class.getResourceAsStream(CLIENT_HTML_PATH), "UTF-8");
+            CLIENT_HTML = IOUtils.toString(System.class.getResourceAsStream(CLIENT_HTML_PATH), "UTF-8");
         } catch (IOException e) {
             throw new RuntimeException("The client.html was not found");
         }

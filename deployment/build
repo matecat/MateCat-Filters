@@ -9,7 +9,7 @@ echo "####           MATECAT CONVERTER  BUILD SCRIPT         #####"
 echo "############################################################"
 printf "\n"
 
-printf "Checking dependences... "
+printf "Checking dependencies... "
 mvn -help 2> /tmp/maven-error > /dev/null
 if [ -s /tmp/maven-error ]
 	then
@@ -22,12 +22,27 @@ rm /tmp/maven-error
 
 printf "Executing maven... "
 cd ..
-mvn clean > /dev/null
-mvn -DskipTests=true package > /dev/null
+mvn -DskipTests=true clean compile package > /dev/null
+echo "done! 😄"
+
+printf "Creating package dir... "
+# Create target dir if not already existent.
+mkdir -p target
+cd target
+# Remove the package dir if already existent, and create a new empty one
+rm -f -r package
+mkdir package
+cd package
+# Copy the jar
+cp ../*.jar .
+# Create the default directory for resources override,
+# and place inside it the main configuration file as
+# example and shortcut
+mkdir resources
+cp ../../src/main/resources/config.properties resources
 echo "done! 😄"
 
 printf "Building UNIX script... "
-cd target/jar/
 JARDIR=$(pwd)
 FILENAME=$(find *.jar | tail -1)
 cat > server <<- 'EOT'
@@ -36,10 +51,10 @@ cat > server <<- 'EOT'
 	DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 	cd $DIR
 EOT
-echo "java -jar $FILENAME" >> server
-echo "done!" 😄
-
-printf "Making UNIX scripts executable... "
+# Run the application adding to classpath the "resource"
+# dir previously created
+echo "java -cp 'resources:$FILENAME' com.matecat.converter.Main" >> server
+# Make script executable
 chmod 755 server
 echo "done! 😄"
 
@@ -47,10 +62,10 @@ printf "Building Windows script... "
 cat > server.bat <<- EOT
 	@ECHO OFF
 	CLS
-	java -jar $FILENAME
+	java -cp "resources;$FILENAME" com.matecat.converter.Main
 	PAUSE 
 EOT
-echo "done!"
+echo "done! 😄"
 
 printf "\nBuild completed at: "
 echo $(pwd)

@@ -13,7 +13,7 @@ public class Configuration {
     // Initialize properties
     private static final Properties properties;
     static {
-        try (InputStream inputStream = Configuration.class.getResourceAsStream("/config.properties")) {
+        try (InputStream inputStream = System.class.getResourceAsStream("/config.properties")) {
             properties = new Properties();
             properties.load(inputStream);
         }

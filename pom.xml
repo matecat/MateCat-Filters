@@ -376,38 +376,15 @@
 
     <build>
         <resources>
-            <!--The code now tries reading resources using the File class.
-            This doesn't work for resources packed inside a JAR. Here is
-            the fix: http://stackoverflow.com/a/26719666
-            The idea is keeping these resources outside the JAR.-->
-            <resource>
-                <directory>src/main/config</directory>
-                <excludes>
-                    <exclude>config.properties</exclude>
-                </excludes>
-            </resource>
             <resource>
                 <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>**/*</exclude>
-                </excludes>
             </resource>
         </resources>
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <outputDirectory>target/jar</outputDirectory>
                     <appendAssemblyId>false</appendAssemblyId>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>com.matecat.converter.Main</mainClass>
-                        </manifest>
-                        <manifestEntries>
-                            <Class-Path>resources/</Class-Path>
-                        </manifestEntries>
-                    </archive>
                     <descriptors>
                         <descriptor>src/assembly/jar-with-dependencies-custom.xml</descriptor>
                     </descriptors>
@@ -419,56 +396,6 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-info</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/jar/</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}</directory>
-                                    <includes>
-                                        <include>**/*.md</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/jar/resources</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/config</directory>
-                                    <includes>
-                                        <include>**/config.properties</include>
-                                    </includes>
-                                </resource>
-                                <resource>
-                                    <directory>src/main/resources</directory>
-                                    <includes>
-                                        <include>**/*</include>
-                                    </includes>
-                                    <excludes>
-                                        <exclude>**/client/*</exclude>
-                                    </excludes>
-                                </resource>
-                            </resources>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -21,10 +21,12 @@ import net.sf.okapi.steps.common.RawDocumentToFilterEventsStep;
 import net.sf.okapi.steps.rainbowkit.creation.ExtractionStep;
 import net.sf.okapi.steps.rainbowkit.postprocess.MergingStep;
 import net.sf.okapi.steps.segmentation.SegmentationStep;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,63 +56,24 @@ public class OkapiClient {
     /**
      * Initialization of the default segmentation rules and its folder
      */
-    public static final String OKAPI_FOLDER_NAME = "okapi";
-    public static final String SEGMENTATION_FOLDER_NAME = "segmentation";
-    public static final String DEFAULT_SEGMENTATION_FILENAME = "default.srx";
-    private static final File segmentationFolder, defaultSegmentation;
+    public static final String SRX_RESOURCE_PATH = "/okapi/segmentation/default.srx";
+    public static final File SRX_FILE;
     static {
-        // Load segmentation folder
-        URL segmentationFolderURL =  OkapiClient.class.getResource("/" + OKAPI_FOLDER_NAME + "/" + SEGMENTATION_FOLDER_NAME);
-        if (segmentationFolderURL == null)
-            throw new RuntimeException("The folder containing the segmentation rules was not found (is it installed?)");
-        segmentationFolder = new File(segmentationFolderURL.getPath());
-
-        // Load default segmentation rules
-        defaultSegmentation =  new File(segmentationFolder.getPath() + File.separator + DEFAULT_SEGMENTATION_FILENAME);
-        if (!defaultSegmentation.exists())
-            throw new RuntimeException(String.format("The default segmentation rules '%s' are not installed", DEFAULT_SEGMENTATION_FILENAME));
-    }
-
-    /**
-     * Segmentation rules cache
-     */
-    private static ConcurrentMap<Locale, File> segmentationRules = new ConcurrentHashMap<>();
-
-
-    /**
-     * Get a segmentation rules file given the language
-     *
-     * If it exists one file whose filename matches the language, it will return it.
-     * Otherwise, it will return the default segmentation file.
-     *
-     * @param language Source language
-     * @return Segmentation file
-     */
-    private static File getSegmentationFile(Locale language) {
-
-        // Obtain from buffer
-        if (segmentationRules.containsKey(language))
-            return segmentationRules.get(language);
-
-        // If not, try to load a custom segmentation. If it does not exist, use the default one.
-        File rules = getSegmentationFile(language.getLanguage() + ".srx");
-        if (rules == null)
-            rules = defaultSegmentation;
-        segmentationRules.put(language, rules);
-        return rules;
-
-    }
-
-    /**
-     * Get the segmentation rules, given it's filename
-     * @param filename Filename
-     * @return Segmentation rules file, null if not found
-     */
-    private static File getSegmentationFile(String filename) {
-        File out = new File(segmentationFolder.getPath() + File.separator + filename.toLowerCase());
-        if (!out.exists())
-            return null;
-        return out;
+        // The SRX file is a resource of the application. When it is
+        // packed inside a jar Okapi fails reading its content.
+        // In order to make it work in every situation, I copy the SRX
+        // in a regular file on the filesystem, and then I pass this
+        // new file to Okapi.
+        try {
+            SRX_FILE = File.createTempFile("matecat-converter-srx-rules", null);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot create a temp file for SRX rules.", e);
+        }
+        try {
+            FileUtils.copyInputStreamToFile(System.class.getResourceAsStream(SRX_RESOURCE_PATH), SRX_FILE);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot copy SRX rules to temp file.", e);
+        }
     }
 
 
@@ -152,10 +115,9 @@ public class OkapiClient {
      * @return Segmentation step
      */
     private static SegmentationStep createSegmentationStep(Locale sourceLanguage) {
-        File segmentationRules = getSegmentationFile(sourceLanguage);
         SegmentationStep segmentationStep = new SegmentationStep();
         net.sf.okapi.steps.segmentation.Parameters params = (net.sf.okapi.steps.segmentation.Parameters) segmentationStep.getParameters();
-        params.setSourceSrxPath(segmentationRules.getPath());
+        params.setSourceSrxPath(SRX_FILE.getPath());
         return segmentationStep;
     }
 
