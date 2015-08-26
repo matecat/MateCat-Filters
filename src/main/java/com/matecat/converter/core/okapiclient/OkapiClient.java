@@ -20,6 +20,7 @@ import net.sf.okapi.filters.table.TableFilter;
 import net.sf.okapi.steps.common.RawDocumentToFilterEventsStep;
 import net.sf.okapi.steps.rainbowkit.creation.ExtractionStep;
 import net.sf.okapi.steps.rainbowkit.postprocess.MergingStep;
+import net.sf.okapi.steps.rainbowkit.postprocess.Parameters;
 import net.sf.okapi.steps.segmentation.SegmentationStep;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -130,6 +131,32 @@ public class OkapiClient {
         net.sf.okapi.steps.rainbowkit.creation.Parameters extParams = (net.sf.okapi.steps.rainbowkit.creation.Parameters) extStep.getParameters();
         extParams.setPackageName(OkapiPack.PACK_FILENAME);
         return extStep;
+    }
+
+    /**
+     * Create the merging steps
+     * @return Merging step
+     */
+    private static MergingStep createMergingStep() {
+        MergingStep mergingStep = new MergingStep();
+        net.sf.okapi.steps.rainbowkit.postprocess.Parameters params = (net.sf.okapi.steps.rainbowkit.postprocess.Parameters) mergingStep.getParameters();
+        // Sometimes the xliff's target language is different from
+        // the target specified in the Okapi manifest file.
+        // This happens for example when in MateCAT you create a
+        // project with multiple target languages. MateCAT calls
+        // the converter just one time and then uses the obtained
+        // xliff with each translation job in each target language,
+        // just changing the target attributes in the xliff.
+        // When the xliff's target segments language is different
+        // from the one specified in the manifest file, Okapi
+        // ignores them and uses source segments instead. So after
+        // the merge you obtain a document without translations.
+        // Using the following options you tell Okapi to ignore the
+        // target language specified in the manifest, and to consider
+        // always the one specified in the pipeline configuration,
+        // that we create using the xliff's target language.
+        params.setForceTargetLocale(true);
+        return mergingStep;
     }
 
     /**
@@ -245,7 +272,7 @@ public class OkapiClient {
             driver.addStep(new RawDocumentToFilterEventsStep());
 
             // Add the t-kit merging step
-            driver.addStep(new MergingStep());
+            driver.addStep(createMergingStep());
 
             // Add the input file (manifest file)
             XliffProcessor processor = new XliffProcessor(pack.getXlf());
