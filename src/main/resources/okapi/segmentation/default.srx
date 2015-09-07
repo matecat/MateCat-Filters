@@ -22,12 +22,12 @@ IV. Hello.</okpsrx:sample>
     <languagerules>
       <languagerule languagerulename="Global">
         <!--Abbreviations followed by an uppercase letter.
-        <rule break="no"><beforebreak>(?i)\b(Hon|Dr|st|Hr|mm|mmes?|mssrs?|sign|sig|dott|Mr|Ms|Mrs|Sr|Sra|Srto|Srta|St|Gen|Col|Maj|Gov|Brig|Sgt|Capt|Ch|Cmnd|Lt|Sen|Rev|Esq|Rep|Revd|Pr|Br|Pres|prof|JS|cf|ph\.\s*d|cit|ex)\.\uE105\s*</beforebreak>
+        <rule break="no"><beforebreak>(?i)\b(Hon|Dr|st|Hr|mm|mmes?|mssrs?|sign|sig|dott|Mr|Ms|Mrs|Sr|Sra|Srto|Srta|St|Gen|Col|Maj|Gov|Brig|Sgt|Capt|Ch|Cmnd|Lt|Sen|Rev|Esq|Rep|Revd|Pr|Br|Pres|prof|JS|cf|ph\.####d|cit|ex)\.\uE105\s*</beforebreak>
         <afterbreak></afterbreak></rule-->
-        <!--Don't break on internation measure unit: cm. 35-->
+        <!--Don't break on max/min abbr. and international measure unit: cm. 35-->
         <rule break="no">
-          <beforebreak>(?i)\b(mm|cm|dm|m|km)\.\uE105\s*</beforebreak>
-          <afterbreak>\s*\d</afterbreak>
+          <beforebreak>(?i)\b(mm|cm|dm|m|km|max|min)\.\uE105\s*</beforebreak>
+          <afterbreak>\d</afterbreak>
         </rule>
         <!--Don't break on names abbreviations: J. K. Simmons is a great actor!-->
         <rule break="no">
@@ -74,15 +74,25 @@ IV. Hello.</okpsrx:sample>
       </languagerule>
 
 
+      <languagerule languagerulename="Single letter abbreviations exception">
+        <!--Treat as abbreviation every lower-case letter followed by a period,
+        so cases like "e.g." or "i.e." are automatically handled.-->
+        <rule break="no">
+          <beforebreak>\b\p{L}\.\uE105\s*</beforebreak>
+          <afterbreak/>
+        </rule>
+	  	</languagerule>
+
+
       <languagerule languagerulename="English (EN) exceptions">
         <!--Abbreviations-->
         <rule break="no">
-          <beforebreak>(?i)\b(Adj|Adm|Adv|Asst|Bart|Bldg|Brig|Bros|Capt|Cmdr|Col|Comdr|Con|Corp|Cpl|DR|Dr|Drs|Ens|Gen|Gov|Hon|Hr|Hosp|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|Rep|Reps|Res|Rev|Rt|Sen|Sens|Sfc|Sgt|Sr|St|Supt|Surg|v|vs|i\.\s*e|rev|e\.\s*g)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(Adj|Adm|Adv|Asst|Bart|Bldg|Brig|Bros|Capt|Cmdr|Col|Comdr|Con|Corp|Cpl|DR|Dr|Drs|Ens|Gen|Gov|Hon|Hr|Hosp|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|Rep|Reps|Res|Rev|Rt|Sen|Sens|Sfc|Sgt|Sr|St|Supt|Surg|v|vs|rev)\.\uE105\s*</beforebreak>
           <afterbreak/>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(n|No|Nos|Nr|Art|pp|p|pag|vol|chap)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(n|No|Nos|Nr|Art|pp|p|pag|vol|chap|fig|figs)\.\uE105\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
       </languagerule>
@@ -91,12 +101,17 @@ IV. Hello.</okpsrx:sample>
       <languagerule languagerulename="Italian (IT) exceptions">
         <!--Abbreviations-->
         <rule break="no">
-          <beforebreak>(?i)\b(Adj|Adm|Adv|Amn|Arch|Asst|Avv|Bart|Bcc|Bldg|Brig|Bros|C\.\s*A\.\s*P|C\.\s*P|Capt|Cc|Cmdr|Co|Col|Comdr|Con|Corp|Cpl|DR|Dott|Dr|Drs|Egr|Ens|Gen|Geom|Gov|Hon|Hosp|Hr|Id|Ing|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mo|Mons|Mr|Mrs|Ms|Msgr|N\.\s*B|Op|Ord|P\.\s*S|P\.\s*T|Pfc|Ph|Prof|Pvt|RP|RSVP|Rag|Rep|Reps|Res|Rev|Rif|Rt|S\.\s*A|S\.\s*B\.\s*F|S\.\s*P\.\s*M|S\.\s*p\.\s*A|S\.\s*r\.\s*l|Sen|Sens|Sfc|Sgt|Sig|Sigg|Soc|Spett|Sr|St|Supt|Surg|V\.\s*P|a\.\s*c|acc|all|banc|c\.\s*a|c\.\s*c\.\s*p|c\.\s*m|c\.\s*p|c\.\s*s|c\.\s*v|corr|dott|e\.\s*p\.\s*c|ecc|es|fatt|gg|int|lett|ogg|on|p\.\s*c|p\.\s*c\.\s*c|p\.\s*es|p\.\s*f|p\.\s*r|p\.\s*v|post|pp|racc|ric|s\.\s*n\.\s*c|seg|sgg|ss|tel|u\.\s*s|v\.\s*r|v\.\s*s|v|vs|i\.\s*e|rev|e\.\s*g)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(Adj|Adm|Adv|Amn|Arch|Asst|Avv|Bart|Bcc|Bldg|Brig|Bros|Capt|Cc|Cmdr|Co|Col|Comdr|Con|Corp|Cpl|DR|Dott|Dr|Drs|Egr|Ens|Gen|Geom|Gov|Hon|Hosp|Hr|Id|Ing|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mo|Mons|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|RP|RSVP|Rag|Rep|Reps|Res|Rev|Rif|Rt|Sen|Sens|Sfc|Sgt|Sig|Sigg|Soc|Spett|Sr|St|Supt|Surg|acc|all|banc|corr|dott|ecc|es|fatt|gg|int|lett|ogg|on|post|pp|racc|ric|seg|sgg|ss|tel|vs|rev|lgs)\.\uE105\s*</beforebreak>
           <afterbreak/>
+        </rule>
+        <!--Compound abbreviations need another rule to avoid breaking inside them-->
+        <rule break="no">
+          <beforebreak>(?i)\bp\.\uE105\s*</beforebreak>
+          <afterbreak>(?i)es\.</afterbreak>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|p|pag|vol|cap)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|p|pag|vol|cap|fig)\.\uE105\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
       </languagerule>
@@ -105,8 +120,62 @@ IV. Hello.</okpsrx:sample>
       <languagerule languagerulename="French (FR) exceptions">
         <!--Abbreviations-->
         <rule break="no">
-          <beforebreak>(?i)\b(A\.\s*C\.\s*N|A\.\s*M|art|ann|apr|av|auj|lib|B\.\s*P|boul|ca|c\.\s*-à-d|cf|ch\.\s*-l|chap|contr|C\.\s*P\.\s*I|C\.\s*Q\.\s*F\.\s*D|C\.\s*N|C\.\s*N\.\s*S|C\.\s*S|dir|éd|e\.\s*g|env|al|etc|E\.\s*V|ex|fasc|fém|fig|fr|hab|ibid|id|i\.\s*e|inf|LL\.\s*AA|LL\.\s*AA\.\s*II|LL\.\s*AA\.\s*RR|LL\.\s*AA\.\s*SS|L\.\s*D|LL\.\s*EE|LL\.\s*MM|LL\.\s*MM\.\s*II\.\s*RR|loc\.\s*cit|masc|MM|ms|N\.\s*B|N\.\s*D\.\s*A|N\.\s*D\.\s*L\.\s*R|N\.\s*D\.\s*T|n/réf|NN\.\s*SS|N\.\s*S|N\.\s*D|N\.\s*P\.\s*A\.\s*I|p\.\s*c\.\s*c|pl|pp|p\.\s*ex|p\.\s*j|P\.\s*S|R\.\s*A\.\s*S|R\.\s*-V|R\.\s*P|R\.\s*I\.\s*P|SS|S\.\s*S|S\.\s*A|S\.\s*A\.\s*I|S\.\s*A\.\s*R|S\.\s*A\.\s*S|S\.\s*E|sec|sect|sing|S\.\s*M|S\.\s*M\.\s*I\.\s*R|sq|sqq|suiv|sup|suppl|tél|T\.\s*S\.\s*V\.\s*P|vb|vol|vs|X\.\s*O|Z\.\s*I)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(art|ann|apr|av|auj|lib|boul|ca|cf|chap|contr|dir|éd|env|al|etc|ex|fasc|fém|fig|fr|hab|ibid|id|inf|masc|MM|ms|n/réf|pl|pp|SS|sec|sect|sing|sq|sqq|suiv|sup|suppl|tél|vb|vol|vs)\.\uE105\s*</beforebreak>
           <afterbreak/>
+        </rule>
+        <!--Abbreviation: ch.-l -->
+        <rule break="no">
+          <beforebreak>(?i)\bch\.\uE105\s*</beforebreak>
+          <afterbreak>(?i)-l</afterbreak>
+        </rule>
+        <!--Abbreviation: loc.cit-->
+        <rule break="no">
+          <beforebreak>(?i)\bloc\.\uE105\s*</beforebreak>
+          <afterbreak>(?i)cit</afterbreak>
+        </rule>
+        <!--Abbreviation: p.ex-->
+        <rule break="no">
+          <beforebreak>(?i)\bp\.\uE105\s*</beforebreak>
+          <afterbreak>(?i)ex</afterbreak>
+        </rule>
+        <!--Abbreviation: L.D-->
+        <rule break="no">
+          <beforebreak>(?i)\bL\.\uE105\s*</beforebreak>
+          <afterbreak>(?i)D</afterbreak>
+        </rule>
+        <!--Abbreviation: R.-V-->
+        <rule break="no">
+          <beforebreak>(?i)\bR\.\uE105\s*</beforebreak>
+          <afterbreak>(?i)-V</afterbreak>
+        </rule>
+        <!--Abbreviation: NN.SS-->
+        <rule break="no">
+          <beforebreak>(?i)\bNN\.\uE105\s*</beforebreak>
+          <afterbreak>(?i)SS</afterbreak>
+        </rule>
+        <!--Abbreviation: LL.AA, LL.EE, LL.MM-->
+        <rule break="no">
+          <beforebreak>(?i)\bLL\.\uE105\s*</beforebreak>
+          <afterbreak>(?i)AA|EE|MM</afterbreak>
+        </rule>
+        <!--Abbreviation: LL.AA.II, LL.AA.RR, LL.AA.SS-->
+        <rule break="no">
+          <beforebreak>(?i)\bLL\.\uE105?\s*\bAA\.\uE105\s*</beforebreak>
+          <afterbreak>(?i)II|RR|SS</afterbreak>
+        </rule>
+        <!--Abbreviation: LL.MM.II.RR (sadly, two rules are needed for this)-->
+        <rule break="no">
+          <beforebreak>(?i)\bLL\.\uE105?\s*MM\.\uE105?\s*</beforebreak>
+          <afterbreak>(?i)II</afterbreak>
+        </rule>
+        <rule break="no">
+          <beforebreak>(?i)\bLL\.\uE105?\s*MM\.\uE105?\s*II\.\uE105?\s*</beforebreak>
+          <afterbreak>(?i)RR</afterbreak>
+        </rule>
+        <!--Abbreviation: c.-à-d -->
+        <rule break="no">
+          <beforebreak>(?i)\bc\.\uE105\s*</beforebreak>
+          <afterbreak>(?i)-à-d</afterbreak>
         </rule>
       </languagerule>
 
@@ -114,8 +183,14 @@ IV. Hello.</okpsrx:sample>
       <languagerule languagerulename="German (DE) exceptions">
         <!--Abbreviations-->
         <rule break="no">
-          <beforebreak>(?i)\b(Adj|Adm|Adv|Asst|Bart|Bldg|Brig|Bros|Capt|Cmdr|Col|Comdr|Con|Corp|Cpl|DR|Dr|Ens|Gen|Gov|Hon|Hosp|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|Rep|Reps|Res|Rev|Rt|Sen|Sens|Sfc|Sgt|Sr|St|Supt|Surg|Mio|Mrd|bzw|v|vs|usw|d\.\s*h|z\.\s*B|u\.\s*a|etc|Mrd|MwSt|ggf|d\.\s*J|D\.\s*h|m\.\s*E|vgl|I\.\s*F|z\.\s*T|sogen|ff|u\.\s*E|g\.\s*U|g\.\s*g\.\s*A|c\.\s*-à-d|Buchst|u\.\s*s\.\s*w|sog|u\.\s*ä|Std|evtl|Zt|Chr|u\.\s*U|o\.\s*ä|Ltd|b\.\s*A|z\.\s*Zt|spp|sen|SA|k\.\s*o|jun|i\.\s*H\.\s*v|dgl|dergl|Co|zzt|usf|s\.\s*p\.\s*a|Dkr|Corp|bzgl|BSE)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(Adj|Adm|Adv|Asst|Bart|Bldg|Brig|Bros|Capt|Cmdr|Col|Comdr|Con|Corp|Cpl|DR|Dr|Ens|Gen|Gov|Hon|Hosp|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|Rep|Reps|Res|Rev|Rt|Sen|Sens|Sfc|Sgt|Sr|St|Supt|Surg|Mio|Mrd|bzw|v|vs|usw|etc|Mrd|MwSt|ggf|vgl|sogen|ff|Buchst|sog|Std|evtl|Zt|Chr|spp|sen|SA|jun|dgl|dergl|Co|zzt|usf|Dkr|Corp|bzgl|BSE|rel|inkl|geb|usw)\.\uE105\s*</beforebreak>
           <afterbreak/>
+        </rule>
+        <!--Compound abbreviations need another rule to avoid breaking inside them-->
+        <!--Abbreviation: z.Zt -->
+        <rule break="no">
+          <beforebreak>(?i)\bz\.\uE105\s*</beforebreak>
+          <afterbreak>(?i)Zt</afterbreak>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
@@ -133,6 +208,7 @@ IV. Hello.</okpsrx:sample>
     </languagerules>
     <!--Pay attention to the order of these mappings, exceptions should be on top to prevent breaks-->
     <maprules>
+      <languagemap languagepattern="(?i)(en|it|de).*" languagerulename="Single letter abbreviations exception"/>
       <languagemap languagepattern="(?i)(en|it).*" languagerulename="Telephone numbers exceptions"/>
       <languagemap languagepattern="(?i)en.*" languagerulename="English (EN) exceptions"/>
       <languagemap languagepattern="(?i)it.*" languagerulename="Italian (IT) exceptions"/>
