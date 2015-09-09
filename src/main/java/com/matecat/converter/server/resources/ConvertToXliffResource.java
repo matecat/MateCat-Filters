@@ -34,7 +34,7 @@ import java.util.MissingResourceException;
  *
  * The result is returned as JSON, to obey the old Matecat library (TODO replace for file content)
  */
-@Path("/convert")
+@Path("/AutomationService/original2xliff")
 public class ConvertToXliffResource {
 
     // Logger
@@ -49,14 +49,13 @@ public class ConvertToXliffResource {
      * @return Converted file
      */
     @POST
-    @Path("/{source-lang}/{target-lang}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces("application/json")
     public Response convert(
-            @PathParam("source-lang") String sourceLanguageCode,
-            @PathParam("target-lang") String targetLanguageCode,
-            @FormDataParam("file") InputStream fileInputStream,
-            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
+            @FormDataParam("sourceLocale") String sourceLanguageCode,
+            @FormDataParam("targetLocale") String targetLanguageCode,
+            @FormDataParam("documentContent") InputStream fileInputStream,
+            @FormDataParam("documentContent") FormDataContentDisposition contentDispositionHeader) {
 
         // Filename and logging
         String filename = FilenameUtils.getName(contentDispositionHeader.getFileName());
@@ -83,7 +82,7 @@ public class ConvertToXliffResource {
             // Create response
             response = Response
                     .status(Response.Status.OK)
-                    .entity(JSONResponseFactory.getSuccess(xlf))
+                    .entity(JSONResponseFactory.getConvertSuccess(xlf))
                     .build();
             LOGGER.info("[CONVERSION FINISHED] {}: {} to {}", filename, sourceLanguageCode, targetLanguageCode);
         }

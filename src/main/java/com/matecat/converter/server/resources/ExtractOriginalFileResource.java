@@ -63,7 +63,7 @@ public class ExtractOriginalFileResource {
             // Create response
             response = Response
                     .status(Response.Status.OK)
-                    .entity(JSONResponseFactory.getSuccess(originalFile))
+                    .entity(JSONResponseFactory.getDerivedSuccess(originalFile))
                     .build();
             LOGGER.info("[EXTRACTION REQUEST FINISHED]");
         }
