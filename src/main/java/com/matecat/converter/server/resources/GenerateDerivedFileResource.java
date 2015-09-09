@@ -29,7 +29,7 @@ import java.io.InputStream;
  *
  * The result is returned as JSON, to obey the old Matecat library (TODO replace for file content)
  */
-@Path("/derived")
+@Path("/AutomationService/xliff2original")
 public class GenerateDerivedFileResource {
 
     // Logger
@@ -44,7 +44,7 @@ public class GenerateDerivedFileResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces("application/json")
     public Response convert(
-            @FormDataParam("file") InputStream fileInputStream) {
+            @FormDataParam("xliffContent") InputStream fileInputStream) {
 
         // Logging
         LOGGER.info("[DERIVATION REQUEST]");
@@ -66,7 +66,7 @@ public class GenerateDerivedFileResource {
             // Create response
             response = Response
                     .status(Response.Status.OK)
-                    .entity(JSONResponseFactory.getSuccess(derivedFile))
+                    .entity(JSONResponseFactory.getDerivedSuccess(derivedFile))
                     .build();
             LOGGER.info("[DERIVATION REQUEST FINISHED]");
         }
