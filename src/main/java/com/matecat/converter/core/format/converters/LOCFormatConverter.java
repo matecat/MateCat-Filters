@@ -2,7 +2,7 @@ package com.matecat.converter.core.format.converters;
 
 import com.matecat.converter.core.format.Format;
 import com.matecat.converter.core.format.FormatNotSupportedException;
-import com.matecat.converter.core.util.Configuration;
+import com.matecat.converter.core.util.Config;
 
 import java.io.IOException;
 import java.util.*;
@@ -34,14 +34,12 @@ public class LOCFormatConverter extends SocketFormatConverter {
     /*
      * Load the LOC Server configuration from the configuration file
      */
-    private static final String HOST_PROPERTY = "loc-host";
-    private static final String PORT_PROPERTY = "loc-port";
     private static final String HOST;
     private static final Integer PORT;
     static {
         try {
-            HOST = Configuration.getProperty(HOST_PROPERTY);
-            PORT = Integer.parseInt(Configuration.getProperty(PORT_PROPERTY));
+            HOST = Config.locHost;
+            PORT = Config.locPort;
             if (HOST == null  ||  HOST.equals("")  ||  PORT < 0)
                 throw new IOException();
         }

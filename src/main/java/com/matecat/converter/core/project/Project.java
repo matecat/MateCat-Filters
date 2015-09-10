@@ -1,6 +1,6 @@
 package com.matecat.converter.core.project;
 
-import com.matecat.converter.core.util.Configuration;
+import com.matecat.converter.core.util.Config;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -20,7 +20,7 @@ public class Project {
 
     // Delete on close
     private static final String DELETE_PROPERTY = "delete-on-close";
-    private static final boolean DELETE_ON_CLOSE = !Configuration.getProperty(DELETE_PROPERTY).equals("false");
+    private static final boolean DELETE_ON_CLOSE = !Config.deleteOnClose;
 
     // Inner properties
     private File folder;

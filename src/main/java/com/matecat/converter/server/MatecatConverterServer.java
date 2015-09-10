@@ -1,6 +1,6 @@
 package com.matecat.converter.server;
 
-import com.matecat.converter.core.util.Configuration;
+import com.matecat.converter.core.util.Config;
 import com.matecat.converter.server.resources.ConvertToXliffResource;
 import com.matecat.converter.server.resources.ExtractOriginalFileResource;
 import com.matecat.converter.server.resources.GenerateDerivedFileResource;
@@ -31,9 +31,6 @@ public class MatecatConverterServer {
     // Logger
     private static final Logger LOGGER = LoggerFactory.getLogger(MatecatConverterServer.class);
 
-    // Port property name in the configuration file
-    public static final String PORT_PROPERTY = "server-port";
-
     // Used port
     private int serverPort;
 
@@ -47,7 +44,7 @@ public class MatecatConverterServer {
      */
     public MatecatConverterServer() {
         try {
-            int port = Integer.parseInt(Configuration.getProperty(PORT_PROPERTY));
+            int port = Config.serverPort;
             if (port <= 0)
                 throw new Exception();
             this.serverPort = port;

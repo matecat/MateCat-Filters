@@ -1,6 +1,6 @@
 package com.matecat.converter.core.project;
 
-import com.matecat.converter.core.util.Configuration;
+import com.matecat.converter.core.util.Config;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +20,10 @@ public class ProjectFactory {
     private static Logger LOGGER = LoggerFactory.getLogger(ProjectFactory.class);
 
     // Storage folder
-    private static final String FOLDER_PROPERTY = "storage-folder";
     private static final File STORAGE_FOLDER;
     static {
         // Try to get the defined folder
-        String storagePath = Configuration.getProperty(FOLDER_PROPERTY);
+        String storagePath = Config.storageFolder;
         if (storagePath != null  &&  !storagePath.equals("")) {
             LOGGER.info("[GLOBAL] Storage path configuration found: {}", storagePath);
             File folder = new File(storagePath);
