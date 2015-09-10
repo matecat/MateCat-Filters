@@ -2,6 +2,7 @@ package com.matecat.converter.core.format.converters;
 
 import com.matecat.converter.core.format.Format;
 import com.matecat.converter.core.format.FormatNotSupportedException;
+import com.matecat.converter.core.util.Config;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,14 +15,16 @@ import java.util.List;
  */
 public class Converters extends AbstractFormatConverter {
 
-   private List<AbstractFormatConverter> converters;
+    private List<AbstractFormatConverter> converters;
 
     /**
      * Construct the class initializing a predifined set of converters
      */
     public Converters() {
         converters = new ArrayList<>();
-        converters.add(new LOCFormatConverter());
+        if (Config.locEnabled) {
+            converters.add(new LOCFormatConverter());
+        }
     }
 
     /**
