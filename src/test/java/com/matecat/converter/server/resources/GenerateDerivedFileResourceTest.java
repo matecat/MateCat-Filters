@@ -15,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.ws.rs.Path;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -27,7 +28,7 @@ public class GenerateDerivedFileResourceTest {
 
     private static MatecatConverterServer server;
     private static final int PORT = 8090;
-    private static final String url = "http://localhost:" + PORT + "/derived";
+    private static final String url = "http://localhost:" + PORT + GenerateDerivedFileResource.class.getAnnotation(Path.class).value();
 
     @Before
     public void setUp() throws Exception {
@@ -46,7 +47,7 @@ public class GenerateDerivedFileResourceTest {
         HttpPost httpPost = new HttpPost(url);
         FileBody uploadFilePart = new FileBody(fileToUpload);
         MultipartEntity reqEntity = new MultipartEntity();
-        reqEntity.addPart("file", uploadFilePart);
+        reqEntity.addPart("xliffContent", uploadFilePart);
         httpPost.setEntity(reqEntity);
         HttpResponse response = httpclient.execute(httpPost);
 

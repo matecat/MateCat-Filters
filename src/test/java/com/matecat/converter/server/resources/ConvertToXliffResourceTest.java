@@ -8,6 +8,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,6 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.ws.rs.Path;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -27,7 +29,7 @@ public class ConvertToXliffResourceTest {
 
     private static MatecatConverterServer server;
     private static final int PORT = 8090;
-    private static final String url = "http://localhost:" + PORT + "/convert";
+    private static final String url = "http://localhost:" + PORT + ConvertToXliffResource.class.getAnnotation(Path.class).value();
 
     @Before
     public void setUp() throws Exception {
@@ -43,10 +45,12 @@ public class ConvertToXliffResourceTest {
 
         // Send request
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(url + "/en-US/fr-FR");
+        HttpPost httpPost = new HttpPost(url);
         FileBody uploadFilePart = new FileBody(fileToUpload);
         MultipartEntity reqEntity = new MultipartEntity();
-        reqEntity.addPart("file", uploadFilePart);
+        reqEntity.addPart("documentContent", uploadFilePart);
+        reqEntity.addPart("sourceLocale", new StringBody("en-US"));
+        reqEntity.addPart("targetLocale", new StringBody("fr-FR"));
         httpPost.setEntity(reqEntity);
         HttpResponse response = httpclient.execute(httpPost);
 
@@ -66,11 +70,11 @@ public class ConvertToXliffResourceTest {
         assertEquals("", error);
 
         // Encoded document
-        String encodedDoc = (String) json.get(JSONResponseFactory.DOCUMENT_CONTENT);
-        assertNotSame("", encodedDoc);
+        String doc = (String) json.get(JSONResponseFactory.XLIFF_CONTENT);
+        assertNotSame("", doc);
 
         File out = new File(fileToUpload.getPath() + ".xlf");
-        FileUtils.writeByteArrayToFile(out, Base64.getDecoder().decode(encodedDoc));
+        FileUtils.writeStringToFile(out, doc);
 
     }
 
