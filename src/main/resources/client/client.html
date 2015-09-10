@@ -135,90 +135,91 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
 	<script>
         
-        // Constrants
-        var CONVERT = 'convert', ORIGINAL = 'original', DERIVED = 'derived'
+        // Constants
+        var CONVERT = 'convert', ORIGINAL = 'original', DERIVED = 'derived';
         
         // Status
-        var option = ''
-        var filenameUploaded = ''
-        var fileToDownload = null
-        var filenameToDownload = ''
+        var option = '';
+        var filenameUploaded = '';
+        var fileToDownload = null;
+        var filenameToDownload = '';
         
         // Visual
         $(function() {
             
             // Change option
             $('#option-generate').click(function() {
-                option = CONVERT
-                changeOption(this, 'Get the xliff!')
-            })
+                option = CONVERT;
+                changeOption(this, 'Get the xliff!');
+            });
             $('#option-original').click(function() {
-                option = ORIGINAL
-                changeOption(this, 'Get the original!')   
-            })
+                option = ORIGINAL;
+                changeOption(this, 'Get the original!');
+            });
             $('#option-derived').click(function() {
-                option = DERIVED
-                changeOption(this, 'Get the translation!')
-            })
+                option = DERIVED;
+                changeOption(this, 'Get the translation!');
+            });
             
             // Upload a file
             $('#icon-upload').click(function() {
-                $('#file').click()
+                $('#file').click();
             })
             $('#button-file').click(function() {
-                $('#file').click()
-            })
+                $('#file').click();
+            });
             $('#file').change(function() {
-                filenameToDownload = ''
-                fileToDownload = null
+                filenameToDownload = '';
+                fileToDownload = null;
                 filenameUploaded = $('#file')[0].files[0].name;
-                $('#file-details').html("File <strong>" + filenameUploaded + "</strong> uploaded!");
-                $('#file-details').css('opacity', 1);
-                setTimeout(function(){ 
-                    $('#section-process').css('opacity',1)     
-                    $('#button-process').removeAttr('disabled')
-                    $('#button-download').attr('disabled','disabled')       
-                }, 500)
-            })
+                $('#file-details')
+                    .html("File <strong>" + filenameUploaded + "</strong> uploaded!")
+                    .css('opacity', 1);
+                setTimeout(function() {
+                    $('#section-process').css('opacity',1);
+                    $('#button-process').removeAttr('disabled');
+                    $('#button-download').attr('disabled','disabled');
+                }, 500);
+            });
             
             // Process
             $('#icon-process').click(function() {
-                process()
-            })
+                process();
+            });
             $('#button-process').click(function() {
-                process()
-            })
+                process();
+            });
             
             // Download
             $('#icon-download').click(function() {
-                download()
-            })
+                download();
+            });
             $('#button-download').click(function() {
-                download()
-            })
+                download();
+            });
         
-        })
+        });
         
         // Process
         function process() {
             if (option != CONVERT  &&  filenameUploaded.split('.').pop() != 'xlf') {
-                showError('Please, upload a xliff (.xlf) file!')
+                showError('Please, upload a xliff (.xlf) file!');
             }
             else {
-                console.log("Executing: " + option)
-                var url = ''
+                console.log("Executing: " + option);
+                var url = '';
                 switch (option) {
-                    case CONVERT  : url = 'convert/en-US/it-IT'; break
-                    case ORIGINAL : url = 'original'; break
-                    case DERIVED  : url = 'derived'; break
+                    case CONVERT  : url = 'convert/en-US/it-IT'; break;
+                    case ORIGINAL : url = 'original'; break;
+                    case DERIVED  : url = 'derived'; break;
                 }
-                console.log("URL: " + url)
+                console.log("URL: " + url);
                 $('#form-file').ajaxSubmit({
                     url: url,
                     beforeSubmit: preProcess,
                     success: processSuccess,
                     error: processError
-                })
+                });
             }
         }
         
@@ -230,59 +231,60 @@
         
         // Change an option
         function changeOption(selected, processMessage) {
-            $('#options li').removeClass('option-selected')
-            $(selected).addClass('option-selected') 
-            $('#section-upload').css('opacity',1)
-            $('#file').val('')
+            $('#options li').removeClass('option-selected');
+            $(selected).addClass('option-selected');
+            $('#section-upload').css('opacity',1);
+            $('#file').val('');
             $('#file-details').css('opacity', 0);
             $('#file-details').val('');
-            $('#section-process').css('opacity',0)
-            setTimeout(function(){ 
-                    $('#button-process').val(processMessage)
-                    $('#button-process').attr('disabled','disabled')
-                    $('#button-download').attr('disabled','disabled')
+            $('#section-process').css('opacity',0);
+            setTimeout(function() {
+                    $('#button-process').val(processMessage);
+                    $('#button-process').attr('disabled','disabled');
+                    $('#button-download').attr('disabled','disabled');
                 }, 1000);
         }
         
         // Pre processing
         function preProcess() {
-            $('#button-download').attr('disabled','disabled')
-            $('#button-process').attr('disabled','disabled')
-            $('#icon-process').css('display','none')
-            $('#img-loading').css('display','inline-block')
-            $('#img-loading').css('opacity', 1)
+            $('#button-download').attr('disabled','disabled');
+            $('#button-process').attr('disabled','disabled');
+            $('#icon-process').css('display','none');
+            $('#img-loading').css('display','inline-block');
+            $('#img-loading').css('opacity', 1);
         }
         
         // Sucess in processing
         function processSuccess(response) {
-            fileToDownload = b64toBlob(response.documentContent)
-            filenameToDownload = response.filename
-            $('#button-download').removeAttr('disabled')
-            $('#button-process').removeAttr('disabled')
-            $('#icon-process').css('display','inline-block')
-            $('#img-loading').css('display','none')
+            fileToDownload = b64toBlob(response.documentContent);
+            filenameToDownload = response.filename;
+            $('#button-download').removeAttr('disabled');
+            $('#button-process').removeAttr('disabled');
+            $('#icon-process').css('display','inline-block');
+            $('#img-loading').css('display','none');
         }
 
         // Error in processing
         function processError(response) {
-            $('#button-process').removeAttr('disabled')
-            $('#icon-process').css('display','inline-block')
-            $('#img-loading').css('display','none')
-            console.log(JSON.parse(response.responseText))
-            showError(JSON.parse(response.responseText).errorMessage)
+            $('#button-process').removeAttr('disabled');
+            $('#icon-process').css('display','inline-block');
+            $('#img-loading').css('display','none');
+            console.log(JSON.parse(response.responseText));
+            showError(JSON.parse(response.responseText).errorMessage);
         }
         
         // Show an error
         function showError(message) {
-            $('#error').html(message)
-            $('#error').css('visibility','visible')
-            $('#error').css('opacity',1)
+            $('#error')
+                .html(message)
+                .css('visibility','visible')
+                .css('opacity',1);
             setTimeout(function() {
-                $('#error').css('opacity', 0)
+                $('#error').css('opacity', 0);
                 setTimeout(function() {
-                    $('#error').css('visibility','hidden')
-                }, 1000)
-            }, 2000)
+                    $('#error').css('visibility','hidden');
+                }, 1000);
+            }, 2000);
         }
 
         // Generate blob from base 64
