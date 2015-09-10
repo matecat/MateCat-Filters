@@ -209,9 +209,9 @@
                 console.log("Executing: " + option);
                 var url = '';
                 switch (option) {
-                    case CONVERT  : url = 'convert/en-US/it-IT'; break;
+                    case CONVERT  : url = 'AutomationService/original2xliff'; break;
                     case ORIGINAL : url = 'original'; break;
-                    case DERIVED  : url = 'derived'; break;
+                    case DERIVED  : url = 'AutomationService/xliff2original'; break;
                 }
                 console.log("URL: " + url);
                 $('#form-file').ajaxSubmit({
@@ -231,10 +231,22 @@
         
         // Change an option
         function changeOption(selected, processMessage) {
+            var fileInputName;
+            switch (option) {
+                case CONVERT:
+                    fileInputName = "documentContent";
+                    break;
+                case ORIGINAL:
+                    fileInputName = "file";
+                    break;
+                case DERIVED:
+                    fileInputName = "xliffContent";
+                    break;
+            }
             $('#options li').removeClass('option-selected');
             $(selected).addClass('option-selected');
             $('#section-upload').css('opacity',1);
-            $('#file').val('');
+            $('#file').prop('name', fileInputName).val('');
             $('#file-details').css('opacity', 0);
             $('#file-details').val('');
             $('#section-process').css('opacity',0);
@@ -256,7 +268,11 @@
         
         // Sucess in processing
         function processSuccess(response) {
-            fileToDownload = b64toBlob(response.documentContent);
+            if (response.documentContent) {
+                fileToDownload = b64toBlob(response.documentContent);
+            } else {
+                fileToDownload = new Blob([response.xliffContent], {type : 'text/xml'});
+            }
             filenameToDownload = response.filename;
             $('#button-download').removeAttr('disabled');
             $('#button-process').removeAttr('disabled');
@@ -328,7 +344,9 @@
 	<form id="form-file" method="post" enctype="multipart/form-data">
 		<i id="icon-upload" class="icon fa fa-upload fa-2x"></i>
 		<input type="button" id="button-file" value="Upload a file!">
-		<input type="file" id="file" name="file" value="">
+		<input type="file" id="file" name="documentContent" value="">
+		<input type="hidden" name="sourceLocale" value="en-US">
+		<input type="hidden" name="targetLocale" value="it-IT">
 	</form>
 	<div id="file-details">Uploaded!</div>
 </section>
