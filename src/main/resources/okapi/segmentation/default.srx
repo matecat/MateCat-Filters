@@ -200,7 +200,7 @@ IV. Hello.</okpsrx:sample>
         <!--Ordinals are done with . in German - "1." = "1st" in English; don't break when dot is followed by these (leaving the afterbreak empty you avoid breaking after a digit and a dot)-->
         <rule break="no">
           <beforebreak>\d\.\uE105\s+</beforebreak>
-          <afterbreak>(?i)(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)(\.|\b)</afterbreak>
+          <afterbreak>(?i)(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember|Lebensjahr)(\.|\b)</afterbreak>
         </rule>
       </languagerule>
 
