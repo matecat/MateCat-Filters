@@ -200,7 +200,7 @@ IV. Hello.</okpsrx:sample>
         <!--Ordinals are done with . in German - "1." = "1st" in English; don't break when dot is followed by these (leaving the afterbreak empty you avoid breaking after a digit and a dot)-->
         <rule break="no">
           <beforebreak>\d\.\uE105\s+</beforebreak>
-          <afterbreak>(?i)(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)(\.|\b)</afterbreak>
+          <afterbreak>(?i)(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember|Lebensjahr)(\.|\b)</afterbreak>
         </rule>
       </languagerule>
 
@@ -208,7 +208,7 @@ IV. Hello.</okpsrx:sample>
     </languagerules>
     <!--Pay attention to the order of these mappings, exceptions should be on top to prevent breaks-->
     <maprules>
-      <languagemap languagepattern="(?i)(en|it|de).*" languagerulename="Single letter abbreviations exception"/>
+      <languagemap languagepattern="(?i)(en|it|de.*" languagerulename="Single letter abbreviations exception"/>
       <languagemap languagepattern="(?i)(en|it).*" languagerulename="Telephone numbers exceptions"/>
       <languagemap languagepattern="(?i)en.*" languagerulename="English (EN) exceptions"/>
       <languagemap languagepattern="(?i)it.*" languagerulename="Italian (IT) exceptions"/>
