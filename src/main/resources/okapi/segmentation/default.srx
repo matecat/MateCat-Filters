@@ -208,7 +208,7 @@ IV. Hello.</okpsrx:sample>
     </languagerules>
     <!--Pay attention to the order of these mappings, exceptions should be on top to prevent breaks-->
     <maprules>
-      <languagemap languagepattern="(?i)(en|it|de.*" languagerulename="Single letter abbreviations exception"/>
+      <languagemap languagepattern="(?i)(en|it|de).*" languagerulename="Single letter abbreviations exception"/>
       <languagemap languagepattern="(?i)(en|it).*" languagerulename="Telephone numbers exceptions"/>
       <languagemap languagepattern="(?i)en.*" languagerulename="English (EN) exceptions"/>
       <languagemap languagepattern="(?i)it.*" languagerulename="Italian (IT) exceptions"/>
