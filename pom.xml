@@ -19,7 +19,7 @@
         on it. Check the pom.xml of the code you are compiling to
         know the version you are installing in your local Maven repo.
         -->
-        <okapi.version>0.28-SNAPSHOT</okapi.version>
+        <okapi.version>0.29-SNAPSHOT</okapi.version>
     </properties>
 
     <dependencies>
@@ -275,7 +275,7 @@
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
-            <artifactId>okapi-filter-railsyaml</artifactId>
+            <artifactId>okapi-filter-yaml</artifactId>
             <version>${okapi.version}</version>
             <exclusions>
                 <exclusion>

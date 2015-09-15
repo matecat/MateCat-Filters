@@ -15,7 +15,7 @@ import net.sf.okapi.filters.php.PHPContentFilter;
 import net.sf.okapi.filters.plaintext.PlainTextFilter;
 import net.sf.okapi.filters.po.POFilter;
 import net.sf.okapi.filters.properties.PropertiesFilter;
-import net.sf.okapi.filters.railsyaml.RailsYamlFilter;
+import net.sf.okapi.filters.yaml.YamlFilter;
 import net.sf.okapi.filters.rainbowkit.RainbowKitFilter;
 import net.sf.okapi.filters.regex.RegexFilter;
 import net.sf.okapi.filters.table.csv.CommaSeparatedValuesFilter;
@@ -258,8 +258,8 @@ public class OkapiFilterFactory {
         return filter;
     }
 
-    private static RailsYamlFilter getYmlFilter() {
-        RailsYamlFilter filter = new RailsYamlFilter();
+    private static YamlFilter getYmlFilter() {
+        YamlFilter filter = new YamlFilter();
         // net.sf.okapi.filters.railsyaml.Parameters params = (net.sf.okapi.filters.railsyaml.Parameters) filter.getParameters();
         // params.setEscapeNonAscii();
         return filter;
