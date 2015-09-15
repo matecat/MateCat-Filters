@@ -30,7 +30,7 @@ c. Three.</okpsrx:sample>
         <afterbreak></afterbreak></rule-->
         <!--Don't break on max/min abbr. and international measure unit: cm. 35-->
         <rule break="no">
-          <beforebreak>(?i)\b(mm|cm|dm|m|km|mg|cg|dg|g|gr|kg|max|min)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(mm|cm|dm|m|km|mg|cg|dg|g|gr|kg|max|min)\.\uE105?\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
         <!--Don't break on names abbreviations: J. K. Simmons is a great actor!-->
@@ -62,12 +62,17 @@ c. Three.</okpsrx:sample>
           <beforebreak>(?i)(https?|ftp)://(-\.)?([^\s/?\.#-]+\.?)+(/[^\s]*)?\?\uE105\s*</beforebreak>
           <afterbreak>[^\s]*</afterbreak>
         </rule>
+        <!--ICU splits this: "Normal sentence (question in parenthesis?) lowercase end."-->
+        <rule break="no">
+          <beforebreak>[?!]\)\uE105\s*</beforebreak>
+          <afterbreak>\p{L}</afterbreak>
+        </rule>
         <!--The most important rule: split on ICU hints-->
         <rule break="yes">
           <beforebreak>\uE105\s*</beforebreak>
           <afterbreak/>
         </rule>
-        <!--ICU doesn't split sentences like "2 bananas. 3 tomatoes." (but splits properly "Go to p. 1.") Fix it-->
+        <!--ICU doesn't split sentences like "2 bananas. 3 tomatoes." Pay attention: this introduces a new major break not caused by the \uE105 char, must take into account in abbreviations exception, especially in abbreviations before numbers and single letter abbreviations-->
         <rule break="yes">
           <beforebreak>\D\.\s*</beforebreak>
           <afterbreak>\d</afterbreak>
@@ -83,7 +88,7 @@ c. Three.</okpsrx:sample>
       <languagerule languagerulename="Telephone numbers exceptions">
         <!--Don't break in cases like: tel. +39 34578464 or fax. (15) 545468754-->
         <rule break="no">
-          <beforebreak>(?i)\b(tel|fax|cell?)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(tel|fax|cell?)\.\uE105?\s*</beforebreak>
           <afterbreak>[\d+\()]</afterbreak>
         </rule>
       </languagerule>
@@ -93,7 +98,7 @@ c. Three.</okpsrx:sample>
         <!--Treat as abbreviation every lower-case letter followed by a period,
         so cases like "e.g." or "i.e." are automatically handled.-->
         <rule break="no">
-          <beforebreak>\b\p{L}\.\uE105\s*</beforebreak>
+          <beforebreak>\b\p{L}\.\uE105?\s*</beforebreak>
           <afterbreak/>
         </rule>
 	  	</languagerule>
@@ -107,7 +112,7 @@ c. Three.</okpsrx:sample>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(No|Nos|Nr|Art|pp|pag|vol|chap|fig|figs)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Nr|Art|pp|pag|vol|chap|fig|figs|approx)\.\uE105?\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
       </languagerule>
@@ -126,7 +131,7 @@ c. Three.</okpsrx:sample>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|pag|vol|cap|fig|art)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|pag|vol|cap|fig|art)\.\uE105?\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
       </languagerule>
@@ -209,7 +214,7 @@ c. Three.</okpsrx:sample>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|ca|Ca)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|ca|Ca)\.\uE105?\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
         <!--Ordinals are done with . in German - "1." = "1st" in English; don't break when dot is followed by these (leaving the afterbreak empty you avoid breaking after a digit and a dot)-->
