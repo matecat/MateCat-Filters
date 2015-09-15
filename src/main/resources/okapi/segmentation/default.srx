@@ -14,7 +14,7 @@
 
 Single letter abbreviation: Go to p. 38. Test, e.g. Uppercase.
 
-Url: http://www.web.com/web.web?v=v&v=v
+Url: http://www.web.com/web.web?v=v&amp;v=v
 
 List:
 1. One.
@@ -62,9 +62,20 @@ c. Three.</okpsrx:sample>
           <beforebreak>(?i)(https?|ftp)://(-\.)?([^\s/?\.#-]+\.?)+(/[^\s]*)?\?\uE105\s*</beforebreak>
           <afterbreak>[^\s]*</afterbreak>
         </rule>
+        <!--The most important rule: split on ICU hints-->
         <rule break="yes">
           <beforebreak>\uE105\s*</beforebreak>
           <afterbreak/>
+        </rule>
+        <!--ICU doesn't split sentences like "2 bananas. 3 tomatoes." (but splits properly "Go to p. 1.") Fix it-->
+        <rule break="yes">
+          <beforebreak>\D\.\s*</beforebreak>
+          <afterbreak>\d</afterbreak>
+        </rule>
+        <!--ICU doesn't split lists like "- First Item. - Second item."-->
+        <rule break="yes">
+          <beforebreak>\.\s*</beforebreak>
+          <afterbreak>-</afterbreak>
         </rule>
       </languagerule>
 
