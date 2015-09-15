@@ -50,7 +50,7 @@ c. Three.</okpsrx:sample>
         But in these cases, ICU is not splitting, so we can exclude these cases from this rule.
         With this rule, we are supporting all the main lists identifiers.-->
         <rule break="no">
-          <beforebreak>(?im)^(([0-9]+|[a-z]+)\.)+\uE105\s*</beforebreak>
+          <beforebreak>(?im)^(([0-9]+|[ivx]+|\p{L})\.\uE105?\s*)+</beforebreak>
           <afterbreak/>
         </rule>
         <!--ICU splits urls with querystring at the question mark. This rule avoids it. 
@@ -74,7 +74,7 @@ c. Three.</okpsrx:sample>
         </rule>
         <!--ICU doesn't split lists like "- First Item. - Second item."-->
         <rule break="yes">
-          <beforebreak>\.\s*</beforebreak>
+          <beforebreak>[\.!?]\s*</beforebreak>
           <afterbreak>-</afterbreak>
         </rule>
       </languagerule>
