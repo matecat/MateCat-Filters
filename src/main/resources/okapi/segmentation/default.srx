@@ -10,12 +10,16 @@
     here no "empty" segments are produced, and spaces are still trimmed by MateCAT
     with the strip_external function.-->
     <okpsrx:options oneSegmentIncludesAll="no" trimLeadingWhitespaces="no" trimTrailingWhitespaces="no" useJavaRegex="yes"/>
-    <okpsrx:sample language="en" useMappedRules="yes">Abbreviation: hello dott. Jones!
-Url: http://www.web.com/web.web?v=v&amp;v=v
+    <okpsrx:sample language="en" useMappedRules="yes">Abbreviation: Hello dott. Jones!
+
+Single letter abbreviation: Go to p. 38. Test, e.g. Uppercase.
+
+Url: http://www.web.com/web.web?v=v&v=v
+
 List:
-1. Ciao.
-2. Due.
-IV. Hello.</okpsrx:sample>
+1. One.
+II. Two.
+c. Three.</okpsrx:sample>
     <okpsrx:rangeRule/>
   </header>
   <body>
@@ -26,7 +30,7 @@ IV. Hello.</okpsrx:sample>
         <afterbreak></afterbreak></rule-->
         <!--Don't break on max/min abbr. and international measure unit: cm. 35-->
         <rule break="no">
-          <beforebreak>(?i)\b(mm|cm|dm|m|km|max|min)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(mm|cm|dm|m|km|mg|cg|dg|g|gr|kg|max|min)\.\uE105\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
         <!--Don't break on names abbreviations: J. K. Simmons is a great actor!-->
@@ -87,12 +91,12 @@ IV. Hello.</okpsrx:sample>
       <languagerule languagerulename="English (EN) exceptions">
         <!--Abbreviations-->
         <rule break="no">
-          <beforebreak>(?i)\b(Adj|Adm|Adv|Asst|Bart|Bldg|Brig|Bros|Capt|Cmdr|Col|Comdr|Con|Corp|Cpl|DR|Dr|Drs|Ens|Gen|Gov|Hon|Hr|Hosp|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|Rep|Reps|Res|Rev|Rt|Sen|Sens|Sfc|Sgt|Sr|St|Supt|Surg|v|vs|rev)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(Adj|Adm|Adv|Asst|Bart|Bldg|Brig|Bros|Capt|Cmdr|Col|Comdr|Con|Corp|Cpl|DR|Dr|Drs|Ens|Gen|Gov|Hon|Hr|Hosp|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|Rep|Reps|Res|Rev|Rt|Sen|Sens|Sfc|Sgt|Sr|St|Supt|Surg|vs|rev)\.\uE105\s*</beforebreak>
           <afterbreak/>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(n|No|Nos|Nr|Art|pp|p|pag|vol|chap|fig|figs)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Nr|Art|pp|pag|vol|chap|fig|figs)\.\uE105\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
       </languagerule>
@@ -111,7 +115,7 @@ IV. Hello.</okpsrx:sample>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|p|pag|vol|cap|fig)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|pag|vol|cap|fig|art)\.\uE105\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
       </languagerule>
@@ -205,15 +209,26 @@ IV. Hello.</okpsrx:sample>
       </languagerule>
 
 
+      <languagerule languagerulename="Spanish (ES) exceptions">
+        <!--Abbreviations-->
+        <rule break="no">
+          <beforebreak>(?i)\b(Apdo|Av|Bco|Da|Dep|Dn|Dr|Dra|Excmo|Fil|Gral|Let|Lic|Prof|Pts|Rte|Sr|Sra|Srta|Sta|Sto|Ud|Uds|Vd|Vds|a/c|adj|admón|afmo|apdo|av|cap|cm|cta|dcha|doc|ej|entlo|esq|etc|grs|izq|nÃºm|núm|ptas|pÃ¡g|pÃ¡gs|pág|págs|vid|vol)\.\uE105\s*</beforebreak>
+          <afterbreak/>
+        </rule>
+      </languagerule>
+
+
     </languagerules>
     <!--Pay attention to the order of these mappings, exceptions should be on top to prevent breaks-->
     <maprules>
-      <languagemap languagepattern="(?i)(en|it|de).*" languagerulename="Single letter abbreviations exception"/>
-      <languagemap languagepattern="(?i)(en|it).*" languagerulename="Telephone numbers exceptions"/>
-      <languagemap languagepattern="(?i)en.*" languagerulename="English (EN) exceptions"/>
-      <languagemap languagepattern="(?i)it.*" languagerulename="Italian (IT) exceptions"/>
-      <languagemap languagepattern="(?i)de.*" languagerulename="German (DE) exceptions"/>
-      <languagemap languagepattern="(?i)fr.*" languagerulename="French (FR) exceptions"/>
+      <!--We exclude the languages we don't have confidence with-->
+      <languagemap languagepattern="(?i)^(?!af|hy|az|bn|zh|ka|gu|he|hi|km|ms|ml|mi|mm|nr|ne|ps|fa|qu|nso|tn|sw|tl|ta|te|th|ts|ur|vi|xh|zu).*" languagerulename="Single letter abbreviations exception"/>
+      <languagemap languagepattern="(?i)^(en|it|de|fr|es).*" languagerulename="Telephone numbers exceptions"/>
+      <languagemap languagepattern="(?i)^en.*" languagerulename="English (EN) exceptions"/>
+      <languagemap languagepattern="(?i)^it.*" languagerulename="Italian (IT) exceptions"/>
+      <languagemap languagepattern="(?i)^de.*" languagerulename="German (DE) exceptions"/>
+      <languagemap languagepattern="(?i)^fr.*" languagerulename="French (FR) exceptions"/>
+      <languagemap languagepattern="(?i)^es.*" languagerulename="Spanish (ES) exceptions"/>
       <languagemap languagepattern=".*" languagerulename="Global"/>
     </maprules>
   </body>
