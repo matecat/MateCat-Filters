@@ -18,10 +18,6 @@ import java.io.IOException;
  */
 public class Project {
 
-    // Delete on close
-    private static final String DELETE_PROPERTY = "delete-on-close";
-    private static final boolean DELETE_ON_CLOSE = !Config.deleteOnClose;
-
     // Inner properties
     private File folder;
     private File file;
@@ -62,7 +58,7 @@ public class Project {
      * One this method is executed, it's not possible to use the project again.
      */
     public void close() {
-        if (DELETE_ON_CLOSE) {
+        if (Config.deleteOnClose) {
             try {
                 FileUtils.deleteDirectory(folder);
             } catch (IOException e) {
