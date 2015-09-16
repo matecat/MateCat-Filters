@@ -283,8 +283,8 @@ public class OkapiClient {
             Locale targetLanguage = processor.getTargetLanguage();
             RawDocument rawDoc = new RawDocument(pack.getManifest().toURI(),
                     "UTF-8",
-                    new LocaleId(sourceLanguage),
-                    new LocaleId(targetLanguage),
+                    new LocaleId(sourceLanguage.toLanguageTag()),
+                    new LocaleId(targetLanguage.toLanguageTag()),
                     "okf_rainbowkit-noprompt");
             driver.addBatchItem(rawDoc);
 
