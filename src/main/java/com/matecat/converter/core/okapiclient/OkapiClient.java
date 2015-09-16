@@ -232,7 +232,10 @@ public class OkapiClient {
         driver.addStep(createExtractionStep());
 
         // Add the input file to the driver
-        RawDocument rawDoc = new RawDocument(file.toURI(), encoding.getCode(), new LocaleId(sourceLanguage), new LocaleId(targetLanguage), filter.getName());
+        // WARNING:
+        // new LocaleId(sourceLanguage) DOESN'T WORK for languages like "sr-Latn-RS" (Serbian Latin)
+        // new LocaleId(sourceLanguage.toLanguageTag()) instead works properly
+        RawDocument rawDoc = new RawDocument(file.toURI(), encoding.getCode(), new LocaleId(sourceLanguage.toLanguageTag()), new LocaleId(targetLanguage.toLanguageTag()), filter.getName());
 
         // Output file (useless but needed)
         String basename = Util.getFilename(file.getPath(), false);
