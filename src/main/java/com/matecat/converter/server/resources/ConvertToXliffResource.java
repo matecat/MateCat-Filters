@@ -59,6 +59,16 @@ public class ConvertToXliffResource {
 
         // Filename and logging
         String filename = FilenameUtils.getName(contentDispositionHeader.getFileName());
+
+        // Make extension ALWAYS lower case.
+        // The original extension of the file is written in the output XLIFF
+        // always lowercase, for compliance with the XLIFF spec (see datatype
+        // attribute of <file> element). This causes insidious bugs in the
+        // back-conversion, very difficult to solve with the current class
+        // structure (I tried). This fixes it easily.
+        // TODO: refactor internal classes to be filename/extension agnostic
+        filename = FilenameUtils.removeExtension(filename) + "." + FilenameUtils.getExtension(filename).toLowerCase();
+
         LOGGER.info("[CONVERSION REQUEST] {}: {} to {}", filename, sourceLanguageCode, targetLanguageCode);
 
         Project project = null;
