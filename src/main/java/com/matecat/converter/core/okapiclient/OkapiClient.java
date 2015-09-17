@@ -279,12 +279,10 @@ public class OkapiClient {
 
             // Add the input file (manifest file)
             XliffProcessor processor = new XliffProcessor(pack.getXlf());
-            Locale sourceLanguage = processor.getSourceLanguage();
-            Locale targetLanguage = processor.getTargetLanguage();
+            LocaleId sourceLanguage = new LocaleId(processor.getSourceLanguage());
+            LocaleId targetLanguage = new LocaleId(processor.getTargetLanguage());
             RawDocument rawDoc = new RawDocument(pack.getManifest().toURI(),
-                    "UTF-8",
-                    new LocaleId(sourceLanguage.toLanguageTag()),
-                    new LocaleId(targetLanguage.toLanguageTag()),
+                    "UTF-8", sourceLanguage, targetLanguage,
                     "okf_rainbowkit-noprompt");
             driver.addBatchItem(rawDoc);
 
