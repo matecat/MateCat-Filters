@@ -287,7 +287,8 @@ public abstract class SocketFormatConverter extends AbstractFormatConverter {
 
             // Generate the output path
             String filename = file.getName();
-            filename += "." + outputFormat.toString();
+            int lastDotIndex = filename.lastIndexOf(".");
+            filename = file.getName().substring(0, lastDotIndex) + "." + outputFormat.toString();
             String outputPath = file.getParentFile().getPath() + File.separator + filename;
 
             // Save the file

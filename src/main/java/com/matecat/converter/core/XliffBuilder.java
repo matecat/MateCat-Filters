@@ -191,13 +191,8 @@ class XliffBuilder {
         // Process filename and original format
         Format format = Format.getFormat(filename);
         if (originalFormat != null  &&  originalFormat != format)  {
-            // If the original file needed a pre-conversion, another
-            // extension was added, resulting in something like this:
-            //   file.ext1.ext2
-            // So at this point, to obtain the original filename with
-            // the original extension we just need to remove the
-            // last extension, returning the rest of the filename.
-            filename = FilenameUtils.getBaseName(filename);
+            String basename = FilenameUtils.getBaseName(filename);
+            filename = String.format("%s.%s", basename,originalFormat);
         }
 
         // Create the new file element which will contain the original file

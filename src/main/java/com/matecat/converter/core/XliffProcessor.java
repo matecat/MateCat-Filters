@@ -259,10 +259,7 @@ public class XliffProcessor {
         try {
             String datatype = fileElement.getAttribute("datatype");
             String convertedExtension = datatype.substring(2);
-            if (!convertedExtension.equalsIgnoreCase(FilenameUtils.getExtension(filename)))
-            {
-                filename += "." + convertedExtension;
-            }
+            filename = FilenameUtils.getBaseName(filename) + "." + convertedExtension;
         }
         catch (Exception ignore) {}
 
