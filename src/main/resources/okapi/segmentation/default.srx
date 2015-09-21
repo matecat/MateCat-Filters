@@ -30,7 +30,7 @@ c. Three.</okpsrx:sample>
         <afterbreak></afterbreak></rule-->
         <!--Don't break on max/min abbr. and international measure unit: cm. 35-->
         <rule break="no">
-          <beforebreak>(?i)\b(mq|mm|cm|dm|m|km|mg|cg|dg|g|gr|kg|max|min)\.\uE105?\s*</beforebreak>
+          <beforebreak>(?i)\b(mm|cm|dm|m|km|mg|cg|dg|g|gr|kg|max|min)\.\uE105?\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
         <!--Don't break on names abbreviations: J. K. Simmons is a great actor!-->
@@ -131,7 +131,7 @@ c. Three.</okpsrx:sample>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|pag|vol|cap|fig|art)\.\uE105?\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|pag|vol|cap|fig|art|mq)\.\uE105?\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
       </languagerule>
