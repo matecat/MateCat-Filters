@@ -204,6 +204,8 @@ public class OkapiClient {
         if (file == null  ||  !file.exists()  ||  file.isDirectory())
             throw new IllegalArgumentException("The input file is not valid");
 
+        final Format format = Format.getFormat(file);
+
         // Output pack folder
         File packFolder = new File(file.getParentFile().getPath() + File.separator + OkapiPack.PACK_FILENAME);
 
@@ -212,21 +214,27 @@ public class OkapiClient {
 
         // Filtering step
         RawDocumentToFilterEventsStep filteringStep = new RawDocumentToFilterEventsStep();
-        IFilter filter = OkapiFilterFactory.getFilter(getFormat(file));
+        IFilter filter = OkapiFilterFactory.getFilter(format);
         filteringStep.setFilter(filter);
         driver.addStep(filteringStep);
 
         // Set the filter configuration map to use with the driver
         driver.setFilterConfigurationMapper(createFilterConfigurationMapper(filter));
 
-        // Add ICU sentences boundaries hint, to help the SRX segmentation step
-        driver.addStep(new AddIcuHintsStep(sourceLanguage));
+        // Very often, PO files carry already some translated segments inside.
+        // If we segment the sources, how can we obtain the corresponding segments
+        // in the translated contents? We can't. The structure of PO files makes
+        // already segmented, so it's better to not segment further.
+        if (format != Format.PO) {
+            // Add ICU sentences boundaries hint, to help the SRX segmentation step
+            driver.addStep(new AddIcuHintsStep(sourceLanguage));
 
-        // Segmentation step
-        driver.addStep(createSegmentationStep(sourceLanguage));
+            // Segmentation step
+            driver.addStep(createSegmentationStep(sourceLanguage));
 
-        // Remove ICU hints restoring original segments
-        driver.addStep(new RemoveIcuHintsStep());
+            // Remove ICU hints restoring original segments
+            driver.addStep(new RemoveIcuHintsStep());
+        }
 
         // Kit creation step
         driver.addStep(createExtractionStep());
