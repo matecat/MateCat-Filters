@@ -79,18 +79,25 @@ public class LOCFormatConverter extends SocketFormatConverter {
 
         // Add formats
         temp.get(Format.DOC).add(Format.DOCX);
+        temp.get(Format.DOCX).add(Format.DOC);
         temp.get(Format.DOT).add(Format.DOCX);
+        temp.get(Format.DOCX).add(Format.DOT);
+        temp.get(Format.RTF).add(Format.DOCX);
+        temp.get(Format.DOCX).add(Format.RTF);
+
         temp.get(Format.XLS).add(Format.XLSX);
+        temp.get(Format.XLSX).add(Format.XLS);
         temp.get(Format.XLT).add(Format.XLSX);
+        temp.get(Format.XLSX).add(Format.XLT);
+
         temp.get(Format.PPT).add(Format.PPTX);
         temp.get(Format.POT).add(Format.PPTX);
         temp.get(Format.PPS).add(Format.PPTX);
-        temp.get(Format.RTF).add(Format.DOCX);
+
         temp.get(Format.PDF).add(Format.DOCX);
         temp.get(Format.JPG).add(Format.DOCX);
         temp.get(Format.PNG).add(Format.DOCX);
         temp.get(Format.TIFF).add(Format.DOCX);
-        temp.get(Format.DOCX).add(Format.RTF);
 
         // Store an unmodifiable map
         conversionsMapping = Collections.unmodifiableMap(temp);
