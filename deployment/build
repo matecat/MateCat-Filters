@@ -35,11 +35,6 @@ mkdir package
 cd package
 # Copy the jar
 cp ../*.jar .
-# Create the default directory for resources override,
-# and place inside it the main configuration file as
-# example and shortcut
-mkdir resources
-cp ../../src/main/resources/config.properties resources
 echo "done! 😄"
 
 printf "Building UNIX script... "
@@ -53,7 +48,7 @@ cat > server <<- 'EOT'
 EOT
 # Run the application adding to classpath the "resource"
 # dir previously created
-echo "java -cp 'resources:$FILENAME' com.matecat.converter.Main" >> server
+echo "java -cp '.:$FILENAME' com.matecat.converter.Main" >> server
 # Make script executable
 chmod 755 server
 echo "done! 😄"
@@ -62,7 +57,7 @@ printf "Building Windows script... "
 cat > server.bat <<- EOT
 	@ECHO OFF
 	CLS
-	java -cp "resources;$FILENAME" com.matecat.converter.Main
+	java -cp ".;$FILENAME" com.matecat.converter.Main
 	PAUSE 
 EOT
 echo "done! 😄"

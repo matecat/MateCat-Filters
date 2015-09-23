@@ -2,3 +2,5 @@
 *.iml
 target
 test-client/out
+src/main/resources/config.properties
+server.log
