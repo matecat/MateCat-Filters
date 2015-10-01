@@ -130,6 +130,17 @@
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.steps</groupId>
+            <artifactId>okapi-step-encodingconversion</artifactId>
+            <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.steps</groupId>
             <artifactId>okapi-step-rainbowkit</artifactId>
             <version>${okapi.version}</version>
             <exclusions>
@@ -199,6 +210,17 @@
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-php</artifactId>
+            <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.okapi.filters</groupId>
+            <artifactId>okapi-filter-its</artifactId>
             <version>${okapi.version}</version>
             <exclusions>
                 <exclusion>

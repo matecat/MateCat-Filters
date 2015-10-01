@@ -1,6 +1,7 @@
 package com.matecat.converter.core.okapiclient;
 
 import com.matecat.converter.core.format.Format;
+import com.matecat.converter.core.okapiclient.customfilters.CustomFiltersRouter;
 import net.sf.okapi.common.filters.FilterConfigurationMapper;
 import net.sf.okapi.common.filters.IFilter;
 import net.sf.okapi.common.filters.IFilterConfigurationMapper;
@@ -15,6 +16,7 @@ import net.sf.okapi.filters.php.PHPContentFilter;
 import net.sf.okapi.filters.plaintext.PlainTextFilter;
 import net.sf.okapi.filters.po.POFilter;
 import net.sf.okapi.filters.properties.PropertiesFilter;
+import net.sf.okapi.filters.xml.XMLFilter;
 import net.sf.okapi.filters.yaml.YamlFilter;
 import net.sf.okapi.filters.rainbowkit.RainbowKitFilter;
 import net.sf.okapi.filters.regex.RegexFilter;
@@ -27,6 +29,7 @@ import net.sf.okapi.filters.xliff.XLIFFFilter;
 import net.sf.okapi.filters.xmlstream.XmlStreamFilter;
 import org.apache.commons.io.IOUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,15 +38,17 @@ import java.util.Set;
 /**
  * Filter factory
  */
-public class OkapiFilterFactory {
+    public class OkapiFilterFactory {
 
     // Path of the configurations
-    private static final String OKAPI_CUSTOM_CONFIGS_PATH = "/okapi/configurations/";
+    public static final String OKAPI_CUSTOM_CONFIGS_PATH = "/okapi/configurations/";
 
     private static final String XML_CONFIG_FILENAME = "okf_xmlstream-custom.fprm";
     private static final String STRINGS_CONFIG_FILENAME = "okf_macStrings.fprm";
     private static final String HTML_CONFIG_FILENAME = "okf_html-custom.fprm";
     private static final String DITA_CONFIG_FILENAME = "okf_xmlstream@dita-custom.fprm";
+
+    private static final CustomFiltersRouter customFiltersRouter = new CustomFiltersRouter();
 
     // Formats supported by the filter factory
     protected static final Set<Format> SUPPORTED_FORMATS;
@@ -98,7 +103,11 @@ public class OkapiFilterFactory {
      * @param format
      * @return
      */
-    protected static IFilter getFilter(Format format) {
+    protected static IFilter getFilter(File file) {
+        IFilter filter = customFiltersRouter.getFilter(file);
+        if (filter != null) return filter;
+
+        final Format format = Format.getFormat(file);
         switch (format) {
             case DOCX:
             case PPTX:
@@ -122,6 +131,7 @@ public class OkapiFilterFactory {
             case RKM:       return getRkmFilter();          // TODO add to Matecat
             case MIF:       return getMifFilter();
             case XML:       return getXmlFilter();
+            //case XML:       return getSocialSweetHeartsXmlFilter();
             case DITA:      return getDitaFilter();
             case CSV:       return getCSVFilter();
             case ARCHIVE:   return getArchiveFilter();
@@ -313,6 +323,21 @@ public class OkapiFilterFactory {
         } catch (IOException e) {
             System.err.println("Strings custom configuration could not be loaded");
         }
+        return filter;
+    }
+
+    private static XMLFilter getSocialSweetHeartsXmlFilter() {
+        XMLFilter filter = new XMLFilter();
+        try {
+            net.sf.okapi.filters.its.Parameters params = (net.sf.okapi.filters.its.Parameters) filter.getParameters();
+            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_xml@socialsweethearts.fprm"), "UTF-8");
+            params.fromString(config);
+        } catch (IOException e) {
+            System.err.println("XML custom configuration could not be loaded");
+        }
+        /*IFilterConfigurationMapper cm = new FilterConfigurationMapper();
+        cm.addConfigurations(XMLFilter.class.getName());
+        filter.setFilterConfigurationMapper(cm);*/
         return filter;
     }
 

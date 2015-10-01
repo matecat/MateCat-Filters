@@ -5,11 +5,13 @@ import com.matecat.converter.core.encoding.Encoding;
 import com.matecat.converter.core.format.Format;
 import com.matecat.converter.okapi.steps.segmentation.AddIcuHintsStep;
 import com.matecat.converter.okapi.steps.segmentation.RemoveIcuHintsStep;
+import net.sf.okapi.common.IParameters;
 import net.sf.okapi.common.LocaleId;
 import net.sf.okapi.common.Util;
 import net.sf.okapi.common.filters.FilterConfigurationMapper;
 import net.sf.okapi.common.filters.IFilter;
 import net.sf.okapi.common.filters.IFilterConfigurationMapper;
+import net.sf.okapi.common.pipeline.IPipelineStep;
 import net.sf.okapi.common.pipelinedriver.BatchItemContext;
 import net.sf.okapi.common.pipelinedriver.IPipelineDriver;
 import net.sf.okapi.common.pipelinedriver.PipelineDriver;
@@ -18,6 +20,7 @@ import net.sf.okapi.filters.html.HtmlFilter;
 import net.sf.okapi.filters.rainbowkit.RainbowKitFilter;
 import net.sf.okapi.filters.table.TableFilter;
 import net.sf.okapi.steps.common.RawDocumentToFilterEventsStep;
+import net.sf.okapi.steps.encodingconversion.EncodingConversionStep;
 import net.sf.okapi.steps.rainbowkit.creation.ExtractionStep;
 import net.sf.okapi.steps.rainbowkit.postprocess.MergingStep;
 import net.sf.okapi.steps.rainbowkit.postprocess.Parameters;
@@ -29,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -214,7 +218,7 @@ public class OkapiClient {
 
         // Filtering step
         RawDocumentToFilterEventsStep filteringStep = new RawDocumentToFilterEventsStep();
-        IFilter filter = OkapiFilterFactory.getFilter(format);
+        IFilter filter = OkapiFilterFactory.getFilter(file);
         filteringStep.setFilter(filter);
         driver.addStep(filteringStep);
 
@@ -251,7 +255,8 @@ public class OkapiClient {
         File outputFile = new File(outputPath);
 
         // Create batch and run it
-        BatchItemContext item = new BatchItemContext(rawDoc, outputFile.toURI(), encoding.getCode());
+        // Warning: output encoding must be ALWAYS UTF-8
+        BatchItemContext item = new BatchItemContext(rawDoc, outputFile.toURI(), StandardCharsets.UTF_8.toString());
         driver.addBatchItem(item);
         driver.processBatch();
 
@@ -277,7 +282,7 @@ public class OkapiClient {
             IPipelineDriver driver = createOkapiPipelineDriver(root);
             driver.setFilterConfigurationMapper(
                     createFilterConfigurationMapper(
-                            OkapiFilterFactory.getFilter(Format.getFormat(pack.getOriginalFile()))));
+                            OkapiFilterFactory.getFilter(pack.getOriginalFile())));
 
             // Add the extraction step
             driver.addStep(new RawDocumentToFilterEventsStep());
