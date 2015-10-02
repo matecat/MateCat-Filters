@@ -36,21 +36,32 @@ public class SocialSweetHeartsFilter implements ICustomFilter {
 
     private boolean isFileCompliant(File file) {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-        InputStream in;
+        InputStream inputStream;
         try {
-            in = new FileInputStream(file);
+            inputStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
             return false;
         }
-        XMLStreamReader streamReader;
+        XMLStreamReader streamReader = null;
         try {
-            streamReader = inputFactory.createXMLStreamReader(in);
+            streamReader = inputFactory.createXMLStreamReader(inputStream);
             streamReader.nextTag(); // Advance to the root element
             if (streamReader.getLocalName().equals("SocialSweetHearts")) {
                 // This is exactly what this filetype looks like
                 return true;
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+          // Ignore exceptions
+        } finally {
+            try {
+                if (streamReader != null) {
+                    streamReader.close();
+                }
+                inputStream.close();
+            } catch (Exception e) {
+                // Ignore exceptions here too
+            }
+        }
 
         // If the execution arrives here, the input file is not the
         // filetype this class expects
