@@ -12,22 +12,6 @@ import java.util.*;
  *
  * Default and free format converter developed and hosted by the Matecat team.
  * It is implemented as a SocketFormatConverter, which connects to the (Windows) machine it is running in.
- *
- * It supports the following conversions:
- *  - doc -> docx
- *  - dot -> docx
- *  - rtf -> docx
- *  - ppt -> pptx
- *  - pot -> pptx
- *  - pps -> pptx
- *  - xls -> xlsx
- *  - xlt -> xlsx
- *  - pdf -> docx (with and without OCR processing)
- *  - png -> docx (OCR processing)
- *  - jpg -> docx (OCR processing)
- *  - tiff -> docx (OCR processing)
- *  - docx -> pdf
- *  - docx -> rtf
  */
 public class LOCFormatConverter extends SocketFormatConverter {
 
@@ -51,21 +35,54 @@ public class LOCFormatConverter extends SocketFormatConverter {
 
     // Supported extensions
     private static List<Format> supportedFormats = Arrays.asList(
-                Format.DOCX,   // 0
-                Format.DOC,    // 1
-                Format.XLS,    // 2
-                Format.PPT,    // 3
-                Format.DOT,    // 4
-                Format.XLT,    // 5
-                Format.POT,    // 6
-                Format.PPS,    // 7
-                Format.RTF,    // 8
-                Format.PDF,    // 9
-                Format.PNG,    // 10
-                Format.JPG,    // 11
-                Format.TIFF,   // 12
-                Format.XLSX,   // 13
-                Format.PPTX    // 14
+
+            // Word formats
+
+            Format.DOC,   // 0
+            Format.DOT,   // 1
+
+            Format.DOCX,
+            Format.DOCM,
+
+            Format.DOTX,
+            Format.DOTM,
+
+            Format.RTF,
+
+            // Excel formats
+
+            Format.XLS,
+            Format.XLT,
+
+            Format.XLSX,
+            Format.XLSM,
+
+            Format.XLTX,
+            Format.XLTM,
+
+            // Powerpoint formats
+
+            Format.PPT,
+            Format.PPS,
+            Format.POT,
+
+            Format.PPTX,
+            Format.PPTM,
+
+            Format.PPSX,
+            Format.PPSM,
+
+            Format.POTX,
+            Format.POTM,
+
+            // PDF & OCR formats
+
+            Format.PDF,
+            Format.BMP,
+            Format.GIF,
+            Format.PNG,
+            Format.JPEG,
+            Format.TIFF
         );
 
 
@@ -82,6 +99,12 @@ public class LOCFormatConverter extends SocketFormatConverter {
         temp.get(Format.DOCX).add(Format.DOC);
         temp.get(Format.DOT).add(Format.DOCX);
         temp.get(Format.DOCX).add(Format.DOT);
+        temp.get(Format.DOCM).add(Format.DOCX);
+        temp.get(Format.DOCX).add(Format.DOCM);
+        temp.get(Format.DOTX).add(Format.DOCX);
+        temp.get(Format.DOCX).add(Format.DOTX);
+        temp.get(Format.DOTM).add(Format.DOCX);
+        temp.get(Format.DOCX).add(Format.DOTM);
         temp.get(Format.RTF).add(Format.DOCX);
         temp.get(Format.DOCX).add(Format.RTF);
 
@@ -89,14 +112,35 @@ public class LOCFormatConverter extends SocketFormatConverter {
         temp.get(Format.XLSX).add(Format.XLS);
         temp.get(Format.XLT).add(Format.XLSX);
         temp.get(Format.XLSX).add(Format.XLT);
+        temp.get(Format.XLSM).add(Format.XLSX);
+        temp.get(Format.XLSX).add(Format.XLSM);
+        temp.get(Format.XLTX).add(Format.XLSX);
+        temp.get(Format.XLSX).add(Format.XLTX);
+        temp.get(Format.XLTM).add(Format.XLSX);
+        temp.get(Format.XLSX).add(Format.XLTM);
 
         temp.get(Format.PPT).add(Format.PPTX);
-        temp.get(Format.POT).add(Format.PPTX);
+        temp.get(Format.PPTX).add(Format.PPT);
         temp.get(Format.PPS).add(Format.PPTX);
+        temp.get(Format.PPTX).add(Format.PPS);
+        temp.get(Format.POT).add(Format.PPTX);
+        temp.get(Format.PPTX).add(Format.POT);
+        temp.get(Format.PPTM).add(Format.PPTX);
+        temp.get(Format.PPTX).add(Format.PPTM);
+        temp.get(Format.PPSX).add(Format.PPTX);
+        temp.get(Format.PPTX).add(Format.PPSX);
+        temp.get(Format.PPSM).add(Format.PPTX);
+        temp.get(Format.PPTX).add(Format.PPSM);
+        temp.get(Format.POTX).add(Format.PPTX);
+        temp.get(Format.PPTX).add(Format.POTX);
+        temp.get(Format.POTM).add(Format.PPTX);
+        temp.get(Format.PPTX).add(Format.POTM);
 
         temp.get(Format.PDF).add(Format.DOCX);
-        temp.get(Format.JPG).add(Format.DOCX);
+        temp.get(Format.BMP).add(Format.DOCX);
+        temp.get(Format.GIF).add(Format.DOCX);
         temp.get(Format.PNG).add(Format.DOCX);
+        temp.get(Format.JPEG).add(Format.DOCX);
         temp.get(Format.TIFF).add(Format.DOCX);
 
         // Store an unmodifiable map

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<its:rules xmlns:its="http://www.w3.org/2005/11/its"
+ xmlns:w="http://schemas.microsoft.com/wix/2006/localization"
+ its:translate="no" version="1.0">
+
+ <its:translateRule selector="/w:WixLocalization" translate="no"/>
+ <its:translateRule selector="//w:String[not(@Overridable) or @Overridable!='no']" translate="yes"/>
+ 
+</its:rules>

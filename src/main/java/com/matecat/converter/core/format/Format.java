@@ -1,6 +1,5 @@
 package com.matecat.converter.core.format;
 
-import jersey.repackaged.com.google.common.collect.Lists;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -15,14 +14,17 @@ import java.util.stream.Stream;
 public enum Format {
 
     // Suported formats
-    DOCX, DOC, DOTX, DOT, DOCM, DOTM, RTF, ODT, SXW, TXT, PDF,
-    XLSX, XLS, XLTX, XLT, XLSM, ODS, SXC, CSV,
-    PPTX, PPT, PPSX, PPS, PPSM, PPTM, POTX, POT, POTM, ODP, SXI, XML,
-    PNG, JPG, TIFF,
-    HTML, HTM, XHTML, PHP, JSON, TXML, YML, RKM,
+    DOC, DOT, DOCX, DOCM, DOTX, DOTM, RTF,
+    XLS, XLT, XLSX, XLSM, XLTX, XLTM, ODS, SXC, CSV,
+    PPT, PPS, POT, PPTX, PPTM, PPSM, PPSX, POTX, POTM,
+    ODP, OTP, SXI, XML,
+    ODT, OTT, OTS, SXW, TXT, PDF,
+    BMP, GIF, PNG, JPEG, TIFF,
+    HTML, HTM, XHTML, PHP, JSON, TXML, YAML, RKM,
     XLIFF, SDLXLIFF, TMX, TTX, ITD, XLF,
     MIF, INX, IDML, ICML, XTG, TAG, DITA,
     PROPERTIES, RC, RESX, SGM, SGML, STRINGS, PO, XLW, XLSB,
+    DTD, SRT, TSV, WIX,
     ARCHIVE, XINI, TS;
 
     // Generate a dictionary mapping the extension to its enum constant
@@ -40,8 +42,8 @@ public enum Format {
     private static final Set<Format> textFormats;
     static {
         textFormats = new HashSet<>(Arrays.asList(
-                TXT, CSV, XML, HTML, HTM, XHTML, PHP, JSON, TXML, YML, XLIFF,
-                SDLXLIFF, DITA, IDML, RESX, STRINGS, PO, ARCHIVE, PROPERTIES
+                TXT, CSV, XML, HTML, HTM, XHTML, PHP, JSON, TXML, YAML, XLIFF,
+                SDLXLIFF, DITA, IDML, RESX, STRINGS, PO, ARCHIVE, PROPERTIES, DTD, SRT, TSV, WIX
         ));
     }
 
@@ -67,7 +69,21 @@ public enum Format {
         extension = extension.replace('.', '\0').toLowerCase();
 
         // Return corresponding format
-        Format format = supportedFormats.getOrDefault(extension, null);
+        // TODO: extension abbreviations should be handled better
+        Format format = null;
+        switch (extension) {
+            case "jpg":
+                format = Format.JPEG;
+                break;
+            case "tif":
+                format = Format.TIFF;
+                break;
+            case "yml":
+                format = Format.YAML;
+                break;
+            default:
+                format = supportedFormats.getOrDefault(extension, null);
+        }
 
         // If it is not supported, throw an exception
         if (format == null)

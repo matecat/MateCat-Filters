@@ -6,7 +6,9 @@ import net.sf.okapi.common.filters.FilterConfigurationMapper;
 import net.sf.okapi.common.filters.IFilter;
 import net.sf.okapi.common.filters.IFilterConfigurationMapper;
 import net.sf.okapi.filters.archive.ArchiveFilter;
+import net.sf.okapi.filters.dtd.DTDFilter;
 import net.sf.okapi.filters.html.HtmlFilter;
+import net.sf.okapi.filters.icml.ICMLFilter;
 import net.sf.okapi.filters.idml.IDMLFilter;
 import net.sf.okapi.filters.json.JSONFilter;
 import net.sf.okapi.filters.mif.MIFFilter;
@@ -16,6 +18,7 @@ import net.sf.okapi.filters.php.PHPContentFilter;
 import net.sf.okapi.filters.plaintext.PlainTextFilter;
 import net.sf.okapi.filters.po.POFilter;
 import net.sf.okapi.filters.properties.PropertiesFilter;
+import net.sf.okapi.filters.table.tsv.TabSeparatedValuesFilter;
 import net.sf.okapi.filters.xml.XMLFilter;
 import net.sf.okapi.filters.yaml.YamlFilter;
 import net.sf.okapi.filters.rainbowkit.RainbowKitFilter;
@@ -44,7 +47,6 @@ import java.util.Set;
     public static final String OKAPI_CUSTOM_CONFIGS_PATH = "/okapi/configurations/";
 
     private static final String XML_CONFIG_FILENAME = "okf_xmlstream-custom.fprm";
-    private static final String STRINGS_CONFIG_FILENAME = "okf_macStrings.fprm";
     private static final String HTML_CONFIG_FILENAME = "okf_html-custom.fprm";
     private static final String DITA_CONFIG_FILENAME = "okf_xmlstream@dita-custom.fprm";
 
@@ -62,17 +64,23 @@ import java.util.Set;
                 Format.XHTML,
                 Format.HTM,
                 Format.ODP,
+                Format.OTP,
                 Format.ODS,
+                Format.OTS,
                 Format.ODT,
+                Format.OTT,
                 Format.PHP,
                 Format.PROPERTIES,
                 Format.PO,
+                Format.SDLXLIFF,
                 Format.XLF,
                 Format.XLIFF,
                 Format.JSON,
+                Format.YAML,
                 Format.IDML,
+                Format.ICML,
                 Format.TXML,
-                Format.YML,
+                Format.YAML,
                 Format.RKM,
                 Format.MIF,
                 Format.XML,
@@ -83,7 +91,12 @@ import java.util.Set;
                 Format.TS,
                 Format.PO,
                 Format.STRINGS,
-                Format.ARCHIVE
+                Format.ARCHIVE,
+                Format.DTD,
+                Format.RESX,
+                Format.SRT,
+                Format.TSV,
+                Format.WIX
         ));
     }
 
@@ -100,7 +113,6 @@ import java.util.Set;
 
     /**
      * Get the corresponding filter for a given format
-     * @param format
      * @return
      */
     protected static IFilter getFilter(File file) {
@@ -116,22 +128,26 @@ import java.util.Set;
             case XHTML:
             case HTM:       return getHtmlFilter();
             case ODP:
+            case OTP:
             case ODS:
-            case ODT:       return getOpenOfficeFilter();
+            case OTS:
+            case ODT:
+            case OTT:       return getOpenOfficeFilter();
+            case SDLXLIFF:
             case XLF:
             case XLIFF:     return getXliffFilter();
             case TXT:       return getPlainTextFilter();
-            case PHP:       return getPhpFilter();          // TODO add to Matecat
+            case PHP:       return getPhpFilter();
             case PROPERTIES:return getPropertiesFilter();
             case PO:        return getPoFilter();
-            case JSON:      return getJsonFilter();         // TODO add to Matecat
+            case JSON:      return getJsonFilter();
             case IDML:      return getIdmlFilter();
-            case TXML:      return getTxmlFilter();         // TODO add to Matecat
-            case YML:       return getYmlFilter();          // TODO add to Matecat
-            case RKM:       return getRkmFilter();          // TODO add to Matecat
+            case ICML:      return getIcmlFilter();
+            case TXML:      return getTxmlFilter();
+            case YAML:      return getYmlFilter();
+            case RKM:       return getRkmFilter();
             case MIF:       return getMifFilter();
             case XML:       return getXmlFilter();
-            //case XML:       return getSocialSweetHeartsXmlFilter();
             case DITA:      return getDitaFilter();
             case CSV:       return getCSVFilter();
             case ARCHIVE:   return getArchiveFilter();
@@ -139,6 +155,11 @@ import java.util.Set;
             case TTX:       return getTTXFilter();
             case TS:        return getTSFilter();
             case STRINGS:   return getStringsFilter();
+            case RESX:      return getRESXFilter();
+            case WIX:       return getWixFilter();
+            case TSV:       return getTSVFilter();
+            case SRT:       return getSRTFilter();
+            case DTD:       return getDTDFilter();
             default: throw new RuntimeException("There is no filter configured for the format: " + format);
         }
     }
@@ -164,6 +185,11 @@ import java.util.Set;
     private static PlainTextFilter getPlainTextFilter() {
         PlainTextFilter filter = new PlainTextFilter();
         // net.sf.okapi.filters.plaintext.Parameters params = (net.sf.okapi.filters.plaintext.Parameters) filter.getParameters();
+        return filter;
+    }
+
+    private static DTDFilter getDTDFilter() {
+        DTDFilter filter = new DTDFilter();
         return filter;
     }
 
@@ -261,6 +287,11 @@ import java.util.Set;
         return filter;
     }
 
+    private static ICMLFilter getIcmlFilter() {
+        ICMLFilter filter = new ICMLFilter();
+        return filter;
+    }
+
     private static TXMLFilter getTxmlFilter() {
         TXMLFilter filter = new TXMLFilter();
         // net.sf.okapi.filters.txml.Parameters params = (net.sf.okapi.filters.txml.Parameters) filter.getParameters();
@@ -296,6 +327,10 @@ import java.util.Set;
         return new CommaSeparatedValuesFilter();
     }
 
+    private static TabSeparatedValuesFilter getTSVFilter() {
+        return new TabSeparatedValuesFilter();
+    }
+
     private static ArchiveFilter getArchiveFilter() {
         return new ArchiveFilter();
     }
@@ -318,7 +353,7 @@ import java.util.Set;
         RegexFilter filter = new RegexFilter();
         try {
             net.sf.okapi.filters.regex.Parameters params = (net.sf.okapi.filters.regex.Parameters) filter.getParameters();
-            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + STRINGS_CONFIG_FILENAME), "UTF-8");
+            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_regex@macstrings.fprm"), "UTF-8");
             params.fromString(config);
         } catch (IOException e) {
             System.err.println("Strings custom configuration could not be loaded");
@@ -326,18 +361,39 @@ import java.util.Set;
         return filter;
     }
 
-    private static XMLFilter getSocialSweetHeartsXmlFilter() {
+    private static RegexFilter getSRTFilter() {
+        RegexFilter filter = new RegexFilter();
+        try {
+            net.sf.okapi.filters.regex.Parameters params = (net.sf.okapi.filters.regex.Parameters) filter.getParameters();
+            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_regex@srt.fprm"), "UTF-8");
+            params.fromString(config);
+        } catch (IOException e) {
+            System.err.println("Strings custom configuration could not be loaded");
+        }
+        return filter;
+    }
+
+    private static XMLFilter getRESXFilter() {
         XMLFilter filter = new XMLFilter();
         try {
             net.sf.okapi.filters.its.Parameters params = (net.sf.okapi.filters.its.Parameters) filter.getParameters();
-            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_xml@socialsweethearts.fprm"), "UTF-8");
+            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_xml@resx.fprm"), "UTF-8");
             params.fromString(config);
         } catch (IOException e) {
             System.err.println("XML custom configuration could not be loaded");
         }
-        /*IFilterConfigurationMapper cm = new FilterConfigurationMapper();
-        cm.addConfigurations(XMLFilter.class.getName());
-        filter.setFilterConfigurationMapper(cm);*/
+        return filter;
+    }
+
+    private static XMLFilter getWixFilter() {
+        XMLFilter filter = new XMLFilter();
+        try {
+            net.sf.okapi.filters.its.Parameters params = (net.sf.okapi.filters.its.Parameters) filter.getParameters();
+            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_xml@wix.fprm"), "UTF-8");
+            params.fromString(config);
+        } catch (IOException e) {
+            System.err.println("XML custom configuration could not be loaded");
+        }
         return filter;
     }
 

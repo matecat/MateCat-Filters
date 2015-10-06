@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<its:rules xmlns:its="http://www.w3.org/2005/11/its" version="1.0"
+ xmlns:a="http://schemas.android.com/apk/res/android">
+ <its:translateRule selector="/*" translate="no"/>
+ <its:translateRule selector="//*/@a:text[not(starts-with(.,'@'))]" translate="yes"/>
+ <its:translateRule selector="//string|//item" translate="yes"/>
+ <its:withinTextRule selector="//string/descendant::*" withinText="yes"/>
+</its:rules>
