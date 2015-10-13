@@ -48,6 +48,7 @@ public class ExtractOriginalFileResource {
 
         Project project = null;
         Response response = null;
+        boolean everythingOk = false;
         try {
 
             // Check that the input file is not null
@@ -65,6 +66,8 @@ public class ExtractOriginalFileResource {
                     .status(Response.Status.OK)
                     .entity(JSONResponseFactory.getDerivedSuccess(originalFile))
                     .build();
+
+            everythingOk = true;
             LOGGER.info("[EXTRACTION REQUEST FINISHED]");
         }
 
@@ -84,7 +87,8 @@ public class ExtractOriginalFileResource {
                     fileInputStream.close();
                 } catch (IOException ignored) {}
             if (project != null)
-                project.close();
+                // Delete folder only if everything went well
+                project.close(everythingOk);
         }
 
         return response;

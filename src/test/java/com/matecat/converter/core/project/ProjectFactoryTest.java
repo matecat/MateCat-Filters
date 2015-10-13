@@ -23,8 +23,8 @@ public class ProjectFactoryTest {
 
     @After
     public void tearDown() throws Exception {
-        project.close();
-        project2.close();
+        project.close(true);
+        project2.close(true);
     }
 
     @Test

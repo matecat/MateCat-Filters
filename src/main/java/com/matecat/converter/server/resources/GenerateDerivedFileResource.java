@@ -51,6 +51,7 @@ public class GenerateDerivedFileResource {
 
         Project project = null;
         Response response = null;
+        boolean everythingOk = false;
         try {
 
             // Check that the input file is not null
@@ -68,6 +69,8 @@ public class GenerateDerivedFileResource {
                     .status(Response.Status.OK)
                     .entity(JSONResponseFactory.getDerivedSuccess(derivedFile))
                     .build();
+
+            everythingOk = true;
             LOGGER.info("[DERIVATION REQUEST FINISHED]");
         }
 
@@ -87,7 +90,8 @@ public class GenerateDerivedFileResource {
                     fileInputStream.close();
                 } catch (IOException ignored) {}
             if (project != null)
-                project.close();
+                // Delete folder only if everything went well
+                project.close(everythingOk);
         }
 
         return response;

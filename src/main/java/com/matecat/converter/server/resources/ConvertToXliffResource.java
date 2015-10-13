@@ -73,6 +73,7 @@ public class ConvertToXliffResource {
 
         Project project = null;
         Response response = null;
+        boolean everythingOk = false;
         try {
 
             // Check that the input file is not null
@@ -94,6 +95,8 @@ public class ConvertToXliffResource {
                     .status(Response.Status.OK)
                     .entity(JSONResponseFactory.getConvertSuccess(xlf))
                     .build();
+
+            everythingOk = true;
             LOGGER.info("[CONVERSION FINISHED] {}: {} to {}", filename, sourceLanguageCode, targetLanguageCode);
         }
 
@@ -116,7 +119,8 @@ public class ConvertToXliffResource {
                     fileInputStream.close();
                 } catch (IOException ignored) {}
             if (project != null)
-                project.close();
+                // Delete folder only if everything went well
+                project.close(everythingOk);
         }
 
         return response;

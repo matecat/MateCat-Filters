@@ -57,8 +57,8 @@ public class Project {
      * This will remove all the inner references to the file, and remove the folder depending on the configuration
      * One this method is executed, it's not possible to use the project again.
      */
-    public void close() {
-        if (Config.deleteOnClose) {
+    public void close(boolean delete) {
+        if (delete && Config.deleteOnClose) {
             try {
                 FileUtils.deleteDirectory(folder);
             } catch (IOException e) {
