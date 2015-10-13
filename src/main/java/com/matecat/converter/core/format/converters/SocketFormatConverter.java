@@ -2,6 +2,8 @@ package com.matecat.converter.core.format.converters;
 
 import com.matecat.converter.core.format.Format;
 import com.matecat.converter.core.format.FormatNotSupportedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.ConnectException;
@@ -9,6 +11,7 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
+import java.util.Random;
 
 /**
  * Format converter based in a socket connection
@@ -40,6 +43,11 @@ import java.nio.file.Files;
  * with the 'useLittleEndian' parameter in the constructor.
  */
 public abstract class SocketFormatConverter extends AbstractFormatConverter {
+
+    // Logger
+    private static Logger LOGGER = LoggerFactory.getLogger(SocketFormatConverter.class);
+
+    private static Random random = new Random();
 
     // Connection variables
     private String host;
@@ -260,6 +268,13 @@ public abstract class SocketFormatConverter extends AbstractFormatConverter {
 
             // Connect, set parameters and send the file
             connect();
+
+            // Send a conversion ID to track conversion between
+            // this converter and the Windows converter
+            final int conversionId = random.nextInt(Integer.MAX_VALUE);
+            LOGGER.info("Conversion id: " + conversionId);
+            write(conversionId);
+
             write(inputFormat);
             write(outputFormat);
             write(file);
