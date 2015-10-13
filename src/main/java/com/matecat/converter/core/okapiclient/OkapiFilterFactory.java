@@ -172,13 +172,18 @@ import java.util.Set;
     private static OpenXMLFilter getOpenXMLFilter() {
         OpenXMLFilter filter = new OpenXMLFilter();
         net.sf.okapi.filters.openxml.ConditionalParameters conditionalParameters = ( net.sf.okapi.filters.openxml.ConditionalParameters) filter.getParameters();
+        // Global
         conditionalParameters.setCleanupAggressively(true);
-        conditionalParameters.setTranslateWordExcludeGraphicMetaData(true);
         conditionalParameters.setTranslateDocProperties(false);
         conditionalParameters.setTranslateComments(false);
-        conditionalParameters.setTranslatePowerpointMasters(false);
+        // Word specific
+        conditionalParameters.setTranslateWordExcludeGraphicMetaData(true);
         conditionalParameters.setTranslateWordHeadersFooters(true);
         conditionalParameters.setTranslateWordHidden(false);
+        // Excel specific
+        conditionalParameters.setTranslateExcelHidden(true);
+        // Powerpoint specific
+        conditionalParameters.setTranslatePowerpointMasters(false);
         return filter;
     }
 
