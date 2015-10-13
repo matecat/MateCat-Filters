@@ -27,6 +27,7 @@ public class ProjectFactory {
         if (storagePath != null  &&  !storagePath.equals("")) {
             LOGGER.info("[GLOBAL] Storage path configuration found: {}", storagePath);
             File folder = new File(storagePath);
+            folder.mkdirs();
             if (folder.exists() && folder.isDirectory() && folder.canRead() && folder.canWrite()) {
                 STORAGE_FOLDER = folder;
             }
