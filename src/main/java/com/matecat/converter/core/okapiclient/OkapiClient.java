@@ -143,23 +143,23 @@ public class OkapiClient {
      */
     private static MergingStep createMergingStep() {
         MergingStep mergingStep = new MergingStep();
-        net.sf.okapi.steps.rainbowkit.postprocess.Parameters params = (net.sf.okapi.steps.rainbowkit.postprocess.Parameters) mergingStep.getParameters();
-        // Sometimes the xliff's target language is different from
-        // the target specified in the Okapi manifest file.
-        // This happens for example when in MateCAT you create a
-        // project with multiple target languages. MateCAT calls
-        // the converter just one time and then uses the obtained
-        // xliff with each translation job in each target language,
-        // just changing the target attributes in the xliff.
-        // When the xliff's target segments language is different
-        // from the one specified in the manifest file, Okapi
-        // ignores them and uses source segments instead. So after
-        // the merge you obtain a document without translations.
-        // Using the following options you tell Okapi to ignore the
-        // target language specified in the manifest, and to consider
-        // always the one specified in the pipeline configuration,
-        // that we create using the xliff's target language.
-        params.setForceTargetLocale(true);
+
+        // These lines were used to handle situations where
+        // MateCAT changed target language in the XLIFF, but
+        // not in the included Okapi's Manifest file.
+        // This caused Okapi look for target segments in the
+        // language specified in the manifest and finding
+        // nothing, because in the XLIFF there are only
+        // segments in the MateCAT's project target lang.
+        // Setting setForceTargetLocale solved the situation
+        // for mismatches like "zh-CN" and "it-IT", but not for
+        // "en-US" and "en-GB".
+        // So I implemented a more radical workaround, in
+        // XLliffProcessor::reconstructManifest.
+
+        // net.sf.okapi.steps.rainbowkit.postprocess.Parameters params = (net.sf.okapi.steps.rainbowkit.postprocess.Parameters) mergingStep.getParameters();
+        // params.setForceTargetLocale(true);
+
         return mergingStep;
     }
 

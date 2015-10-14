@@ -25,6 +25,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Locale;
 
@@ -318,14 +319,32 @@ public class XliffProcessor {
             if (!manifestElement.getAttribute("original").equals(OkapiPack.MANIFEST_FILENAME))
                 throw new RuntimeException("The xlf is corrupted: it does not contain a manifest");
 
+            // Extract language
+            String targetLanguage = manifestElement.getAttribute("target-language");
+
             // Manifest contents
             String encodedManifest = manifestElement.getFirstChild().getFirstChild().getFirstChild().getTextContent();
-            byte[] manifestBytes = Base64.getDecoder().decode(encodedManifest);
+            String manifest = new String(Base64.getDecoder().decode(encodedManifest), StandardCharsets.UTF_8);
+            // MateCAT caches produced XLIFFs and reuses them to save
+            // file conversions, updating just the source and target
+            // languages when needed.
+            // But this creates a problem: the Okapi's Manifest file
+            // maintains the original couple of source - target
+            // languages.
+            // So sometimes this happens: Okapi runs looking for
+            // segments in the language specified in the Manifest,
+            // but in the XLIFF the segments are all in another
+            // language, so Okapi finds nothing.
+            // Missing target segments means obtaining a file
+            // identical to the original, without translations.
+            // To fix this I replace the target in the manifest with
+            // the one defined in the XLIFF.
+            manifest = manifest.replaceFirst("(<manifest [^>]* ?target=\")[^\"]+\"", "$1" + targetLanguage + "\"");
 
             // Reconstruct the manifest file
             File manifestFile = new File(packFolder.getPath() + File.separator + OkapiPack.MANIFEST_FILENAME);
             manifestFile.createNewFile();
-            FileUtils.writeByteArrayToFile(manifestFile, manifestBytes);
+            FileUtils.writeStringToFile(manifestFile, manifest);
 
         }
         catch (Exception e) {
