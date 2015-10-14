@@ -344,8 +344,7 @@ public class XliffProcessor {
             // Reconstruct the manifest file
             File manifestFile = new File(packFolder.getPath() + File.separator + OkapiPack.MANIFEST_FILENAME);
             manifestFile.createNewFile();
-            FileUtils.writeStringToFile(manifestFile, manifest);
-
+            FileUtils.writeStringToFile(manifestFile, manifest, StandardCharsets.UTF_8);
         }
         catch (Exception e) {
             throw new RuntimeException("It was not possible to reconstruct the manifest file");
