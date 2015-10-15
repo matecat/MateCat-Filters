@@ -181,7 +181,7 @@ import java.util.Set;
         conditionalParameters.setTranslateWordHeadersFooters(true);
         conditionalParameters.setTranslateWordHidden(false);
         // Excel specific
-        conditionalParameters.setTranslateExcelHidden(true);
+        conditionalParameters.setTranslateExcelHidden(false);
         // Powerpoint specific
         conditionalParameters.setTranslatePowerpointMasters(false);
         return filter;
