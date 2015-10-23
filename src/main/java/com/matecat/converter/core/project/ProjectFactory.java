@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 /**
@@ -18,28 +19,6 @@ public class ProjectFactory {
 
     // Logger
     private static Logger LOGGER = LoggerFactory.getLogger(ProjectFactory.class);
-
-    // Storage folder
-    private static final File STORAGE_FOLDER;
-    static {
-        // Try to get the defined folder
-        String storagePath = Config.storageFolder;
-        if (storagePath != null  &&  !storagePath.equals("")) {
-            LOGGER.info("[GLOBAL] Storage path configuration found: {}", storagePath);
-            File folder = new File(storagePath);
-            folder.mkdirs();
-            if (folder.exists() && folder.isDirectory() && folder.canRead() && folder.canWrite()) {
-                STORAGE_FOLDER = folder;
-            }
-            else {
-                LOGGER.error("[GLOBAL] The storage path '{}' is not valid; OS' temp default folder will be used", storagePath);
-                STORAGE_FOLDER = null;
-            }
-        }
-        else {
-            STORAGE_FOLDER = null;
-        }
-    }
 
     /**
      * Private constructor to make the class static
@@ -56,9 +35,7 @@ public class ProjectFactory {
         try {
 
             // Load the folder
-            File folder = STORAGE_FOLDER != null ?
-                    Files.createTempDirectory(STORAGE_FOLDER.toPath(), "").toFile()
-                    : Files.createTempDirectory("matecat-converter-").toFile();
+            File folder = Files.createTempDirectory(Paths.get(Config.cacheFolder), "").toFile();
 
             // Save the file inside the temporal
             File file = new File(folder.getPath() + File.separator + filename);

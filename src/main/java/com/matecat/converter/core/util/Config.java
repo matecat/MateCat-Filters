@@ -4,7 +4,7 @@ import com.matecat.converter.core.okapiclient.customfilters.ICustomFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +22,8 @@ public class Config {
 
     // Configuration params
     public static final int serverPort;
-    public static final String storageFolder;
+    public static final String cacheFolder;
+    public static final String errorsFolder;
     public static final boolean deleteOnClose;
     public static final boolean locEnabled;
     public static final String locHost;
@@ -35,7 +36,41 @@ public class Config {
             props.load(inputStream);
 
             serverPort = Integer.parseInt(props.getProperty("server-port"));
-            storageFolder = props.getProperty("storage-folder");
+
+            String cacheFolderVal = props.getProperty("cache-folder", "").trim();
+            if (!cacheFolderVal.isEmpty()) {
+                // Try to extract a valid folder from the param value
+                File folder = new File(cacheFolderVal);
+                folder.mkdirs();
+                if (folder.exists() && folder.isDirectory() && folder.canRead() && folder.canWrite()) {
+                    cacheFolderVal = folder.getCanonicalPath();
+                } else {
+                    LOGGER.error("Bad value for config param cache-folder: " + cacheFolderVal + "; set at default OS' temp folder");
+                    cacheFolderVal = "";
+                }
+            }
+            if (cacheFolderVal.isEmpty()) {
+                // Can be here because:
+                // 1 - this param is missing
+                // 2 - the param isn't a valid folder (see previous block)
+                // In both case use the fallback: the OS's temp folder
+                final File tmpFile = File.createTempFile("where-am-i", ".matecat");
+                cacheFolderVal = tmpFile.getParentFile().getCanonicalPath();
+            }
+            cacheFolder = cacheFolderVal;
+
+
+            String errorsFolderVal = props.getProperty("errors-folder", "").trim();
+            if (!errorsFolderVal.isEmpty()) {
+                try {
+                    errorsFolderVal = new File(errorsFolderVal).getCanonicalPath();
+                } catch (Exception e) {
+                    errorsFolderVal = "";
+                    LOGGER.error("Bad value for config param error-folder: " + errorsFolderVal + "; errors backup disabled");
+                }
+            }
+            errorsFolder = errorsFolderVal;
+
             deleteOnClose = Boolean.parseBoolean(props.getProperty("delete-on-close"));
             locEnabled = Boolean.parseBoolean(props.getProperty("loc-enabled"));
             locHost = props.getProperty("loc-host");

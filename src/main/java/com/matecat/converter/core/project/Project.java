@@ -2,9 +2,14 @@ package com.matecat.converter.core.project;
 
 import com.matecat.converter.core.util.Config;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -17,6 +22,12 @@ import java.io.IOException;
  * @see ProjectFactory
  */
 public class Project {
+
+    // Logger
+    private static Logger LOGGER = LoggerFactory.getLogger(Project.class);
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH-mm");
 
     // Inner properties
     private File folder;
@@ -57,12 +68,41 @@ public class Project {
      * This will remove all the inner references to the file, and remove the folder depending on the configuration
      * One this method is executed, it's not possible to use the project again.
      */
-    public void close(boolean delete) {
-        if (delete && Config.deleteOnClose) {
+    public void close(boolean success) {
+        if (!success && !Config.errorsFolder.isEmpty()) {
+            final Date now = Calendar.getInstance().getTime();
+            final String errorFolderPath = Config.errorsFolder
+                    + File.separator + DATE_FORMAT.format(now)
+                    + File.separator + TIME_FORMAT.format(now)
+                    + "-" + folder.getName();
+
+            final File errorFolder = new File(errorFolderPath);
+            errorFolder.getParentFile().mkdirs();
+
+            boolean moveError = false;
+            if (Config.deleteOnClose) {
+                try {
+                    FileUtils.moveDirectory(folder, errorFolder);
+                    LOGGER.info("folder with temp files moved to " + errorFolderPath);
+                } catch (Exception e) {
+                    moveError = true;
+                    LOGGER.error("exception while moving temp folder to errors folder; will try to copy it", e);
+                }
+            }
+
+            if (!Config.deleteOnClose || moveError) {
+                try {
+                    FileUtils.copyDirectory(folder, errorFolder);
+                } catch (Exception e) {
+                    LOGGER.error("exception while copying temp folder to errors folder", e);
+                }
+            }
+        }
+        if (Config.deleteOnClose && folder.exists()) {
             try {
                 FileUtils.deleteDirectory(folder);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error("exception while deleting temp folder", e);
             }
         }
         this.folder = null;
