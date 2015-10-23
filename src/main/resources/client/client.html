@@ -202,10 +202,10 @@
         
         // Process
         function process() {
-            if (option != CONVERT  &&  filenameUploaded.split('.').pop() != 'xlf') {
+            /*if (option != CONVERT  &&  filenameUploaded.split('.').pop() != 'xlf') {
                 showError('Please, upload a xliff (.xlf) file!');
             }
-            else {
+            else {*/
                 console.log("Executing: " + option);
                 var url = '';
                 switch (option) {
@@ -220,7 +220,7 @@
                     success: processSuccess,
                     error: processError
                 });
-            }
+            //}
         }
         
         // Download
