@@ -4,6 +4,8 @@ import com.matecat.converter.core.format.Format;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -52,6 +54,11 @@ import java.util.Base64;
  * </file>
  */
 class XliffBuilder {
+
+    // Logger
+    private static Logger LOGGER = LoggerFactory.getLogger(XliffBuilder.class);
+
+    private static final String CONVERTER_VERSION = XliffBuilder.class.getPackage().getImplementationVersion();
 
     /**
      * Build the XLIFF, manifest and original file into a new Xliff
@@ -197,7 +204,13 @@ class XliffBuilder {
 
         // Create the new file element which will contain the original file
         Element originalFileNode = document.createElement("file");
-        originalFileNode.setAttribute("tool-id", "matecat-converter " + XliffBuilder.class.getPackage().getImplementationVersion());
+        String toolId = "matecat-converter";
+        if (CONVERTER_VERSION != null) {
+            toolId += " " + CONVERTER_VERSION;
+        } else {
+            LOGGER.warn("Can't write converter version in XLIFF: converter server version unknown (version available only when running from a jar)");
+        }
+        originalFileNode.setAttribute("tool-id", toolId);
         originalFileNode.setAttribute("original", filename);
         originalFileNode.setAttribute("datatype", "x-" + format);
         originalFileNode.setAttribute("source-language", sourceLanguage);

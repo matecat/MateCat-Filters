@@ -1,7 +1,6 @@
 package com.matecat.converter.core;
 
 import com.matecat.converter.core.format.Format;
-import com.matecat.converter.core.format.FormatNotSupportedException;
 import com.matecat.converter.core.format.converters.Converters;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
@@ -28,6 +27,8 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -41,6 +42,9 @@ public class XliffProcessor {
 
     // Logger
     private static Logger LOGGER = LoggerFactory.getLogger(XliffProcessor.class);
+
+    private static final String CONVERTER_VERSION = XliffBuilder.class.getPackage().getImplementationVersion();
+    private static final Pattern PRODUCER_CONVERTER_VERSION_PATTERN = Pattern.compile("matecat-converter(\\s+([^\"]+))?");
 
     // File we are processing
     private File xlf;
@@ -202,11 +206,12 @@ public class XliffProcessor {
             Document document = documentBuilder.parse(new InputSource(new StringReader(xlfContent)));
             Element root = document.getDocumentElement();
 
-            // Reconstruct the original file
             Element fileElement = (Element) root.getFirstChild();
+
+            checkProducerVersion(fileElement);
+
             reconstructOriginalFile(packFolder, fileElement);
 
-            // Extract the original format
             extractOriginalFormat(fileElement);
 
             // Extract the languages
@@ -227,6 +232,35 @@ public class XliffProcessor {
             throw new RuntimeException("It was not possible to reconstruct the pack from the Xliff");
         }
 
+    }
+
+    /**
+     * Checks the tool-id attribute of the provided <file> element, extracts
+     * the XLIFF producer converter version and logs some warnings if the
+     * producer version does not match the version of this server.
+     */
+    private static void checkProducerVersion(Element file) {
+        final String toolId = file.getAttribute("tool-id");
+        if (toolId != null) {
+            final Matcher matcher = PRODUCER_CONVERTER_VERSION_PATTERN.matcher(toolId);
+            if (matcher.find()) {
+                final String xliffVersion = matcher.group(2);
+                if (xliffVersion == null) {
+                    LOGGER.warn("Missing producer version in input XLIFF");
+                } else {
+                    if (CONVERTER_VERSION == null) {
+                        LOGGER.warn("XLIFF producer version is " + xliffVersion + ", but converter server version is unknown (version available only when running from a jar)");
+                    } else if (!xliffVersion.equals(CONVERTER_VERSION)) {
+                        LOGGER.warn("Converters versions mismatch: " + xliffVersion + " (XLIFF) vs " + CONVERTER_VERSION + " (server)");
+                    } else {
+                        // In this last condition converters versions match,
+                        // so everything is perfect!
+                    }
+                }
+            } else {
+                LOGGER.warn("Bad tool-id attribute");
+            }
+        }
     }
 
 
