@@ -197,7 +197,7 @@ class XliffBuilder {
 
         // Create the new file element which will contain the original file
         Element originalFileNode = document.createElement("file");
-        originalFileNode.setAttribute("tool-id", "matecat-converter");
+        originalFileNode.setAttribute("tool-id", "matecat-converter " + XliffBuilder.class.getPackage().getImplementationVersion());
         originalFileNode.setAttribute("original", filename);
         originalFileNode.setAttribute("datatype", "x-" + format);
         originalFileNode.setAttribute("source-language", sourceLanguage);

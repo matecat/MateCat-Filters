@@ -12,14 +12,25 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <!--
-        The official Okapi repository hosts only Okapi releases.
-        If you specify a "snapshot" version in the following tag, be
-        sure to have it installed in you Maven locally. You can do
-        it by downloading the code and running "maven clean install"
-        on it. Check the pom.xml of the code you are compiling to
-        know the version you are installing in your local Maven repo.
+        We use the Okapi's "Snapshot" versions to have faster updates.
+        Snapshots version are not hosted in the Okapi Maven repository,
+        you can find them in development branches in the Okapi source
+        code repository.
+        In order to resolve Okapi Snapshots dependencies, you have to
+        install the Snapshot code in you local Maven repository.
+        You can do it by cloning the Okapi code on your machine,
+        checkout to the desired branch, and running the command
+        "maven clean install".
+        Check the pom.xml of the Okapi code to know the version you are
+        installing in your local Maven repo.
         -->
         <okapi.version>0.29-SNAPSHOT</okapi.version>
+        <!--
+        The following parameter is not used by Maven or any other part
+        of this code, but we keep it updated in order to make it clear
+        which Okapi code we are using in our builds.
+        -->
+        <okapi.commit>e6fddaf404b8d85e48ffc36baa56b5f1313cfb34</okapi.commit>
     </properties>
 
     <dependencies>
@@ -426,20 +437,23 @@
         </resources>
         <plugins>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <appendAssemblyId>false</appendAssemblyId>
-                    <descriptors>
-                        <descriptor>src/assembly/jar-with-dependencies-custom.xml</descriptor>
-                    </descriptors>
-                </configuration>
+                <artifactId>maven-shade-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>com.matecat.converter.Main</Main-Class>
+                                        <Implementation-Version>${project.version}</Implementation-Version>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
