@@ -135,7 +135,7 @@ class XliffBuilder {
         try {
 
             // Parse the XML document
-            String xlfContent = FileUtils.readFileToString(baseXLF, "UTF-8").replaceAll("[\\n\\t]","");
+            String xlfContent = FileUtils.readFileToString(baseXLF, "UTF-8");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(new InputSource(new StringReader(xlfContent)));
@@ -155,9 +155,6 @@ class XliffBuilder {
             Element originalFileNode = createFileElement(document, sourceLanguage, targetLanguage,
                     filename, originalFormat, encodedFile);
             root.insertBefore(originalFileNode, root.getFirstChild());
-
-            // Normalize document
-            document.normalizeDocument();
 
             // Save the file
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
