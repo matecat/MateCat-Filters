@@ -255,21 +255,9 @@ import java.util.Set;
     }
     private static XLIFFFilter getXliffFilter() {
         XLIFFFilter filter = new XLIFFFilter();
-        // net.sf.okapi.filters.xliff.Parameters params = (net.sf.okapi.filters.xliff.Parameters) filter.getParameters();
-        // params.setAddAltTrans();
-        // params.setAddTargetLanguage();
-        // params.setAllowEmptyTargets();
-        // params.setAlwaysUseSegSource();
-        // params.setBalanceCodes();
-        // params.setEditAltTrans();
-        // params.setEscapeGT();
-        // params.setIgnoreInputSegmentation();
-        // params.setIncludeExtensions();
-        // params.setIncludeIts();
-        // params.setOverrideTargetLanguage();
-        // params.setAllowEmptyOutputTarget();
-        // params.setBilingualMode();
-        // params.setWrapContent();
+        net.sf.okapi.filters.xliff.Parameters params = (net.sf.okapi.filters.xliff.Parameters) filter.getParameters();
+        params.setOverrideTargetLanguage(true);
+        params.setOutputSegmentationType(net.sf.okapi.filters.xliff.Parameters.SEGMENTATIONTYPE_ORIGINAL);
         return filter;
     }
 

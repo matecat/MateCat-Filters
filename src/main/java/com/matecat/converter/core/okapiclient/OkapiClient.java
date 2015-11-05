@@ -229,7 +229,9 @@ public class OkapiClient {
         // If we segment the sources, how can we obtain the corresponding segments
         // in the translated contents? We can't. The structure of PO files makes
         // already segmented, so it's better to not segment further.
-        if (format != Format.PO) {
+        // XLIFFs instead are already segmented, and segmenting them further causes
+        // strange outputs.
+        if (format != Format.PO && format != Format.XLF && format != Format.XLIFF && format != SDLXLIFF) {
             // Add ICU sentences boundaries hint, to help the SRX segmentation step
             driver.addStep(new AddIcuHintsStep(sourceLanguage));
 
