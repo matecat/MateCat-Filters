@@ -257,6 +257,12 @@ import java.util.Set;
         XLIFFFilter filter = new XLIFFFilter();
         net.sf.okapi.filters.xliff.Parameters params = (net.sf.okapi.filters.xliff.Parameters) filter.getParameters();
         params.setOverrideTargetLanguage(true);
+        // Sometimes users send XLIFFs having some <seg-source> different from the related <source>.
+        // In this case the default filter's behaviour is ignoring <seg-source> and using <source> instead. But looking
+        // at the resulting XLIFF from a CAT, you see a huge source segment (because it's not segmented) and a strange
+        // target segment including also <mrk> (that couldn't be computed because the <seg-source> was ignored. So it's
+        // better to ignore <source> instead, and always use <seg-source> as default reference.
+        params.setAlwaysUseSegSource(true);
         params.setOutputSegmentationType(net.sf.okapi.filters.xliff.Parameters.SEGMENTATIONTYPE_ORIGINAL);
         return filter;
     }
