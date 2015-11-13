@@ -1,4 +1,4 @@
-<img src="http://i.imgur.com/4I1uX0a.png" style="display:block; margin:auto">
+<p align="center"><img src="http://i.imgur.com/4I1uX0a.png"></p>
 
 # MateCat Filters: convert any file to XLIFF and back
 
