@@ -1,7 +1,5 @@
 .idea
 *.iml
 target
-test-client/out
-src/main/resources/config.properties
-log*
 dependency-reduced-pom.xml
+src/main/resources/config.properties
