@@ -25,9 +25,9 @@ public class Config {
     public static final String cacheFolder;
     public static final String errorsFolder;
     public static final boolean deleteOnClose;
-    public static final boolean locEnabled;
-    public static final String locHost;
-    public static final int locPort;
+    public static final boolean winConvEnabled;
+    public static final String winConvHost;
+    public static final int winConvPort;
     public static final List<Class> customFilters;
 
     static {
@@ -72,9 +72,9 @@ public class Config {
             errorsFolder = errorsFolderVal;
 
             deleteOnClose = Boolean.parseBoolean(props.getProperty("delete-on-close"));
-            locEnabled = Boolean.parseBoolean(props.getProperty("loc-enabled"));
-            locHost = props.getProperty("loc-host");
-            locPort = Integer.parseInt(props.getProperty("loc-port"));
+            winConvEnabled = Boolean.parseBoolean(props.getProperty("win-conv-enabled"));
+            winConvHost = props.getProperty("win-conv-host");
+            winConvPort = Integer.parseInt(props.getProperty("win-conv-port"));
 
             String customFiltersString = props.getProperty("custom-filters");
             if (customFiltersString == null) {

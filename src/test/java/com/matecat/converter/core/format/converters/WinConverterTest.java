@@ -1,7 +1,7 @@
-package com.matecat.converter.core.format.converters.loc;
+package com.matecat.converter.core.format.converters;
 
 import com.matecat.converter.core.format.Format;
-import com.matecat.converter.core.format.converters.LOCFormatConverter;
+import com.matecat.converter.core.format.converters.WinConverter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,14 +11,14 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-public class LOCFormatConverterTest {
+public class WinConverterTest {
 
-    private LOCFormatConverter converter;
+    private WinConverter converter;
     private File convertedFile;
 
     @Before
     public void setUp() throws Exception {
-        converter = new LOCFormatConverter();
+        converter = new WinConverter();
     }
 
     @After
@@ -45,7 +45,7 @@ public class LOCFormatConverterTest {
 
         // Convert the file
         File oviedo = new File(getClass().getResource("/converter/Oviedo.doc").toURI());
-        LOCFormatConverter converter = new LOCFormatConverter();
+        WinConverter converter = new WinConverter();
         convertedFile = converter.convert(oviedo, Format.DOCX);
 
         // Check it was saved in the same directoy

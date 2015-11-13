@@ -8,27 +8,27 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * LOC Converter
+ * Win Converter
  *
  * Default and free format converter developed and hosted by the Matecat team.
  * It is implemented as a SocketFormatConverter, which connects to the (Windows) machine it is running in.
  */
-public class LOCFormatConverter extends SocketFormatConverter {
+public class WinConverter extends SocketFormatConverter {
 
     /*
-     * Load the LOC Server configuration from the configuration file
+     * Load the Win Converter server configuration from the configuration file
      */
     private static final String HOST;
     private static final Integer PORT;
     static {
         try {
-            HOST = Config.locHost;
-            PORT = Config.locPort;
+            HOST = Config.winConvHost;
+            PORT = Config.winConvPort;
             if (HOST == null  ||  HOST.equals("")  ||  PORT < 0)
                 throw new IOException();
         }
         catch (IOException | NumberFormatException e) {
-            throw new RuntimeException("LOC configuration is missing or corrupted");
+            throw new RuntimeException("Win Converter configuration is missing or corrupted");
         }
     }
 
@@ -151,7 +151,7 @@ public class LOCFormatConverter extends SocketFormatConverter {
     /**
      * LOC Converter constructor using the properties loaded before
      */
-    public LOCFormatConverter() {
+    public WinConverter() {
         super(HOST, PORT, true);
     }
 

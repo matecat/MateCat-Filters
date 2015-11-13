@@ -22,8 +22,8 @@ public class Converters extends AbstractFormatConverter {
      */
     public Converters() {
         converters = new ArrayList<>();
-        if (Config.locEnabled) {
-            converters.add(new LOCFormatConverter());
+        if (Config.winConvEnabled) {
+            converters.add(new WinConverter());
         }
     }
 
