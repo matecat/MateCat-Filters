@@ -14,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.ws.rs.Path;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -25,7 +26,7 @@ public class ExtractOriginalFileResourceTest {
 
     private static MatecatConverterServer server;
     private static final int PORT = 8090;
-    private static final String url = "http://localhost:" + PORT + "/original";
+    private static final String url = "http://localhost:" + PORT + ExtractOriginalFileResource.class.getAnnotation(Path.class).value();
 
     @Before
     public void setUp() throws Exception {

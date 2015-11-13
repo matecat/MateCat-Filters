@@ -19,7 +19,7 @@ import java.io.InputStream;
 /**
  * Resource taking care of the extraction of the original file from the .XLF
  */
-@Path("//AutomationService/xliff2source")
+@Path("/AutomationService/xliff2source")
 public class ExtractOriginalFileResource {
 
     // Logger
