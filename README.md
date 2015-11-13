@@ -1,45 +1,34 @@
-# Matecat Converter
+<img src="http://i.imgur.com/4I1uX0a.png">
 
-Matecat Converter is a free open-source [Matecat](https://www.matecat.com) module which offers file conversions from multiple formats to Xliff (.xlf). Even though its usage is not mandatory, it substancially improves the user experience of the site. 
+# MateCat Filters: convert any file to XLIFF and back
+
+With MateCat Filters you can easily extract all the translatable contents of any file in a convenient XML compliant with the XLIFF standard.
+
+Put the translated contents in the XML and use again MateCat Filters to have back the original file perfectly translated.
+
+Fast, reliable and scalable, running everyday inside MateCat, the popular open-source CAT tool.
 
 ## Main features
 
-Matecat Converter is a server that offers a REST interface for the tasks of:
+#### 58 formats supported
 
-* Conversion of a file into a Xliff
-* Extraction of the original file from a Xliff
-* Generation of the translated (derived) file from a Xliff
+32 formats supported directly + 26 supported using the MateCat Win Converter
+See the [full list](//github.com/matecat/matecat_filters/wiki/Supported-file-formats) in the Wiki.
 
-In addition to that, it also frees Matecat of the following responsabilities:
+#### Advanced segmentation
 
-* Encoding detection / handling
-* Intermediate file conversions
-* Interaction with the [Okapi Framework](http://www.opentag.com/okapi/wiki/)
+Using the Unicode ICU Library, MateCat Filters implement the rules defined by the Unicode consortium to properly split sentences in every language. On top of this we also added a set of rules specifically designed for the CATs world.
+
+#### Fast and scalable
+
+Written in Java using Jetty and Okapi Framework. Efficient, multi-threaded and stateless.
 
 
-## Test client
-![Client preview](http://i59.tinypic.com/2nba9l0.png)
-Once the server is running, the easiest way to test it is using the embedded client. It can be accessed at `http://localhost:{SERVER-PORT}`. By default, the address is `http://localhost:8082`. 
+## Getting started
 
-_Note: whereas the client it has been proven in several browser, we do recommend the usage of Google Chrome._
+To use MateCat Filters you can:
 
-## Changelog
+* Use the [API as-a-service](https://market.mashape.com/translated/MateCat-filters) using our infrastructure, the same we use for MateCat (through [Mashape](https://market.mashape.com/translated/MateCat-filters))
+* Create your personal instance (read the [how-to](//github.com/matecat/matecat_filters/wiki/Installation-guide) in the wiki)
 
-__Version 0.2.2:__
-* HTML and XML trimming prevented
-* Improved logging
-* A bug affecting XML conversions has been fixed
-* New client within the server
-
-__Version 0.2.1:__
-* Testing endpoint added, accessible at /test. It can be used to test if the server is working.
-* Even if the server is running on Windows, the Converter reads the .xlf's as UTF-8 (fixing some encoding bugs).
-
-__Version 0.2:__
-* Logging messages improved. In addition to that, a more extensive log is stored in 'server.log' file.
-* PHP test client added.
-* Minor changes preventing memory leaks.
-* Better handling of .xlf files with un-normalized structure.
-* Okapi framework updated to its latest 0.28 snapshot.
-* Improved HTML charset detection.
-* Storage configuration added: now it's possible to specify the temporal folder, as well as if the folders should be deleted after its competition or not.
+Navigate the [wiki](//github.com/matecat/matecat_filters/wiki) to know everything about MateCat Filters, for example [how to use the API](//github.com/matecat/matecat_filters/wiki/API-Documentation).
