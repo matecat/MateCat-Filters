@@ -26,13 +26,6 @@ import java.util.MissingResourceException;
 
 /**
  * Resource taking care of the conversion task into .XLF
- *
- * The call is:
- * [POST]: /convert/{source-language}/{target-language}
- *
- * Sending the file to convert as POST body with multipart/form-data encoding
- *
- * The result is returned as JSON, to obey the old Matecat library (TODO replace for file content)
  */
 @Path("/AutomationService/original2xliff")
 public class ConvertToXliffResource {
@@ -42,11 +35,6 @@ public class ConvertToXliffResource {
 
     /**
      * Convert a file into XLF
-     * @param sourceLanguageCode Source language
-     * @param targetLanguageCode target language
-     * @param fileInputStream Input file
-     * @param contentDispositionHeader Inputfile
-     * @return Converted file
      */
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -129,9 +117,6 @@ public class ConvertToXliffResource {
 
     /**
      * Parse the language code into Locales
-     * @param languageCode Language code
-     * @return Locale which corresponds to the code
-     * @throws ServerException If the code is not valid
      */
     private Locale parseLanguage(String languageCode) throws ServerException {
 

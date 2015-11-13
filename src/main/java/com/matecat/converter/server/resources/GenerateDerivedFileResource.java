@@ -21,13 +21,6 @@ import java.io.InputStream;
 
 /**
  * Resource taking care of the generation of the new file from the .XLF
- *
- * The call is:
- * [POST]: /derived/
- *
- * Sending the xlf file to convert as POST body with multipart/form-data encoding
- *
- * The result is returned as JSON, to obey the old Matecat library (TODO replace for file content)
  */
 @Path("/AutomationService/xliff2original")
 public class GenerateDerivedFileResource {
@@ -37,8 +30,6 @@ public class GenerateDerivedFileResource {
 
     /**
      * Generate the derived file from the xlf
-     * @param fileInputStream Xlf
-     * @return Derived file
      */
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)

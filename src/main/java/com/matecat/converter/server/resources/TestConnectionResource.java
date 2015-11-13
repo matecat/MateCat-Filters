@@ -20,7 +20,6 @@ public class TestConnectionResource {
 
     /**
      * Return a simple ok message
-     * @return OK response
      */
     @GET
     public Response test(@Context HttpServletRequest request) {

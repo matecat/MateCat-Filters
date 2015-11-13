@@ -18,15 +18,8 @@ import java.io.InputStream;
 
 /**
  * Resource taking care of the extraction of the original file from the .XLF
- *
- * The call is:
- * [POST]: /original/
- *
- * Sending the xlf file to convert as POST body with multipart/form-data encoding
- *
- * The result is returned as JSON, to obey the old Matecat library (TODO replace for file content)
  */
-@Path("/original")
+@Path("//AutomationService/xliff2source")
 public class ExtractOriginalFileResource {
 
     // Logger
@@ -35,8 +28,6 @@ public class ExtractOriginalFileResource {
 
     /**
      * Extract the original file from the xlf
-     * @param fileInputStream Xlf
-     * @return Original file
      */
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
