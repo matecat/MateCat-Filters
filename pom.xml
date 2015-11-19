@@ -2,10 +2,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.matecat</groupId>
-    <artifactId>converter</artifactId>
-    <version>0.9.0</version>
+    <artifactId>filters</artifactId>
+    <version>1.1.1</version>
     <packaging>jar</packaging>
-    <name>Matecat Converter</name>
+    <name>MateCat Filters</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,7 +30,7 @@
         of this code, but we keep it updated in order to make it clear
         which Okapi code we are using in our builds.
         -->
-        <okapi.commit>e6fddaf404b8d85e48ffc36baa56b5f1313cfb34</okapi.commit>
+        <okapi.commit>be5b7178e4412ab2455bfe2643a51e8229e7791f</okapi.commit>
     </properties>
 
     <dependencies>
@@ -438,6 +438,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.2</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
