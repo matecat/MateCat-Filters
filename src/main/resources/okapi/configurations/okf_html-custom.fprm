@@ -12,6 +12,8 @@ attributes:
   xml:lang:
     ruleTypes: [ATTRIBUTE_WRITABLE]
 elements:
+  noedit:
+    ruleTypes: [EXCLUDE]
   meta:
     ruleTypes: [ATTRIBUTES_ONLY]
     translatableAttributes:
