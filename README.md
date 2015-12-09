@@ -28,7 +28,7 @@ Written in Java using Jetty and Okapi Framework. Efficient, multi-threaded and s
 
 To use MateCat Filters you can:
 
-* Use the [API as-a-service](https://market.mashape.com/translated/MateCat-filters) using our infrastructure, the same we use for MateCat (through [Mashape](https://market.mashape.com/translated/MateCat-filters))
-* Create your personal instance (read the [how-to](//github.com/matecat/matecat_filters/wiki/Installation-guide) in the wiki)
+* Use the hosted [API as-a-service](https://market.mashape.com/translated/MateCat-filters), running in the same infrastructure we use for MateCat
+* Create your personal instance using the code in this repository
 
 Navigate the [wiki](//github.com/matecat/matecat_filters/wiki) to know everything about MateCat Filters, for example [how to use the API](//github.com/matecat/matecat_filters/wiki/API-Documentation).
