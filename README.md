@@ -28,6 +28,13 @@ The interface is super simple, with only 2 REST endpoints to use! See the [API d
 
 ## Getting started
 
-Play with our [hosted API](https://market.mashape.com/translated/MateCat-filters) for free, using the same istances that MateCat uses: istantly ready to use, instances maintained by us and commercial dependencies included.
+Navigate the [wiki](https://github.com/matecat/MateCat-Filters/wiki/) to learn how to [build your instance](https://github.com/matecat/MateCat-Filters/wiki/Build-and-run) and [use the API](https://github.com/matecat/MateCat-Filters/wiki/API-documentation).
 
-In the [wiki](https://github.com/matecat/MateCat-Filters/wiki/) you can learn how to [build your instance](https://github.com/matecat/MateCat-Filters/wiki/Build-and-run) and [use the API](https://github.com/matecat/MateCat-Filters/wiki/API-documentation).
+Consider using the [hosted API](https://market.mashape.com/translated/MateCat-filters) for both testing and production purposes. 
+You can use it for free or pay a monthly fee for big conversion volumes. 
+Main advantages:
+
+* **Istantly ready to use**, zero installation / configuration.
+* **Runs in MateCat's infrastructure**, with instances constantly monitored, optimized, and updated.
+* **Transparent versioning**: automatically downgrades when you try to convert a XLIFF created with an older version of MateCat Filters.
+* **Commercial dependencies included**: you don't need to buy licenses for the commercial software MateCat Filter uses to support OCR, PDF and legacy MS Office formats.
