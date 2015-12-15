@@ -1,4 +1,4 @@
-<img src="http://i.imgur.com/4I1uX0a.png">
+<p align="center"><img src="http://i.imgur.com/4I1uX0a.png"></p>
 
 # Convert any file to XLIFF and back
 
@@ -15,7 +15,7 @@ you are using Filters.
 
 #### Plenty of supported formats
 
-Among others, MateCat Filters fully supports Microsoft Office formats (legacy ones too), Open Office, PDF, hypertext, and even images of scanned documents thanks to automatic OCR (using the proper external library). See the [full list](wiki/Supported-file-formats) in the Wiki.
+Among others, MateCat Filters fully supports Microsoft Office formats (legacy ones too), Open Office, PDF, hypertext, and even images of scanned documents thanks to automatic OCR (using the proper external library). See the [full list](https://github.com/matecat/MateCat-Filters/wiki/Supported-file-formats) in the Wiki.
 
 #### Advanced segmentation
 
@@ -24,10 +24,10 @@ Filters uses segmentation rules defined by the Unicode consortium, plus another 
 #### Easy integration, fast and scalable
 
 Written in Java using Jetty and Okapi Framework. Efficient, multi-threaded and stateless.
-The interface is super simple, with only 2 REST endpoints to use! See the [API documentation](wiki/API-documentation) in the wiki.
+The interface is super simple, with only 2 REST endpoints to use! See the [API documentation](https://github.com/matecat/MateCat-Filters/wiki/API-documentation) in the wiki.
 
 ## Getting started
 
 Play with our [hosted API](https://market.mashape.com/translated/MateCat-filters) for free, using the same istances that MateCat uses: istantly ready to use, instances maintained by us and commercial dependencies included.
 
-In the [wiki](wiki/) you can learn how to [build your instance](wiki/Build-and-run) and [use the API](wiki/API-documentation).
+In the [wiki](https://github.com/matecat/MateCat-Filters/wiki/) you can learn how to [build your instance](https://github.com/matecat/MateCat-Filters/wiki/Build-and-run) and [use the API](https://github.com/matecat/MateCat-Filters/wiki/API-documentation).
