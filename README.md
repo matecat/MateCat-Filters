@@ -1,4 +1,4 @@
-<p align="center"><img src="http://i.imgur.com/kCb5hS1.png"></p>
+<p align="center"><img src="http://i.imgur.com/J8FSuWi.png"></p>
 
 # Convert any file to XLIFF and back
 
