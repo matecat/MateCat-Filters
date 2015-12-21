@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.matecat</groupId>
     <artifactId>filters</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <packaging>jar</packaging>
     <name>MateCat Filters</name>
 
@@ -30,7 +30,7 @@
         of this code, but we keep it updated in order to make it clear
         which Okapi code we are using in our builds.
         -->
-        <okapi.commit>be5b7178e4412ab2455bfe2643a51e8229e7791f</okapi.commit>
+        <okapi.commit>99465d21cee4c7ba163c3c638f2fd8bcb7ed1eb9</okapi.commit>
     </properties>
 
     <dependencies>
