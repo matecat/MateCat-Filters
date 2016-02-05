@@ -11,7 +11,7 @@ public class OkapiClientTest {
 
     private void testFile(String filename) throws IOException {
         File file = new File(getClass().getResource("/okapi/" + filename).getPath());
-        OkapiPack pack = OkapiClient.generatePack(Locale.ENGLISH, Locale.ENGLISH, Encoding.getDefault(), file);
+        OkapiPack pack = OkapiClient.generatePack(Locale.ENGLISH, Locale.ENGLISH, Encoding.getDefault(), file, null);
         OkapiClient.generateDerivedFile(pack);
         pack.delete();
     }

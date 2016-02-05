@@ -27,6 +27,7 @@ public class XliffGenerator {
     // Required properties
     private Locale sourceLanguage;
     private Locale targetLanguage;
+    private String segmentation;
     private File file;
 
     // Other module's instances
@@ -40,7 +41,7 @@ public class XliffGenerator {
      * @param targetLanguage Target language
      * @param file File we want to convert into a Xliff
      */
-    public XliffGenerator(Locale sourceLanguage, Locale targetLanguage, File file) {
+    public XliffGenerator(Locale sourceLanguage, Locale targetLanguage, File file, String segmentation) {
 
         // Check that any of the inputs is null
         if (sourceLanguage == null)
@@ -53,12 +54,12 @@ public class XliffGenerator {
         // Store the properties
         this.sourceLanguage = sourceLanguage;
         this.targetLanguage = targetLanguage;
+        this.segmentation = segmentation;
         this.file = file;
-
     }
 
-
-    /**
+    
+	/**
      * Generate the Xliff file from the stored inputs
      * @throws FormatNotSupportedException if the file is not supported and cannot be converted to supported file
      * @return Xliff file
@@ -80,7 +81,7 @@ public class XliffGenerator {
         Encoding encoding = encodingDetector.detect(file);
 
         // 3. Send to Okapi
-        OkapiPack okapiPack = OkapiClient.generatePack(sourceLanguage, targetLanguage, encoding, file);
+        OkapiPack okapiPack = OkapiClient.generatePack(sourceLanguage, targetLanguage, encoding, file, segmentation);
 
         // 4. Generate and return the xliff
         return XliffBuilder.build(okapiPack, originalFormat);

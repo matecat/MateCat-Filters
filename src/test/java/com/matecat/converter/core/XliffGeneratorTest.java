@@ -19,7 +19,7 @@ public class XliffGeneratorTest {
     public void testGenerate() throws Exception {
 
         File file = new File(getClass().getResource("/generation/test.docx").getPath());
-        XliffGenerator generator = new XliffGenerator(Locale.ENGLISH, Locale.ENGLISH, file);
+        XliffGenerator generator = new XliffGenerator(Locale.ENGLISH, Locale.ENGLISH, file, null);
         File xlf = generator.generate();
         assertNotNull(xlf);
         assertTrue(xlf.exists());

@@ -1,17 +1,17 @@
 package com.matecat.converter.core.okapiclient;
 
-import com.matecat.converter.core.XliffProcessor;
-import com.matecat.converter.core.encoding.Encoding;
-import com.matecat.converter.core.format.Format;
-import com.matecat.converter.okapi.steps.segmentation.AddIcuHintsStep;
-import com.matecat.converter.okapi.steps.segmentation.RemoveIcuHintsStep;
-import net.sf.okapi.common.IParameters;
+import static com.matecat.converter.core.format.Format.SDLXLIFF;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+
 import net.sf.okapi.common.LocaleId;
 import net.sf.okapi.common.Util;
 import net.sf.okapi.common.filters.FilterConfigurationMapper;
 import net.sf.okapi.common.filters.IFilter;
 import net.sf.okapi.common.filters.IFilterConfigurationMapper;
-import net.sf.okapi.common.pipeline.IPipelineStep;
 import net.sf.okapi.common.pipelinedriver.BatchItemContext;
 import net.sf.okapi.common.pipelinedriver.IPipelineDriver;
 import net.sf.okapi.common.pipelinedriver.PipelineDriver;
@@ -20,24 +20,20 @@ import net.sf.okapi.filters.html.HtmlFilter;
 import net.sf.okapi.filters.rainbowkit.RainbowKitFilter;
 import net.sf.okapi.filters.table.TableFilter;
 import net.sf.okapi.steps.common.RawDocumentToFilterEventsStep;
-import net.sf.okapi.steps.encodingconversion.EncodingConversionStep;
 import net.sf.okapi.steps.rainbowkit.creation.ExtractionStep;
 import net.sf.okapi.steps.rainbowkit.postprocess.MergingStep;
-import net.sf.okapi.steps.rainbowkit.postprocess.Parameters;
 import net.sf.okapi.steps.segmentation.SegmentationStep;
+
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import static com.matecat.converter.core.format.Format.*;
+import com.matecat.converter.core.XliffProcessor;
+import com.matecat.converter.core.encoding.Encoding;
+import com.matecat.converter.core.format.Format;
+import com.matecat.converter.core.util.Config;
+import com.matecat.converter.okapi.steps.segmentation.AddIcuHintsStep;
+import com.matecat.converter.okapi.steps.segmentation.RemoveIcuHintsStep;
 
 
 /**
@@ -117,14 +113,89 @@ public class OkapiClient {
     /**
      * Create the segmentation step
      * @param sourceLanguage Source language
-     * @return Segmentation step
+     * @param segmentation the name of the custom segmentation file to use (if any), or <code>null</code> to fallback on default
+     * @param driver a reference to the current driver to be populated with the segmentation step
+     * 
+     * @see Config.customSegmentationFolder
      */
-    private static SegmentationStep createSegmentationStep(Locale sourceLanguage) {
+    private static void createSegmentationStep(Locale sourceLanguage, String segmentation, IPipelineDriver driver) {
         SegmentationStep segmentationStep = new SegmentationStep();
         net.sf.okapi.steps.segmentation.Parameters params = (net.sf.okapi.steps.segmentation.Parameters) segmentationStep.getParameters();
-        params.setSourceSrxPath(SRX_FILE.getPath());
-        return segmentationStep;
+        
+        String customSegmentationFilePath = getCustomSegmentationFilePath(segmentation);
+
+        if( customSegmentationFilePath != null ) {
+			params.setSourceSrxPath(customSegmentationFilePath);
+			driver.addStep(segmentationStep);
+        } else {
+	        driver.addStep(new AddIcuHintsStep(sourceLanguage));
+	        params.setSourceSrxPath(SRX_FILE.getPath());
+	        driver.addStep(segmentationStep);
+	        driver.addStep(new RemoveIcuHintsStep());
+        }
     }
+    
+    
+    /**
+     * given a segmentation name, check if exists a corresponding file with custom segmentation rules and return its path 
+     * @param segmentation
+     * @return the full path of the file containing the specified segmentation rules, or null if no custom segmentation has been defined
+     * @throws RuntimeException if the file does not exist or there are no read permissions on it 
+     */
+    private static String getCustomSegmentationFilePath(String segmentation) {
+    	// no custom segmentation required
+        if (segmentation == null || segmentation.trim().isEmpty()) {
+        	LOGGER.info("Using default segmentation");
+        	return null;
+        }
+        
+		// the custom segmentation folder is empty, skip all checks and use default rules
+		if( Config.customSegmentationFolder.isEmpty() ) {
+			LOGGER.info("No custom segmentation folder, falling back to default segmentation");
+			throw new IllegalStateException("Custom segmentation file requested, but no segmentation folder configured. File: " + Config.customSegmentationFolder + segmentation + ".srx");
+		}
+		
+		
+		/* A custom segmentation has been requested, and there is a valid custom segmentation rules folder.
+		 * Try to get the proper file, if it is not found or not accessible, raise an exception for the client.
+		 * That is why no exception handling has been defined here
+		 */
+				
+		// instantiate a file wrapper to make all the necessary checks
+		File segmentationFile = new File(Config.customSegmentationFolder + segmentation + ".srx");
+		
+		/* Check if the corresponding file exists
+		 *  
+		 * IMPORTANT
+		 * Read permission in folder Config.customSegmentationFolder are check only once at startup time from Config class.
+		 * If these permissions change at runtime and the application becomes not allowed to read from it, the following check will fail
+		 * because it will try to read the folder content, and an empty set of files will be returned, due to the permission issue.
+		 * 
+		 *  Sample Scenario:
+		 *   - application loads and at startup time is able to read from Config.customSegmentationFolder
+		 *   - permission on the folder change, and the application cannot read from it anymore
+		 *   - user issues a conversion request and the application tries to look for the specified segmentation file from custom folder
+		 *   - because of read limitation, OS will return the application an empty set of files
+		 *   - the application will correctly fallback on default srx file, but with following "not found" error message
+		 *  
+		 * Even though the behaviuor is correct (and this case should not happen), the error message might be trivial 
+		 */ 
+		if(!segmentationFile.isFile()) {
+			LOGGER.warn("Custom segmentation file not found. File: " + Config.customSegmentationFolder + segmentation + ".srx");
+			throw new IllegalArgumentException("Custom segmentation file not found. File: " + Config.customSegmentationFolder + segmentation + ".srx");
+		}
+	
+		// Check if the corresponding file can be read
+		if(!segmentationFile.canRead()) {
+			LOGGER.warn("Custom segmentation file cannot be read. File: " + Config.customSegmentationFolder + segmentation + ".srx");
+			throw new IllegalArgumentException("Custom segmentation file cannot be read. File: " + Config.customSegmentationFolder + segmentation + ".srx");
+		}
+	
+		// the file exists and can be read, return its path
+		LOGGER.info("Using custom segmentation in file: " + segmentationFile.getPath());
+		return segmentationFile.getPath();	
+    }
+    
 
     /**
      * Create the extraction step
@@ -196,7 +267,7 @@ public class OkapiClient {
      * @param file File
      * @return Okapi's result pack
      */
-    public static OkapiPack generatePack(Locale sourceLanguage, Locale targetLanguage, Encoding encoding, File file) {
+    public static OkapiPack generatePack(Locale sourceLanguage, Locale targetLanguage, Encoding encoding, File file, String segmentation) {
 
         // Check inputs
         if (sourceLanguage == null)
@@ -232,14 +303,7 @@ public class OkapiClient {
         // XLIFFs instead are already segmented, and segmenting them further causes
         // strange outputs.
         if (format != Format.PO && format != Format.XLF && format != Format.XLIFF && format != SDLXLIFF) {
-            // Add ICU sentences boundaries hint, to help the SRX segmentation step
-            driver.addStep(new AddIcuHintsStep(sourceLanguage));
-
-            // Segmentation step
-            driver.addStep(createSegmentationStep(sourceLanguage));
-
-            // Remove ICU hints restoring original segments
-            driver.addStep(new RemoveIcuHintsStep());
+        	createSegmentationStep(sourceLanguage, segmentation, driver);
         }
 
         // Kit creation step

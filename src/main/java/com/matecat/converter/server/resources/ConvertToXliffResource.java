@@ -1,27 +1,30 @@
 package com.matecat.converter.server.resources;
 
-import com.matecat.converter.core.XliffGenerator;
-import com.matecat.converter.core.format.FormatNotSupportedException;
-import com.matecat.converter.core.project.Project;
-import com.matecat.converter.core.project.ProjectFactory;
-import com.matecat.converter.server.exceptions.ServerException;
-import com.matecat.converter.server.JSONResponseFactory;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Locale;
+import java.util.MissingResourceException;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Locale;
-import java.util.MissingResourceException;
+import com.matecat.converter.core.XliffGenerator;
+import com.matecat.converter.core.format.FormatNotSupportedException;
+import com.matecat.converter.core.project.Project;
+import com.matecat.converter.core.project.ProjectFactory;
+import com.matecat.converter.server.JSONResponseFactory;
+import com.matecat.converter.server.exceptions.ServerException;
 
 
 /**
@@ -43,7 +46,8 @@ public class ConvertToXliffResource {
             @FormDataParam("sourceLocale") String sourceLanguageCode,
             @FormDataParam("targetLocale") String targetLanguageCode,
             @FormDataParam("documentContent") InputStream fileInputStream,
-            @FormDataParam("documentContent") FormDataContentDisposition contentDispositionHeader) {
+            @FormDataParam("documentContent") FormDataContentDisposition contentDispositionHeader,
+            @FormDataParam("segmentation") String segmentation) {
 
         // Filename and logging
         String filename = FilenameUtils.getName(contentDispositionHeader.getFileName());
@@ -76,7 +80,7 @@ public class ConvertToXliffResource {
             project = ProjectFactory.createProject(filename, fileInputStream);
 
             // Retrieve the xlf
-            File xlf = new XliffGenerator(sourceLanguage, targetLanguage, project.getFile()).generate();
+            File xlf = new XliffGenerator(sourceLanguage, targetLanguage, project.getFile(), segmentation).generate();
 
             // Create response
             response = Response

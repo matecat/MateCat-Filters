@@ -44,7 +44,7 @@ public class XliffProcessorTest {
         FileUtils.writeStringToFile(input, ORIGINAL);
 
         // Generate xlf
-        File xlf = new XliffGenerator(Locale.ENGLISH, Locale.FRENCH, input).generate();
+        File xlf = new XliffGenerator(Locale.ENGLISH, Locale.FRENCH, input, null).generate();
 
         // Remove pack
         File pack = new File(folder.getPath() + File.separator + OkapiPack.PACK_FILENAME);
