@@ -59,8 +59,8 @@ c. Three.</okpsrx:sample>
         The rule seems to be the best balance between brevity and effectiveness.
         In order to make the regexp work in this context I did some small changes.-->
         <rule break="no">
-          <beforebreak>(?i)(https?|ftp)://(-\.)?([^\s/?\.#-]+\.?)+(/[^\s]*)?\?\uE105\s*</beforebreak>
-          <afterbreak>[^\s]*</afterbreak>
+          <beforebreak>(?i)(https?|ftp)://[^\s/$.?#].[^\s]*\?\uE105</beforebreak>
+          <afterbreak>[^\s]+</afterbreak>
         </rule>
         <!--ICU splits this: "Normal sentence (question in parenthesis?) lowercase end."-->
         <rule break="no">
