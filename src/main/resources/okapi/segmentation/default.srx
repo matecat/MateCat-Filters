@@ -54,13 +54,20 @@ c. Three.</okpsrx:sample>
           <afterbreak/>
         </rule>
         <!--ICU splits urls with querystring at the question mark. This rule avoids it. 
-        The regexp for url matching is of @imme_emosol, found in: 
+        The regexp for url matching is of @stephenhay, found in:
           https://mathiasbynens.be/demo/url-regex
-        The rule seems to be the best balance between brevity and effectiveness.
-        In order to make the regexp work in this context I did some small changes.-->
+        In order to make the regexp work in this context I did some small changes.
+        Pay attention that the complexity of most of the expressions in that page can
+        cause infinite computations for the segmentation step, so be careful.
+        Previously we had this precise problem with the expression of @imme_emosol.-->
         <rule break="no">
           <beforebreak>(?i)(https?|ftp)://[^\s/$.?#].[^\s]*\?\uE105</beforebreak>
           <afterbreak>[^\s]+</afterbreak>
+        </rule>
+        <!--ICU splits this: "Sentence that ends with footnote reference. [1]"-->
+        <rule break="no">
+          <beforebreak>(\p{Ps}|\p{Pi})\uE105\s*</beforebreak>
+          <afterbreak>\d+(\p{Pe}|\p{Pf})</afterbreak>
         </rule>
         <!--ICU splits this: "Normal sentence (question in parenthesis?) lowercase end."-->
         <rule break="no">
@@ -70,6 +77,11 @@ c. Three.</okpsrx:sample>
         <!--The most important rule: split on ICU hints-->
         <rule break="yes">
           <beforebreak>\uE105\s*</beforebreak>
+          <afterbreak/>
+        </rule>
+        <!--Split after footnote reference (see footnote exception above)-->
+        <rule break="yes">
+          <beforebreak>(\p{Ps}|\p{Pi})\uE105\s*\d+(\p{Pe}|\p{Pf})</beforebreak>
           <afterbreak/>
         </rule>
         <!--ICU doesn't split sentences like "2 bananas. 3 tomatoes." Pay attention: this introduces a new major break not caused by the \uE105 char, must take into account in abbreviations exception, especially in abbreviations before numbers and single letter abbreviations-->
