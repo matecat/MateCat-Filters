@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import net.sf.okapi.common.exceptions.OkapiUnexpectedRevisionException;
 import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -94,14 +95,20 @@ public class ConvertToXliffResource {
 
         // If there is any error, return it
         catch (Exception e) {
+            String errorMessage;
+            if (e instanceof OkapiUnexpectedRevisionException) {
+                errorMessage = "Document contains revisions or comments, please review and remove them.";
+            } else {
+                errorMessage = e.getMessage();
+            }
             response =  Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity(JSONResponseFactory.getError(e.getMessage()))
+                    .entity(JSONResponseFactory.getError(errorMessage))
                     .build();
             if (e instanceof FormatNotSupportedException)
-                LOGGER.error("[CONVERSION REQUEST FAILED] {}", e.getMessage());
+                LOGGER.error("[CONVERSION REQUEST FAILED] {}", errorMessage);
             else
-                LOGGER.error("[CONVERSION REQUEST FAILED] {}", e.getMessage(), e);
+                LOGGER.error("[CONVERSION REQUEST FAILED] {}", errorMessage, e);
         }
 
         // Close the project and streams

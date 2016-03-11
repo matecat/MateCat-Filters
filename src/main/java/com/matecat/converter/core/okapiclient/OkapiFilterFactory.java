@@ -182,6 +182,7 @@ import java.util.Set;
         conditionalParameters.setTranslateWordExcludeGraphicMetaData(true);
         conditionalParameters.setTranslateWordHeadersFooters(true);
         conditionalParameters.setTranslateWordHidden(false);
+        conditionalParameters.setAutomaticallyAcceptRevisions(false);
         // Excel specific
         conditionalParameters.setTranslateExcelHidden(false);
         // Powerpoint specific
