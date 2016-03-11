@@ -18,9 +18,16 @@ public class ClientResource {
 
     private static final String CLIENT_HTML_PATH = "/client/client.html";
     private static final String CLIENT_HTML;
+
     static {
+        String filtersVersion = ClientResource.class.getPackage().getImplementationVersion();
+        if (filtersVersion == null) {
+            filtersVersion = "[version number not available]";
+        }
         try {
-            CLIENT_HTML = IOUtils.toString(System.class.getResourceAsStream(CLIENT_HTML_PATH), "UTF-8");
+            String html = IOUtils.toString(System.class.getResourceAsStream(CLIENT_HTML_PATH), "UTF-8");
+            // Handlebar-like variable substitution
+            CLIENT_HTML = html.replace("{{filtersVersion}}", filtersVersion);
         } catch (IOException e) {
             throw new RuntimeException("The client.html was not found");
         }

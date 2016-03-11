@@ -58,7 +58,7 @@ class XliffBuilder {
     // Logger
     private static Logger LOGGER = LoggerFactory.getLogger(XliffBuilder.class);
 
-    private static final String CONVERTER_VERSION = XliffBuilder.class.getPackage().getImplementationVersion();
+    private static final String FILTERS_VERSION = XliffBuilder.class.getPackage().getImplementationVersion();
 
     /**
      * Build the XLIFF, manifest and original file into a new Xliff
@@ -202,8 +202,8 @@ class XliffBuilder {
         // Create the new file element which will contain the original file
         Element originalFileNode = document.createElement("file");
         String toolId = "matecat-converter";
-        if (CONVERTER_VERSION != null) {
-            toolId += " " + CONVERTER_VERSION;
+        if (FILTERS_VERSION != null) {
+            toolId += " " + FILTERS_VERSION;
         } else {
             LOGGER.warn("Can't write converter version in XLIFF: converter server version unknown (version available only when running from a jar)");
         }
