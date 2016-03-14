@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.matecat</groupId>
     <artifactId>filters</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
     <packaging>jar</packaging>
     <name>MateCat Filters</name>
 
@@ -20,17 +20,17 @@
         install the Snapshot code in you local Maven repository.
         You can do it by cloning the Okapi code on your machine,
         checkout to the desired branch, and running the command
-        "maven clean install".
+        "mvn clean install".
         Check the pom.xml of the Okapi code to know the version you are
         installing in your local Maven repo.
         -->
-        <okapi.version>0.29-SNAPSHOT</okapi.version>
+        <okapi.version>0.30-SNAPSHOT</okapi.version>
         <!--
         The following parameter is not used by Maven or any other part
         of this code, but we keep it updated in order to make it clear
         which Okapi code we are using in our builds.
         -->
-        <okapi.commit>99465d21cee4c7ba163c3c638f2fd8bcb7ed1eb9</okapi.commit>
+        <okapi.commit>ccd02ab23f32b17a31bba91b27daa9cf07f4f18b</okapi.commit>
     </properties>
 
     <dependencies>
