@@ -1,4 +1,4 @@
-package com.matecat.converter.core.format.converters;
+package com.matecat.converter.core.winconverter;
 
 /**
  * Exception thrown when a file is too big for the conversion

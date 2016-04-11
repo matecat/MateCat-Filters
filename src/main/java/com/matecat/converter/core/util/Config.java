@@ -2,10 +2,8 @@ package com.matecat.converter.core.util;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.net.InetSocketAddress;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +25,15 @@ public class Config {
     public static final String errorsFolder;
     public static final boolean deleteOnClose;
     public static final boolean winConvEnabled;
+    public static final String winConvConsulAddress;
+    public static final String winConvConsulService;
     public static final String winConvHost;
-    public static final int winConvPort;
+    public static final Integer winConvPort;
     public static final List<Class> customFilters;
     public static final String customSegmentationFolder;
-    
+
+    public static final List<InetSocketAddress> winConvs = new ArrayList<>();
+
     
     static {
         try (InputStream inputStream = System.class.getResourceAsStream("/config.properties")) {
@@ -61,9 +63,19 @@ public class Config {
             }
 
             deleteOnClose = Boolean.parseBoolean(props.getProperty("delete-on-close"));
+
             winConvEnabled = Boolean.parseBoolean(props.getProperty("win-conv-enabled"));
+
             winConvHost = props.getProperty("win-conv-host");
-            winConvPort = Integer.parseInt(props.getProperty("win-conv-port"));
+            String winConvPortString = props.getProperty("win-conv-port");
+            if (winConvPortString != null && !winConvPortString.isEmpty()) {
+                winConvPort = Integer.parseInt(winConvPortString);
+            } else {
+                winConvPort = null;
+            }
+
+            winConvConsulAddress = props.getProperty("win-conv-consul-address");
+            winConvConsulService = props.getProperty("win-conv-consul-service");
 
             String customFiltersString = props.getProperty("custom-filters");
             if (customFiltersString == null) {

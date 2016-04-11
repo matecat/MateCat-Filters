@@ -1,6 +1,6 @@
 package com.matecat.converter.core.okapiclient;
 
-import com.matecat.converter.core.format.Format;
+import com.matecat.converter.core.Format;
 import com.matecat.converter.core.okapiclient.customfilters.CustomFiltersRouter;
 import net.sf.okapi.common.filters.FilterConfigurationMapper;
 import net.sf.okapi.common.filters.IFilter;

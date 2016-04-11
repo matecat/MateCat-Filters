@@ -1,6 +1,5 @@
 package com.matecat.converter.core;
 
-import com.matecat.converter.core.format.Format;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;

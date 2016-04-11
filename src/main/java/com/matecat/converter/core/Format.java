@@ -1,4 +1,4 @@
-package com.matecat.converter.core.format;
+package com.matecat.converter.core;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -27,6 +27,21 @@ public enum Format {
     DTD, SRT, TSV, WIX,
     ARCHIVE, XINI, TS;
 
+    // Plain text formats
+    public static final Set<Format> textFormats
+            = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            TXT, CSV, XML, HTML, HTM, XHTML, PHP, JSON, TXML, YAML, XLIFF,
+            SDLXLIFF, DITA, IDML, RESX, STRINGS, PO, ARCHIVE, PROPERTIES,
+            DTD, SRT, TSV, WIX
+            )));
+
+    // OCR formats
+    public static final Set<Format> OCRFormats
+            = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            PDF, BMP, GIF, PNG, JPEG, TIFF
+            )));
+
+
     // Generate a dictionary mapping the extension to its enum constant
     private static final Map<String, Format> supportedFormats;
     static {
@@ -38,31 +53,14 @@ public enum Format {
                 });
     }
 
-    // Plain text formats
-    private static final Set<Format> textFormats;
-    static {
-        textFormats = new HashSet<>(Arrays.asList(
-                TXT, CSV, XML, HTML, HTM, XHTML, PHP, JSON, TXML, YAML, XLIFF,
-                SDLXLIFF, DITA, IDML, RESX, STRINGS, PO, ARCHIVE, PROPERTIES, DTD, SRT, TSV, WIX
-        ));
-    }
 
-
-    /**
-     * Check whether a format is plain text or not
-     * @param format Format
-     * @return True if plain text, false otherwise
-     */
     public static boolean isPlainTextFormat(Format format) {
         return textFormats.contains(format);
     }
+    public static boolean isOCRFormat(Format format) {
+        return OCRFormats.contains(format);
+    }
 
-
-    /**
-     * Parse the extension and return the format
-     * @param extension Extension (with or without dot)
-     * @return Format
-     */
     public static Format parse(String extension) {
 
         // Remove the dot, if it exists
@@ -87,42 +85,33 @@ public enum Format {
 
         // If it is not supported, throw an exception
         if (format == null)
-            throw new FormatNotSupportedException(extension);
+            throw new UnsupportedFormatException(extension);
 
         // Else, return it
         return format;
 
     }
 
-    /**
-     * Obtain the format of a given filename
-     * @param filename Filename we want to know the format
-     * @return File's format
-     * @throws FormatNotSupportedException If the file's format is not supported
-     */
     public static Format getFormat(String filename) {
         return parse(FilenameUtils.getExtension(filename));
     }
 
-
-    /**
-     * Obtain the format of a given file
-     * @param file File we want to know the format
-     * @return File's format
-     * @throws FormatNotSupportedException If the file's format is not supported
-     */
     public static Format getFormat(File file) {
         return parse(FilenameUtils.getExtension(file.getName()));
     }
 
-
     /**
-     * To string returning the extension of the format (without dot)
-     * @return Format's extension
+     * Returns the extension of the format without dot in lowercase
      */
     @Override
     public String toString() {
         return name().toLowerCase();
+    }
+
+    public static class UnsupportedFormatException extends IllegalArgumentException {
+        public UnsupportedFormatException(String format) {
+            super("Format \""+ format +"\" is not supported");
+        }
     }
 
 }

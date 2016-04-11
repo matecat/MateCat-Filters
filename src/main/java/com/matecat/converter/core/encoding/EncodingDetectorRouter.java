@@ -1,7 +1,7 @@
 package com.matecat.converter.core.encoding;
 
 
-import com.matecat.converter.core.format.Format;
+import com.matecat.converter.core.Format;
 
 import java.io.File;
 

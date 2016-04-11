@@ -1,13 +1,6 @@
 package com.matecat.converter.core.okapiclient;
 
-import com.matecat.converter.core.format.Format;
-import junit.framework.Assert;
-import net.sf.okapi.common.filters.IFilter;
 import org.junit.Test;
-
-import java.util.Arrays;
-
-import static org.junit.Assert.*;
 
 
 public class OkapiFilterFactoryTest {

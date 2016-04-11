@@ -2,11 +2,9 @@ package com.matecat.converter.core;
 
 import com.matecat.converter.core.encoding.Encoding;
 import com.matecat.converter.core.encoding.EncodingDetectorRouter;
-import com.matecat.converter.core.encoding.ICUEncodingDetector;
 import com.matecat.converter.core.encoding.IEncodingDetector;
-import com.matecat.converter.core.format.Format;
-import com.matecat.converter.core.format.FormatNotSupportedException;
-import com.matecat.converter.core.format.converters.Converters;
+import com.matecat.converter.core.util.Config;
+import com.matecat.converter.core.winconverter.WinConverterRouter;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 import org.slf4j.Logger;
@@ -32,7 +30,6 @@ public class XliffGenerator {
 
     // Other module's instances
     private IEncodingDetector encodingDetector = new EncodingDetectorRouter();
-    private Converters converters = new Converters();
 
 
     /**
@@ -61,20 +58,17 @@ public class XliffGenerator {
     
 	/**
      * Generate the Xliff file from the stored inputs
-     * @throws FormatNotSupportedException if the file is not supported and cannot be converted to supported file
      * @return Xliff file
      */
-    public File generate() {
+    public File generate() throws Exception {
 
         // 0. Load the file
         Format originalFormat = Format.getFormat(this.file);
         File file = this.file;
 
         // 1. If the file it's not supported, convert it
-        if (!OkapiClient.isSupported(originalFormat)) {
-            Format outputFormat = converters.getPreferredConversion(originalFormat);
-            LOGGER.info("Converting file from {} to {}", originalFormat, outputFormat);
-            file = converters.convert(this.file, outputFormat);
+        if (Config.winConvEnabled && !OkapiClient.isSupported(originalFormat)) {
+            file = WinConverterRouter.convert(this.file);
         }
 
         // 2. Detect the encoding

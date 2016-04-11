@@ -1,4 +1,4 @@
-package com.matecat.converter.core.format.converters;
+package com.matecat.converter.core.winconverter;
 
 /**
  * Exception thrown by an internal error of the converter

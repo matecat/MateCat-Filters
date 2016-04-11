@@ -1,6 +1,6 @@
 package com.matecat.converter.core.okapiclient;
 
-import static com.matecat.converter.core.format.Format.SDLXLIFF;
+import static com.matecat.converter.core.Format.SDLXLIFF;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.matecat.converter.core.XliffProcessor;
 import com.matecat.converter.core.encoding.Encoding;
-import com.matecat.converter.core.format.Format;
+import com.matecat.converter.core.Format;
 import com.matecat.converter.core.util.Config;
 import com.matecat.converter.okapi.steps.segmentation.AddIcuHintsStep;
 import com.matecat.converter.okapi.steps.segmentation.RemoveIcuHintsStep;

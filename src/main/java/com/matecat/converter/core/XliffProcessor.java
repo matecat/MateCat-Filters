@@ -1,7 +1,7 @@
 package com.matecat.converter.core;
 
-import com.matecat.converter.core.format.Format;
-import com.matecat.converter.core.format.converters.Converters;
+import com.matecat.converter.core.util.Config;
+import com.matecat.converter.core.winconverter.WinConverterRouter;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 import org.apache.commons.io.FileUtils;
@@ -128,7 +128,7 @@ public class XliffProcessor {
      * Get the original file embedded into the XLF
      * @return Original file
      */
-    public File getOriginalFile() {
+    public File getOriginalFile() throws Exception {
 
         // Reconstruct the pack
         if (pack == null)
@@ -151,7 +151,7 @@ public class XliffProcessor {
      * This is produced using the original file, the manifest and the XLF
      * @return Derived file
      */
-    public File getDerivedFile() {
+    public File getDerivedFile() throws Exception {
 
         // Reconstruct the pack
         if (pack == null)
@@ -175,13 +175,13 @@ public class XliffProcessor {
      * @param originalFormat Original format
      * @return Converted file if possible, input file otherwise
      */
-    private static File convertToOriginalFormat(File file, Format originalFormat) {
+    private static File convertToOriginalFormat(File file, Format originalFormat) throws Exception {
         Format currentFormat = Format.getFormat(file);
-        if (currentFormat != originalFormat) {
-            Converters converters = new Converters();
-            if (converters.isConvertible(currentFormat, originalFormat)) {
-                LOGGER.info("Converting file from {} to {}", currentFormat, originalFormat);
-                return new Converters().convert(file, originalFormat);
+        if (Config.winConvEnabled && currentFormat != originalFormat && !Format.isOCRFormat(originalFormat)) {
+            try {
+                file = WinConverterRouter.convert(file, originalFormat);
+            } catch (WinConverterRouter.NoRegisteredConvertersException e) {
+                LOGGER.warn("No WinConverters registered, can't convert back to the original format");
             }
         }
         return file;

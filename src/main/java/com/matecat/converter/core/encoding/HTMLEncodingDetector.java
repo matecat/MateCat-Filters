@@ -1,6 +1,6 @@
 package com.matecat.converter.core.encoding;
 
-import com.matecat.converter.core.format.Format;
+import com.matecat.converter.core.Format;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
