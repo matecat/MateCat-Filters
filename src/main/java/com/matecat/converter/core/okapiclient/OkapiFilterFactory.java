@@ -176,8 +176,10 @@ import java.util.Set;
         conditionalParameters.setCleanupAggressively(true);
         conditionalParameters.setTranslateDocProperties(false);
         conditionalParameters.setTranslateComments(false);
-        conditionalParameters.setAddTabAsCharacter(true);
         conditionalParameters.setAddLineSeparatorCharacter(true);
+        conditionalParameters.setAddTabAsCharacter(true);
+        conditionalParameters.setReplaceNoBreakHyphenTag(true);
+        conditionalParameters.setIgnoreSoftHyphenTag(true);
         // Word specific
         conditionalParameters.setTranslateWordExcludeGraphicMetaData(true);
         conditionalParameters.setTranslateWordHeadersFooters(true);
