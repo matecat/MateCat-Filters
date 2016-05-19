@@ -44,14 +44,21 @@ public class ConvertToXliffResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces("application/json")
     public Response convert(
-            @FormDataParam("sourceLocale") String sourceLanguageCode,
-            @FormDataParam("targetLocale") String targetLanguageCode,
             @FormDataParam("documentContent") InputStream fileInputStream,
             @FormDataParam("documentContent") FormDataContentDisposition contentDispositionHeader,
+            @FormDataParam("fileName") String filename,
+            @FormDataParam("sourceLocale") String sourceLanguageCode,
+            @FormDataParam("targetLocale") String targetLanguageCode,
             @FormDataParam("segmentation") String segmentation) {
 
-        // Filename and logging
-        String filename = FilenameUtils.getName(contentDispositionHeader.getFileName());
+        // Due to a bug in the MIMEPull library (MIMEParser.java line 510),
+        // contentDispositionHeader.getFileName() returns the filename in ISO-8859-1
+        // even if it was sent in UTF-8. Unless this bug is there, here is a little
+        // workaround: you can send the filename in UTF-8 in the 'fileName' POST
+        // param. If the 'fileName' parameter is present, it overrides the name of
+        // the file in 'documentContent'
+        if (filename == null || filename.isEmpty())
+            filename = FilenameUtils.getName(contentDispositionHeader.getFileName());
 
         // Make extension ALWAYS lower case.
         // The original extension of the file is written in the output XLIFF
