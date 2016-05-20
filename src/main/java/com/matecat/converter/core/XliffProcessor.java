@@ -53,6 +53,7 @@ public class XliffProcessor {
     private OkapiPack pack;
 
     // Inner properties
+    private String originalFilename = null;
     private Format originalFormat;
     private Locale sourceLanguage, targetLanguage;
 
@@ -207,10 +208,14 @@ public class XliffProcessor {
             Element root = document.getDocumentElement();
 
             Element fileElement = (Element) root.getFirstChild();
+            Element manifestElement = (Element) fileElement.getNextSibling();
+
+            // Reconstruct the manifest
+            String originalFilename = reconstructManifest(packFolder, manifestElement);
 
             checkProducerVersion(fileElement);
 
-            reconstructOriginalFile(packFolder, fileElement);
+            reconstructOriginalFile(packFolder, fileElement, originalFilename);
 
             extractOriginalFormat(fileElement);
 
@@ -218,12 +223,8 @@ public class XliffProcessor {
             this.sourceLanguage = new Locale(fileElement.getAttribute("source-language"));
             this.targetLanguage = new Locale(fileElement.getAttribute("target-language"));
 
-            // Reconstruct the manifest
-            Element manifestElement = (Element) fileElement.getNextSibling();
-            reconstructManifest(packFolder, manifestElement);
-
             // Reconstruct the original xlf
-            reconstructOriginalXlf(packFolder, document, fileElement, manifestElement);
+            reconstructOriginalXlf(packFolder, document, fileElement, manifestElement, originalFilename);
 
             // Generate the pack (which will check the extracted files)
             this.pack = new OkapiPack(packFolder);
@@ -309,12 +310,14 @@ public class XliffProcessor {
      * @param packFolder Pack's folder
      * @param fileElement XML element containing the file
      */
-    private void reconstructOriginalFile(File packFolder, Element fileElement) {
+    private void reconstructOriginalFile(File packFolder, Element fileElement, String originalFilename) {
 
         try {
 
             // Filename
-            String filename = getFilename(fileElement);
+            if (originalFilename == null) {
+                originalFilename = getFilename(fileElement);
+            }
 
             // Contents
             Element internalFileElement = (Element) fileElement.getFirstChild().getFirstChild().getFirstChild();
@@ -329,7 +332,7 @@ public class XliffProcessor {
                 originalFolder.mkdir();
 
             // Reconstruct the original file
-            File originalFile = new File(originalFolder.getPath() + File.separator + filename);
+            File originalFile = new File(originalFolder.getPath() + File.separator + originalFilename);
             originalFile.createNewFile();
             FileUtils.writeByteArrayToFile(originalFile, originalFileBytes);
 
@@ -345,7 +348,7 @@ public class XliffProcessor {
      * @param packFolder Pack's folder
      * @param manifestElement XML element containing the manifest
      */
-    private void reconstructManifest(File packFolder, Element manifestElement) {
+    private String reconstructManifest(File packFolder, Element manifestElement) {
 
         try {
 
@@ -375,10 +378,26 @@ public class XliffProcessor {
             // the one defined in the XLIFF.
             manifest = manifest.replaceFirst("(<manifest [^>]* ?target=\")[^\"]+\"", "$1" + targetLanguage + "\"");
 
+            // Extract source filename from manifest
+            // Originally this class used to extract the original filename
+            // from the "original" attribute of the first <file> element in
+            // the XLIFF. Unfortunately some bugs in the encoding of the
+            // filename in the HTTP communication caused many XLIFFs to be
+            // created with corrupted text inside the "original" attribute.
+            // So the pack was reconstructed using the "original" attribute,
+            // but Okapi could not find the files because the filenames
+            // in the manifest were different. To solve this bug I ignore
+            // the "original" attribute and extract it directly from manifest.
+            // TODO: remove the "original" attribute and rethink class design
+            Matcher matcher = Pattern.compile(" relativeInputPath *= *\"(.+?)\"").matcher(manifest);
+            String originalFilename = (matcher.find() ? matcher.group(1) : null);
+
             // Reconstruct the manifest file
             File manifestFile = new File(packFolder.getPath() + File.separator + OkapiPack.MANIFEST_FILENAME);
             manifestFile.createNewFile();
             FileUtils.writeStringToFile(manifestFile, manifest, StandardCharsets.UTF_8);
+
+            return originalFilename;
         }
         catch (Exception e) {
             throw new RuntimeException("It was not possible to reconstruct the manifest file");
@@ -396,7 +415,7 @@ public class XliffProcessor {
      * @param fileElement XML element containing the file
      * @param manifestElement XML element containing the manifest
      */
-    private void reconstructOriginalXlf(File packFolder, Document document, Element fileElement, Element manifestElement) {
+    private void reconstructOriginalXlf(File packFolder, Document document, Element fileElement, Element manifestElement, String originalFilename) {
 
         try {
 
@@ -404,7 +423,9 @@ public class XliffProcessor {
             Element root = document.getDocumentElement();
 
             // Filename
-            String filename = getFilename(fileElement);
+            if (originalFilename == null) {
+                originalFilename = getFilename(fileElement);
+            }
 
             // Obtain the original xlf
             root.removeChild(fileElement);
@@ -418,7 +439,7 @@ public class XliffProcessor {
                 workFolder.mkdir();
 
             // Save the file
-            String xlfOutputPath = workFolder.getPath() + File.separator + filename + ".xlf";
+            String xlfOutputPath = workFolder.getPath() + File.separator + originalFilename + ".xlf";
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
 
             DOMSource domSource = new DOMSource(document);
