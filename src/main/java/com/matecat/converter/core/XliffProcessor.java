@@ -6,6 +6,8 @@ import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -390,7 +392,7 @@ public class XliffProcessor {
             // the "original" attribute and extract it directly from manifest.
             // TODO: remove the "original" attribute and rethink class design
             Matcher matcher = Pattern.compile(" relativeInputPath *= *\"(.+?)\"").matcher(manifest);
-            String originalFilename = (matcher.find() ? matcher.group(1) : null);
+            String originalFilename = (matcher.find() ? StringEscapeUtils.unescapeXml(matcher.group(1)) : null);
 
             // Reconstruct the manifest file
             File manifestFile = new File(packFolder.getPath() + File.separator + OkapiPack.MANIFEST_FILENAME);
