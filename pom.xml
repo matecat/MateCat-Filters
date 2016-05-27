@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
-            <version>55.1</version>
+            <version>57.1</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
