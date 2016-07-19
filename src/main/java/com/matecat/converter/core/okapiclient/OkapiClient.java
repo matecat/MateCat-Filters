@@ -1,6 +1,8 @@
 package com.matecat.converter.core.okapiclient;
 
 import static com.matecat.converter.core.Format.SDLXLIFF;
+import static net.sf.okapi.common.LocaleId.CHINA_CHINESE;
+import static net.sf.okapi.common.LocaleId.JAPANESE;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +26,8 @@ import net.sf.okapi.steps.rainbowkit.creation.ExtractionStep;
 import net.sf.okapi.steps.rainbowkit.postprocess.MergingStep;
 import net.sf.okapi.steps.segmentation.SegmentationStep;
 
+import net.sf.okapi.whitespacecorrection.AddWhitespaceAfterKutenStep;
+import net.sf.okapi.whitespacecorrection.RemoveWhitespaceAfterKutenStep;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -353,13 +357,39 @@ public class OkapiClient {
             // Add the extraction step
             driver.addStep(new RawDocumentToFilterEventsStep());
 
+            XliffProcessor processor = new XliffProcessor(pack.getXlf());
+            LocaleId sourceLanguage = new LocaleId(processor.getSourceLanguage());
+            LocaleId targetLanguage = new LocaleId(processor.getTargetLanguage());
+
+            // Kuten (that is the char "。") is the "period" for the asian languages.
+            // This character has an embedded trailing space, and this causes
+            // problems when it is converted to/from a regular period + space, i.e. ". "
+            boolean sourceLanguageHasKuten = LocaleId.JAPANESE.sameLanguageAs(sourceLanguage) || LocaleId.CHINA_CHINESE.sameLanguageAs(sourceLanguage);
+            boolean targetLanguageHasKuten = LocaleId.JAPANESE.sameLanguageAs(targetLanguage) || LocaleId.CHINA_CHINESE.sameLanguageAs(targetLanguage);
+
+            if (sourceLanguageHasKuten && !targetLanguageHasKuten) {
+                // If source language has kutens but target language has not,
+                // all the target segments ending with just a period will have
+                // no space after them, and will be merged all "glued" together.
+                // To compensate, add an ending space to each target segment
+                // which source ends with a kuten.
+                driver.addStep(new AddWhitespaceAfterKutenStep());
+            }
+
+            if (targetLanguageHasKuten && !sourceLanguageHasKuten) {
+                // If target language has kutens but source has not, the merged
+                // output will contain many extra spaces. This because CATs hide
+                // trailing spaces after ending periods, but put them back in
+                // in place in the XLIFF.
+                // To compensate, replace any kuten + space with just a kuten in
+                // the target segments.
+                driver.addStep(new RemoveWhitespaceAfterKutenStep());
+            }
+
             // Add the t-kit merging step
             driver.addStep(createMergingStep());
 
             // Add the input file (manifest file)
-            XliffProcessor processor = new XliffProcessor(pack.getXlf());
-            LocaleId sourceLanguage = new LocaleId(processor.getSourceLanguage());
-            LocaleId targetLanguage = new LocaleId(processor.getTargetLanguage());
             RawDocument rawDoc = new RawDocument(pack.getManifest().toURI(),
                     "UTF-8", sourceLanguage, targetLanguage,
                     "okf_rainbowkit-noprompt");
