@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
+import com.matecat.converter.EscapeTwigStep;
 import net.sf.okapi.common.LocaleId;
 import net.sf.okapi.common.Util;
 import net.sf.okapi.common.filters.FilterConfigurationMapper;
@@ -290,6 +291,8 @@ public class OkapiClient {
 
         // Create the pipeline driver
         IPipelineDriver driver = createOkapiPipelineDriver(file.getParent());
+
+        driver.addStep(new EscapeTwigStep());
 
         // Filtering step
         RawDocumentToFilterEventsStep filteringStep = new RawDocumentToFilterEventsStep();
