@@ -1,15 +1,12 @@
 package com.matecat.converter.core.okapiclient;
 
 import static com.matecat.converter.core.Format.SDLXLIFF;
-import static net.sf.okapi.common.LocaleId.CHINA_CHINESE;
-import static net.sf.okapi.common.LocaleId.JAPANESE;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
-import com.matecat.converter.EscapeTwigStep;
 import net.sf.okapi.common.LocaleId;
 import net.sf.okapi.common.Util;
 import net.sf.okapi.common.filters.FilterConfigurationMapper;
@@ -272,7 +269,7 @@ public class OkapiClient {
      * @param file File
      * @return Okapi's result pack
      */
-    public static OkapiPack generatePack(Locale sourceLanguage, Locale targetLanguage, Encoding encoding, File file, String segmentation) {
+    public static OkapiPack generatePack(Locale sourceLanguage, Locale targetLanguage, Encoding encoding, File file, String segmentation, IFilter filter) {
 
         // Check inputs
         if (sourceLanguage == null)
@@ -292,11 +289,11 @@ public class OkapiClient {
         // Create the pipeline driver
         IPipelineDriver driver = createOkapiPipelineDriver(file.getParent());
 
-        driver.addStep(new EscapeTwigStep());
-
         // Filtering step
         RawDocumentToFilterEventsStep filteringStep = new RawDocumentToFilterEventsStep();
-        IFilter filter = OkapiFilterFactory.getFilter(file);
+        if (filter == null) {
+            filter = OkapiFilterFactory.getFilter(file);
+        }
         filteringStep.setFilter(filter);
         driver.addStep(filteringStep);
 

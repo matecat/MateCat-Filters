@@ -5,10 +5,10 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.util.*;
 
+import com.matecat.filters.basefilters.DefaultFilter;
+import com.matecat.filters.basefilters.IFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.matecat.converter.core.okapiclient.customfilters.ICustomFilter;
 
 
 /**
@@ -77,24 +77,24 @@ public class Config {
             winConvConsulAddress = props.getProperty("win-conv-consul-address");
             winConvConsulService = props.getProperty("win-conv-consul-service");
 
-            String customFiltersString = props.getProperty("custom-filters");
-            if (customFiltersString == null) {
-                customFilters = Collections.unmodifiableList(new ArrayList<>());
-            } else {
-                List<Class> customFiltersList = new ArrayList<>();
-                String[] customFiltersNames = props.getProperty("custom-filters").split(",");
-                for (String customFilterName : customFiltersNames) {
-                    String cleanCustomFilterName = customFilterName.trim();
-                    Class customFilter = Class.forName(cleanCustomFilterName);
-                    if (!ICustomFilter.class.isAssignableFrom(customFilter)) {
-                        throw new RuntimeException("Error loading custom filters classes: the class " + cleanCustomFilterName + " doesn't implement the ICustomFilter interface.");
+
+            String filtersString = props.getProperty("custom-filters");
+            List<Class> filtersList = new ArrayList<>();
+            if (filtersString != null) {
+                String[] filtersNames = filtersString.split(",");
+                for (String filterName : filtersNames) {
+                    filterName = filterName.trim();
+                    Class filter = Class.forName(filterName);
+                    if (!IFilter.class.isAssignableFrom(filter)) {
+                        throw new RuntimeException("Exception loading custom filters classes: the class " + filterName + " doesn't implement the IFilter interface.");
                     }
-                    customFiltersList.add(customFilter);
+                    filtersList.add(filter);
                 }
-                customFilters = Collections.unmodifiableList(customFiltersList);
             }
-            
-            
+            filtersList.add(DefaultFilter.class);
+            customFilters = Collections.unmodifiableList(filtersList);
+
+
             // load the custom segmentation directory value
             LOGGER.info("Reading custom segmentation folder property: custom-segmentation-folder");
             customSegmentationFolder = checkFolderValidity(props.getProperty("custom-segmentation-folder"), false, false);

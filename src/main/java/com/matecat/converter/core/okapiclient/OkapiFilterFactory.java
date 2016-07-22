@@ -50,8 +50,6 @@ import java.util.Set;
     private static final String HTML_CONFIG_FILENAME = "okf_html-custom.fprm";
     private static final String DITA_CONFIG_FILENAME = "okf_xmlstream@dita-custom.fprm";
 
-    private static final CustomFiltersRouter customFiltersRouter = new CustomFiltersRouter();
-
     // Formats supported by the filter factory
     protected static final Set<Format> SUPPORTED_FORMATS;
     static {
@@ -116,9 +114,6 @@ import java.util.Set;
      * @return
      */
     protected static IFilter getFilter(File file) {
-        IFilter filter = customFiltersRouter.getFilter(file);
-        if (filter != null) return filter;
-
         final Format format = Format.getFormat(file);
         switch (format) {
             case DOCX:
@@ -194,7 +189,7 @@ import java.util.Set;
 
     private static PlainTextFilter getPlainTextFilter() {
         PlainTextFilter filter = new PlainTextFilter();
-        // net.sf.okapi.filters.plaintext.Parameters params = (net.sf.okapi.filters.plaintext.Parameters) filter.getParameters();
+        // net.sf.okapi.customFilters.plaintext.Parameters params = (net.sf.okapi.customFilters.plaintext.Parameters) filter.getParameters();
         return filter;
     }
 
@@ -217,7 +212,7 @@ import java.util.Set;
 
     private static OpenOfficeFilter getOpenOfficeFilter() {
         OpenOfficeFilter filter = new OpenOfficeFilter();
-        // net.sf.okapi.filters.openoffice.Parameters params = (Parameters) filter.getParameters();
+        // net.sf.okapi.customFilters.openoffice.Parameters params = (Parameters) filter.getParameters();
         // params.setConvertSpacesTabs(false);
         // params.setExtractNotes(false);
         // params.setExtractReferences(false);
@@ -226,13 +221,13 @@ import java.util.Set;
 
     private static PHPContentFilter getPhpFilter() {
         PHPContentFilter filter = new PHPContentFilter();
-        // net.sf.okapi.filters.php.Parameters params = (net.sf.okapi.filters.php.Parameters) filter.getParameters();
+        // net.sf.okapi.customFilters.php.Parameters params = (net.sf.okapi.customFilters.php.Parameters) filter.getParameters();
         return filter;
     }
 
     private static PropertiesFilter getPropertiesFilter() {
         PropertiesFilter filter = new PropertiesFilter();
-        // net.sf.okapi.filters.properties.Parameters params = (net.sf.okapi.filters.properties.Parameters) filter.getParameters();
+        // net.sf.okapi.customFilters.properties.Parameters params = (net.sf.okapi.customFilters.properties.Parameters) filter.getParameters();
         // params.setExtraComments();
         // params.setEscapeExtendedChars();
         // params.setCommentsAreNotes();
@@ -242,7 +237,7 @@ import java.util.Set;
 
     private static POFilter getPoFilter() {
         POFilter filter = new POFilter();
-        // net.sf.okapi.filters.po.Parameters params = (net.sf.okapi.filters.po.Parameters) filter.getParameters();
+        // net.sf.okapi.customFilters.po.Parameters params = (net.sf.okapi.customFilters.po.Parameters) filter.getParameters();
         // params.setAllowEmptyOutputTarget();
         // params.setBilingualMode();
         // params.setWrapContent();
@@ -251,7 +246,7 @@ import java.util.Set;
 
     private static TsFilter getTSFilter() {
         TsFilter filter = new TsFilter();
-        // net.sf.okapi.filters.ts.Parameters params = (net.sf.okapi.filters.ts.Parameters) filter.getParameters();
+        // net.sf.okapi.customFilters.ts.Parameters params = (net.sf.okapi.customFilters.ts.Parameters) filter.getParameters();
         // params.setEscapeGT();
         // params.setDecodeByteValues();
         return filter;
@@ -272,7 +267,7 @@ import java.util.Set;
 
     private static JSONFilter getJsonFilter() {
         JSONFilter filter = new JSONFilter();
-        // net.sf.okapi.filters.json.Parameters params = (net.sf.okapi.filters.json.Parameters) filter.getParameters();
+        // net.sf.okapi.customFilters.json.Parameters params = (net.sf.okapi.customFilters.json.Parameters) filter.getParameters();
         // params.setExtractAllPairs();
         // params.setExtractStandalone();
         // params.setUseFullKeyPath();
@@ -282,7 +277,7 @@ import java.util.Set;
 
     private static IDMLFilter getIdmlFilter() {
         IDMLFilter filter = new IDMLFilter();
-        // net.sf.okapi.filters.idml.Parameters params = (net.sf.okapi.filters.idml.Parameters) filter.getParameters();
+        // net.sf.okapi.customFilters.idml.Parameters params = (net.sf.okapi.customFilters.idml.Parameters) filter.getParameters();
         // params.setExtractHiddenLayers();
         // params.setExtractMasterSpreads();
         // params.setExtractNotes();
@@ -298,14 +293,14 @@ import java.util.Set;
 
     private static TXMLFilter getTxmlFilter() {
         TXMLFilter filter = new TXMLFilter();
-        // net.sf.okapi.filters.txml.Parameters params = (net.sf.okapi.filters.txml.Parameters) filter.getParameters();
+        // net.sf.okapi.customFilters.txml.Parameters params = (net.sf.okapi.customFilters.txml.Parameters) filter.getParameters();
         // params.setAllowEmptyOutputTarget();
         return filter;
     }
 
     private static YamlFilter getYmlFilter() {
         YamlFilter filter = new YamlFilter();
-        // net.sf.okapi.filters.railsyaml.Parameters params = (net.sf.okapi.filters.railsyaml.Parameters) filter.getParameters();
+        // net.sf.okapi.customFilters.railsyaml.Parameters params = (net.sf.okapi.customFilters.railsyaml.Parameters) filter.getParameters();
         // params.setEscapeNonAscii();
         return filter;
     }
@@ -316,7 +311,7 @@ import java.util.Set;
 
     private static MIFFilter getMifFilter() {
         MIFFilter filter = new MIFFilter();
-        // net.sf.okapi.filters.mif.Parameters params = (net.sf.okapi.filters.mif.Parameters) filter.getParameters();
+        // net.sf.okapi.customFilters.mif.Parameters params = (net.sf.okapi.customFilters.mif.Parameters) filter.getParameters();
         // params.setExtractBodyPages();
         // params.setExtractHiddenPages();
         // params.setExtractIndexMarkers();
@@ -341,14 +336,14 @@ import java.util.Set;
 
     private static XINIFilter getXiniFilter() {
         XINIFilter filter = new XINIFilter();
-        //net.sf.okapi.filters.xini.Parameters params = (net.sf.okapi.filters.xini.Parameters) filter.getParameters();
+        //net.sf.okapi.customFilters.xini.Parameters params = (net.sf.okapi.customFilters.xini.Parameters) filter.getParameters();
         //params.setUseOkapiSegmentation();
         return filter;
     }
 
     private static TTXFilter getTTXFilter() {
         TTXFilter filter = new TTXFilter();
-        //net.sf.okapi.filters.ttx.Parameters params = (net.sf.okapi.filters.ttx.Parameters) filter.getParameters();
+        //net.sf.okapi.customFilters.ttx.Parameters params = (net.sf.okapi.customFilters.ttx.Parameters) filter.getParameters();
         //params.setEscapeGT();
         return filter;
     }

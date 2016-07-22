@@ -6,7 +6,7 @@ import org.junit.Test;
 public class OkapiFilterFactoryTest {
 
     /**
-     * Check that the list of supported formats and the filters available
+     * Check that the list of supported formats and the customFilters available
      * are synchronized; and that it's possible to get it without exceptions
      */
     @Test

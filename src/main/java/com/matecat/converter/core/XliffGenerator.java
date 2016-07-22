@@ -7,6 +7,7 @@ import com.matecat.converter.core.util.Config;
 import com.matecat.converter.core.winconverter.WinConverterRouter;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
+import com.matecat.filters.basefilters.DefaultFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,10 +76,10 @@ public class XliffGenerator {
         Encoding encoding = encodingDetector.detect(file);
 
         // 3. Send to Okapi
-        OkapiPack okapiPack = OkapiClient.generatePack(sourceLanguage, targetLanguage, encoding, file, segmentation);
+        OkapiPack okapiPack = OkapiClient.generatePack(sourceLanguage, targetLanguage, encoding, file, segmentation, null);
 
         // 4. Generate and return the xliff
-        return XliffBuilder.build(okapiPack, originalFormat);
+        return XliffBuilder.build(okapiPack, originalFormat, DefaultFilter.class);
     }
 
 }

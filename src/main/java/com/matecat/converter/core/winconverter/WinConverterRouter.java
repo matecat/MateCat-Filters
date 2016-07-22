@@ -259,7 +259,7 @@ public class WinConverterRouter {
         throw new NoReachableConvertersException();
     }
 
-    public static File convert(final File file) throws Exception {
+    public static File convert(final File file) throws NoRegisteredConvertersException, NoReachableConvertersException, WinConverterClient.WinConverterException {
         Format inputFormat = Format.getFormat(file);
         Format outputFormat = FORMATS_MAPPINGS.get(inputFormat);
         return convert(file, outputFormat);

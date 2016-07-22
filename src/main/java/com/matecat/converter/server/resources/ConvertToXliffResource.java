@@ -14,13 +14,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import net.sf.okapi.common.exceptions.OkapiUnexpectedRevisionException;
+import com.matecat.filters.basefilters.FiltersRouter;
 import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.matecat.converter.core.XliffGenerator;
 import com.matecat.converter.core.project.Project;
 import com.matecat.converter.core.project.ProjectFactory;
 import com.matecat.converter.server.JSONResponseFactory;
@@ -87,7 +87,7 @@ public class ConvertToXliffResource {
             project = ProjectFactory.createProject(filename, fileInputStream);
 
             // Retrieve the xlf
-            File xlf = new XliffGenerator(sourceLanguage, targetLanguage, project.getFile(), segmentation).generate();
+            File xlf = new FiltersRouter().extract(project.getFile(), sourceLanguage, targetLanguage, segmentation);
 
             // Create response
             response = Response

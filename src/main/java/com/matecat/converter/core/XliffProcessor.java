@@ -6,8 +6,8 @@ import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -18,14 +18,16 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Locale;
@@ -58,6 +60,9 @@ public class XliffProcessor {
     private String originalFilename = null;
     private Format originalFormat;
     private Locale sourceLanguage, targetLanguage;
+
+    private boolean filterExtracted = false;
+    private String filter;
 
 
     /**
@@ -102,6 +107,48 @@ public class XliffProcessor {
     }
 
 
+    public String getFilter() {
+        if (filterExtracted) return filter;
+
+        filter = extractFilter();
+        filterExtracted = true;
+        return filter;
+    }
+
+    private String extractFilter() {
+        InputStream inputStream = null;
+        XMLStreamReader stax = null;
+        try {
+            inputStream = new FileInputStream(xlf);
+            stax = XMLInputFactory.newInstance().createXMLStreamReader(inputStream);
+
+            // Default value is null
+            String filter = null;
+
+            // Look for a <file> tag in the first 1000 chars
+            while (stax.hasNext() && stax.getLocation().getCharacterOffset() < 1000) {
+                int event = stax.next();
+
+                if (event == XMLStreamConstants.START_ELEMENT && stax.getLocalName().equals("file")) {
+                    filter = stax.getAttributeValue(null, "filter");
+                    break;
+                }
+            }
+
+            return filter;
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            try {
+                if (stax != null) stax.close();
+            } catch (XMLStreamException ignored) {}
+            IOUtils.closeQuietly(inputStream);
+        }
+    }
+
+
     /**
      * Extract language from the XLF
      */
@@ -119,7 +166,7 @@ public class XliffProcessor {
             this.targetLanguage = new Locale(firstFile.getAttribute("target-language"));
         }
         catch (ParserConfigurationException | SAXException | IOException e) {
-            throw new RuntimeException("It was not possible to extract the source and target languages. Corrupted xlf?");
+            throw new RuntimeException("It was not possible to extract the source and target languages. Corrupted xlf?", e);
         }
     }
 
@@ -151,7 +198,7 @@ public class XliffProcessor {
      * This is produced using the original file, the manifest and the XLF
      * @return Derived file
      */
-    public File getDerivedFile() throws Exception {
+    public File getDerivedFile() {
 
         // Reconstruct the pack
         if (pack == null)
@@ -175,13 +222,13 @@ public class XliffProcessor {
      * @param originalFormat Original format
      * @return Converted file if possible, input file otherwise
      */
-    private static File convertToOriginalFormat(File file, Format originalFormat) throws Exception {
+    private static File convertToOriginalFormat(File file, Format originalFormat) {
         Format currentFormat = Format.getFormat(file);
         if (Config.winConvEnabled && currentFormat != originalFormat && !Format.isOCRFormat(originalFormat)) {
             try {
                 file = WinConverterRouter.convert(file, originalFormat);
-            } catch (WinConverterRouter.NoRegisteredConvertersException e) {
-                LOGGER.warn("No WinConverters registered, can't convert back to the original format");
+            } catch (Exception e) {
+                throw new RuntimeException("Exception while using WinConverterRouter.convert", e);
             }
         }
         return file;

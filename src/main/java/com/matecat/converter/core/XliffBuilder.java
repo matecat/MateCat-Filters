@@ -52,7 +52,7 @@ import java.util.Base64;
  *      <body></body>
  * </file>
  */
-class XliffBuilder {
+public class XliffBuilder {
 
     // Logger
     private static Logger LOGGER = LoggerFactory.getLogger(XliffBuilder.class);
@@ -65,7 +65,7 @@ class XliffBuilder {
      * @return New XLIFF generated combining the inputs
      */
     public static File build(final OkapiPack pack) {
-        return build(pack, null);
+        return build(pack, null, null);
     }
 
 
@@ -75,7 +75,7 @@ class XliffBuilder {
      * @param originalFormat Original format, if the file was converted before processing it
      * @return New XLIFF generated combining the inputs
      */
-    public static File build(final OkapiPack pack, Format originalFormat) {
+    public static File build(final OkapiPack pack, Format originalFormat, Class filter) {
 
         // Check the inputs that are not empty
         if (pack == null)
@@ -95,7 +95,7 @@ class XliffBuilder {
         // Insert the filename, the encoded manifest and the encoded file into the xlf
         File xlf = pack.getXlf();
         String outputPath = pack.getPackFolder().getParentFile().getPath() + File.separator + filename + ".xlf";
-        return createXliff(outputPath, xlf, filename, originalFormat, encodedFile, encodedManifest);
+        return createXliff(outputPath, xlf, filename, originalFormat, filter, encodedFile, encodedManifest);
 
     }
 
@@ -127,7 +127,7 @@ class XliffBuilder {
      * @param encodedFile Encoded original file's contents
      * @param encodedManifest Encoded manifest   @return Xliff generated
      */
-    private static File createXliff(String outputPath, final File baseXLF, String filename, Format originalFormat, String encodedFile, String encodedManifest) {
+    private static File createXliff(String outputPath, final File baseXLF, String filename, Format originalFormat, Class filter, String encodedFile, String encodedManifest) {
 
         File output = null;
 
@@ -147,12 +147,12 @@ class XliffBuilder {
 
             // Add the original file
             Element manifestNode = createFileElement(document, sourceLanguage, targetLanguage,
-                    "manifest.rkm", null, encodedManifest);
+                    "manifest.rkm", null, filter, encodedManifest);
             root.insertBefore(manifestNode, root.getFirstChild());
 
             // Add the original file
             Element originalFileNode = createFileElement(document, sourceLanguage, targetLanguage,
-                    filename, originalFormat, encodedFile);
+                    filename, originalFormat, filter, encodedFile);
             root.insertBefore(originalFileNode, root.getFirstChild());
 
             // Save the file
@@ -189,7 +189,7 @@ class XliffBuilder {
      * @param encodedFile Encoded contents of the file we are storing  @return New file element
      */
     private static Element createFileElement(Document document, String sourceLanguage, String targetLanguage,
-                                             String filename, Format originalFormat, String encodedFile) {
+                                             String filename, Format originalFormat, Class filter, String encodedFile) {
 
         // Process filename and original format
         Format format = Format.getFormat(filename);
@@ -207,6 +207,7 @@ class XliffBuilder {
             LOGGER.warn("Can't write converter version in XLIFF: converter server version unknown (version available only when running from a jar)");
         }
         originalFileNode.setAttribute("tool-id", toolId);
+        originalFileNode.setAttribute("filter", filter.getCanonicalName());
         originalFileNode.setAttribute("original", filename);
         originalFileNode.setAttribute("datatype", "x-" + format);
         originalFileNode.setAttribute("source-language", sourceLanguage);

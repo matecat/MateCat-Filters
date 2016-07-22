@@ -1,9 +1,9 @@
 package com.matecat.converter.server.resources;
 
-import com.matecat.converter.core.XliffProcessor;
 import com.matecat.converter.core.project.Project;
 import com.matecat.converter.core.project.ProjectFactory;
 import com.matecat.converter.server.JSONResponseFactory;
+import com.matecat.filters.basefilters.FiltersRouter;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public class GenerateDerivedFileResource {
             project = ProjectFactory.createProject("to-derived.xlf", fileInputStream);
 
             // Retrieve the xlf
-            File derivedFile = new XliffProcessor(project.getFile()).getDerivedFile();
+            File derivedFile = new FiltersRouter().merge(project.getFile());
 
             // Create response
             response = Response
