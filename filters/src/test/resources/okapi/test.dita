@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+"http://docs.oasis-open.org/dita/v1.1/OS/dtd/concept.dtd">
+<concept id="militarytime">
+  <title>About <term>military time</term></title>
+
+  <shortdesc>This topic explains what <term>military time</term> is and why it
+  is used.</shortdesc>
+
+  <prolog>
+    <author type="creator">Heather Wymer</author>
+
+    <copyright>
+      <copyryear year="2008"/>
+
+      <copyrholder>Swinburne University of Technology</copyrholder>
+    </copyright>
+
+    <critdates>
+      <created date="6 Oct 2008"/>
+    </critdates>
+
+    <metadata>
+      <keywords>
+        <indexterm>military time</indexterm>
+
+        <indexterm>24-hour clock</indexterm>
+
+        <indexterm>standard time</indexterm>
+      </keywords>
+
+      <prodinfo>
+        <prodname>World Time Pro</prodname>
+
+        <vrmlist>
+          <vrm version="2 trial"/>
+        </vrmlist>
+      </prodinfo>
+    </metadata>
+  </prolog>
+
+  <conbody>
+    <p><term>Military time</term> refers to a timekeeping system where the
+    hours of the day are numbered 0-24, rather than the <term>standard
+    time</term> system's numbering of 1-12 am and 1-12 pm. <term>Military
+    time</term> is also called the <term>24-hour clock</term>. </p>
+
+    <p><term>Military time</term> is written in the format hh.mm, where
+    h=hours and m=minutes. Between 1.00 am and 12.59 pm <term>military
+    time</term> and <term>standard time</term> look very similar. For example,
+    4.30 am <term>standard time</term> is written as 04.30 in <term>military
+    time</term>. However, after 12.59 pm it becomes slightly more difficult to
+    correlate <term>military time</term> and <term>standard time</term>. For
+    example, 6.08 pm <term>standard time</term> is written as 18.08 in
+    <term>military time</term>. </p>
+
+    <p>After 12.59 pm, an easy way to convert <term>military time</term> to
+    <term>standard time</term> is to subtract 12 hours from the <term>military
+    time</term> then add the pm suffix. For example, subtracting 12 hours from
+    the <term>military time</term> of 17.45 gives the <term>standard
+    time</term> of 5.45 pm.</p>
+
+    <p>Midnight can be expressed as either 00.00 or 24.00 in <term>military
+    time</term>. In practise, 00.00 is used to refer to the start of a day,
+    and 24.00 to refer to the end of a day. </p>
+
+    <p>As the name suggests, <term>military time</term> is used by the
+    military to avoid potentially dangerous situations that may result if
+    soldiers misunderstand <term>standard time</term>'s am or pm suffix.
+    <term>Military time</term> is used in other industries where time is
+    critical, such as computing, aviation, railway timetables and medical
+    situations. <term>Military time</term> is the <term>ISO</term>
+    international standard for the notation of time, and is used as instead of
+    <term>standard time</term> in many countries, especially in Europe.</p>
+  </conbody>
+</concept>
