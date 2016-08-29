@@ -9,11 +9,6 @@
     <version>1.2.0</version>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>filters</module>
-        <module>custom-filters</module>
-    </modules>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
