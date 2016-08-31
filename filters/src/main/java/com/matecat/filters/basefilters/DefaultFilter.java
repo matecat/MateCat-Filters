@@ -8,6 +8,7 @@ import com.matecat.converter.core.encoding.EncodingDetectorRouter;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 import com.matecat.converter.core.util.Config;
+import com.matecat.converter.core.winconverter.WinConverterClient;
 import com.matecat.converter.core.winconverter.WinConverterRouter;
 
 import java.io.File;
@@ -17,7 +18,15 @@ public class DefaultFilter implements IFilter {
     @Override
     public boolean isSupported(File sourceFile) {
         Format originalFormat = Format.getFormat(sourceFile);
-        return OkapiClient.isSupported(originalFormat);
+        boolean supportedByOkapi = OkapiClient.isSupported(originalFormat);
+        if (supportedByOkapi) {
+            return true;
+        }
+        else if (Config.winConvEnabled) {
+            return WinConverterClient.supportedFormats.contains(originalFormat);
+        } else {
+            return false;
+        }
     }
 
     @Override
