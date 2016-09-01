@@ -18,6 +18,7 @@ import net.sf.okapi.filters.php.PHPContentFilter;
 import net.sf.okapi.filters.plaintext.PlainTextFilter;
 import net.sf.okapi.filters.po.POFilter;
 import net.sf.okapi.filters.properties.PropertiesFilter;
+import net.sf.okapi.filters.table.TableFilter;
 import net.sf.okapi.filters.table.tsv.TabSeparatedValuesFilter;
 import net.sf.okapi.filters.xml.XMLFilter;
 import net.sf.okapi.filters.yaml.YamlFilter;
@@ -322,12 +323,18 @@ import java.util.Set;
         return filter;
     }
 
-    private static CommaSeparatedValuesFilter getCSVFilter() {
-        return new CommaSeparatedValuesFilter();
+    private static TableFilter getCSVFilter() {
+        TableFilter filter = new TableFilter();
+        filter.setConfiguration(CommaSeparatedValuesFilter.FILTER_CONFIG);
+
+        return filter;
     }
 
-    private static TabSeparatedValuesFilter getTSVFilter() {
-        return new TabSeparatedValuesFilter();
+    private static TableFilter getTSVFilter() {
+        TableFilter filter = new TableFilter();
+        filter.setConfiguration(TabSeparatedValuesFilter.FILTER_CONFIG);
+
+        return filter;
     }
 
     private static ArchiveFilter getArchiveFilter() {
