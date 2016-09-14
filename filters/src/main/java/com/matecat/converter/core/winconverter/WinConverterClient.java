@@ -24,7 +24,7 @@ public class WinConverterClient {
     private final InetSocketAddress address;
 
     // Supported extensions
-    private static final List<Format> supportedFormats =
+    public static final List<Format> supportedFormats =
             Collections.unmodifiableList(Arrays.asList(
 
             // Word formats
