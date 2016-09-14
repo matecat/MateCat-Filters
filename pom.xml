@@ -32,7 +32,7 @@
         of this code, but we keep it updated in order to make it clear
         which Okapi code we are using in our builds.
         -->
-        <okapi.commit>6008c59520b0c1a06e933e216a23e28d8fdd9a02</okapi.commit>
+        <okapi.commit>eba2db195ff6a844ac4842f089c1e9bdb29318d6</okapi.commit>
     </properties>
 
     <repositories>
