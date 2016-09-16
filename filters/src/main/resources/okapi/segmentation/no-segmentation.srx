@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<srx xmlns="http://www.lisa.org/srx20" version="2.0">
+ <header>
+ </header>
+ <body>
+  <languagerules>
+  </languagerules>
+  <maprules>
+  </maprules>
+ </body>
+</srx>
