@@ -278,12 +278,9 @@ import java.util.Set;
 
     private static IDMLFilter getIdmlFilter() {
         IDMLFilter filter = new IDMLFilter();
-        // net.sf.okapi.customFilters.idml.Parameters params = (net.sf.okapi.customFilters.idml.Parameters) filter.getParameters();
-        // params.setExtractHiddenLayers();
-        // params.setExtractMasterSpreads();
-        // params.setExtractNotes();
-        // params.setNewTuOnBr();
-        // params.setSimplifyCodes();
+        net.sf.okapi.filters.idml.Parameters params = filter.getParameters();
+        params.setSkipThreshold(Integer.MAX_VALUE / 1024);
+        params.setStopWhenOverThreshold(false);
         return filter;
     }
 
