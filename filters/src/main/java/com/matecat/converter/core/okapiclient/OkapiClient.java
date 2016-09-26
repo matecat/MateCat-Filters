@@ -8,7 +8,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 import net.sf.okapi.common.LocaleId;
+import net.sf.okapi.common.MimeTypeMapper;
 import net.sf.okapi.common.Util;
+import net.sf.okapi.common.filters.FilterConfiguration;
 import net.sf.okapi.common.filters.FilterConfigurationMapper;
 import net.sf.okapi.common.filters.IFilter;
 import net.sf.okapi.common.filters.IFilterConfigurationMapper;
@@ -245,12 +247,22 @@ public class OkapiClient {
 
         // Create a filter configuration map and add mandatory configurations
         IFilterConfigurationMapper fcMapper = new FilterConfigurationMapper();
-        fcMapper.addConfigurations(RainbowKitFilter.class.getName());
-        fcMapper.addConfigurations(HtmlFilter.class.getName());
-        fcMapper.addConfigurations(TableFilter.class.getName());
-
-        // Add custom configurations
         fcMapper.addConfigurations(filter.getClass().getName());
+        fcMapper.addConfigurations(RainbowKitFilter.class.getName());
+        // Here you must add all the used subfilters configurations; this should
+        // be improved: subfilters configurations should be saved in the manifest
+        // and retrieved from there, not from the FilterConfigurationMapper
+        fcMapper.addConfigurations(TableFilter.class.getName());
+        // This is used by the XML filter
+        fcMapper.addConfiguration(new FilterConfiguration(
+                "okf_html-custom",
+                MimeTypeMapper.HTML_MIME_TYPE,
+                HtmlFilter.class.getName(),
+                "HTML",
+                "HTML customized for MateCat Filters",
+                OkapiFilterFactory.OKAPI_CUSTOM_CONFIGS_PATH + OkapiFilterFactory.HTML_CONFIG_FILENAME,
+                ".htm;.html;"
+        ));
 
         return fcMapper;
     }

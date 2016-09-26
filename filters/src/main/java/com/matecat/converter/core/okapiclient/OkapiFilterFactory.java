@@ -1,7 +1,8 @@
 package com.matecat.converter.core.okapiclient;
 
 import com.matecat.converter.core.Format;
-import com.matecat.converter.core.okapiclient.customfilters.CustomFiltersRouter;
+import net.sf.okapi.common.MimeTypeMapper;
+import net.sf.okapi.common.filters.FilterConfiguration;
 import net.sf.okapi.common.filters.FilterConfigurationMapper;
 import net.sf.okapi.common.filters.IFilter;
 import net.sf.okapi.common.filters.IFilterConfigurationMapper;
@@ -47,9 +48,9 @@ import java.util.Set;
     // Path of the configurations
     public static final String OKAPI_CUSTOM_CONFIGS_PATH = "/okapi/configurations/";
 
-    private static final String XML_CONFIG_FILENAME = "okf_xmlstream-custom.fprm";
-    private static final String HTML_CONFIG_FILENAME = "okf_html-custom.fprm";
-    private static final String DITA_CONFIG_FILENAME = "okf_xmlstream@dita-custom.fprm";
+    public static final String XML_CONFIG_FILENAME = "okf_xmlstream-custom.fprm";
+    public static final String HTML_CONFIG_FILENAME = "okf_html-custom.fprm";
+    public static final String DITA_CONFIG_FILENAME = "okf_xmlstream@dita-custom.fprm";
 
     // Formats supported by the filter factory
     protected static final Set<Format> SUPPORTED_FORMATS;
@@ -410,7 +411,18 @@ import java.util.Set;
             System.err.println("XML custom configuration could not be loaded");
         }
         IFilterConfigurationMapper cm = new FilterConfigurationMapper();
-        cm.addConfigurations(HtmlFilter.class.getName());
+        // This configuration must be copied in the FilterConfigurationMapper
+        // used in the merge phase, because the manifest doesn't carry the
+        // subfilter configuration. See OkapiClient.createFilterConfigurationMapper
+        cm.addConfiguration(new FilterConfiguration(
+                "okf_html-custom",
+                MimeTypeMapper.HTML_MIME_TYPE,
+                HtmlFilter.class.getName(),
+                "HTML",
+                "HTML customized for MateCat Filters",
+                OKAPI_CUSTOM_CONFIGS_PATH + HTML_CONFIG_FILENAME,
+                ".htm;.html;"
+        ));
         filter.setFilterConfigurationMapper(cm);
         return filter;
     }

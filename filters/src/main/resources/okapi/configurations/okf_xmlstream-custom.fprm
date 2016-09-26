@@ -1,6 +1,6 @@
 assumeWellformed: true
 preserve_whitespace: true
-global_cdata_subfilter: okf_html
+global_cdata_subfilter: okf_html-custom
 attributes:
   xml:lang:
     ruleTypes: [ATTRIBUTE_WRITABLE]
