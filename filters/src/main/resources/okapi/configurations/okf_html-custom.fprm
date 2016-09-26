@@ -4,9 +4,6 @@ attributes:
   dir:
     ruleTypes: [ATTRIBUTE_WRITABLE]
     allElementsExcept: [base, basefront, head, html, meta, param, script]
-  title:
-    ruleTypes: [ATTRIBUTE_TRANS]
-    allElementsExcept: [base, basefront, head, html, meta, param, script, title]
   lang:
     ruleTypes: [ATTRIBUTE_WRITABLE]
   xml:lang:
@@ -101,7 +98,7 @@ elements:
   a:
     ruleTypes: [INLINE]
     elementType: link
-    translatableAttributes: [title, accesskey]
+    translatableAttributes: [accesskey]
     writableLocalizableAttributes: [href]
   abbr:
     ruleTypes: [INLINE]
