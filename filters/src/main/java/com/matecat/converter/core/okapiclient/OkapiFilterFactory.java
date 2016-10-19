@@ -33,7 +33,6 @@ import net.sf.okapi.filters.xini.XINIFilter;
 import net.sf.okapi.filters.xliff.XLIFFFilter;
 import net.sf.okapi.filters.xmlstream.XmlStreamFilter;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.client.fluent.Form;
 
 import java.io.File;
 import java.io.IOException;
