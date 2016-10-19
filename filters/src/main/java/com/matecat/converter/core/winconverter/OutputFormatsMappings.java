@@ -26,9 +26,7 @@ public class OutputFormatsMappings {
 
         map.put(Format.PPT, Format.PPTM);
         map.put(Format.PPS, Format.PPTM);
-        map.put(Format.PPTX, Format.PPTM);
         map.put(Format.POT, Format.PPTM);
-        map.put(Format.PPTX, Format.PPTM);
         map.put(Format.PPSX, Format.PPTM);
         map.put(Format.POTX, Format.PPTM);
 
