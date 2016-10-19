@@ -33,6 +33,7 @@ import net.sf.okapi.filters.xini.XINIFilter;
 import net.sf.okapi.filters.xliff.XLIFFFilter;
 import net.sf.okapi.filters.xmlstream.XmlStreamFilter;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.client.fluent.Form;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +44,7 @@ import java.util.Set;
 /**
  * Filter factory
  */
-    public class OkapiFilterFactory {
+public class OkapiFilterFactory {
 
     // Path of the configurations
     public static final String OKAPI_CUSTOM_CONFIGS_PATH = "/okapi/configurations/";
@@ -57,8 +58,15 @@ import java.util.Set;
     static {
         SUPPORTED_FORMATS = new HashSet<>(Arrays.asList(
                 Format.DOCX,
+                Format.DOCM,
+                Format.DOTM,
                 Format.PPTX,
+                Format.PPTM,
+                Format.POTM,
+                Format.PPSM,
                 Format.XLSX,
+                Format.XLSM,
+                Format.XLTM,
                 Format.TXT,
                 Format.HTML,
                 Format.XHTML,
@@ -119,8 +127,15 @@ import java.util.Set;
         final Format format = Format.getFormat(file);
         switch (format) {
             case DOCX:
+            case DOCM:
+            case DOTM:
             case PPTX:
-            case XLSX:      return getOpenXMLFilter();
+            case PPTM:
+            case POTM:
+            case PPSM:
+            case XLSX:
+            case XLSM:
+            case XLTM:      return getOpenXMLFilter();
             case HTML:
             case XHTML:
             case HTM:       return getHtmlFilter();
