@@ -227,11 +227,8 @@ import java.util.Set;
 
     private static PropertiesFilter getPropertiesFilter() {
         PropertiesFilter filter = new PropertiesFilter();
-        // net.sf.okapi.customFilters.properties.Parameters params = (net.sf.okapi.customFilters.properties.Parameters) filter.getParameters();
-        // params.setExtraComments();
-        // params.setEscapeExtendedChars();
-        // params.setCommentsAreNotes();
-        // params.setConvertLFandTab();
+        net.sf.okapi.filters.properties.Parameters params = filter.getParameters();
+        params.setEscapeExtendedChars(false);   // Force UTF-8 encoding
         return filter;
     }
 
