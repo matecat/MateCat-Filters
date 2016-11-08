@@ -17,18 +17,14 @@ public class OutputFormatsMappings {
 
         map.put(Format.DOC, Format.DOCM);
         map.put(Format.DOT, Format.DOCM);
-        map.put(Format.DOTX, Format.DOCM);
         map.put(Format.RTF, Format.DOCM);
 
         map.put(Format.XLS, Format.XLSM);
         map.put(Format.XLT, Format.XLSM);
-        map.put(Format.XLTX, Format.XLSM);
 
         map.put(Format.PPT, Format.PPTM);
         map.put(Format.PPS, Format.PPTM);
         map.put(Format.POT, Format.PPTM);
-        map.put(Format.PPSX, Format.PPTM);
-        map.put(Format.POTX, Format.PPTM);
 
         map.put(Format.PDF, Format.DOCX);
         map.put(Format.BMP, Format.DOCX);
