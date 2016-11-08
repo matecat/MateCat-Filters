@@ -2,6 +2,20 @@
 
 
 
+## 1.2.1 (2016-10-20)
+
+* HTML subfiltering in XML now uses the same rules of the regular HTML filter
+* Fixed: conversion of CSV and TSV files was not working properly
+
+Changes we developed in Okapi and tested in this MateCat Filters version:
+
+* Fixed: revisions detection in DOCX files sometimes produced false positives
+* Fixed: some tags where not extracted from MIF files
+* Fixed: default thresholds for IDML files where too conservative
+* Fixed: some special inline tags in TTX where causing broken converted files
+
+
+
 ## 1.2.0 (2016-08-10)
 
 * Improved Filters architecture to allow more customization; develop and plug your own filters to support files with particular features

@@ -243,11 +243,8 @@ public class OkapiFilterFactory {
 
     private static PropertiesFilter getPropertiesFilter() {
         PropertiesFilter filter = new PropertiesFilter();
-        // net.sf.okapi.customFilters.properties.Parameters params = (net.sf.okapi.customFilters.properties.Parameters) filter.getParameters();
-        // params.setExtraComments();
-        // params.setEscapeExtendedChars();
-        // params.setCommentsAreNotes();
-        // params.setConvertLFandTab();
+        net.sf.okapi.filters.properties.Parameters params = filter.getParameters();
+        params.setEscapeExtendedChars(false);   // Force UTF-8 encoding
         return filter;
     }
 
@@ -271,6 +268,7 @@ public class OkapiFilterFactory {
         XLIFFFilter filter = new XLIFFFilter();
         net.sf.okapi.filters.xliff.Parameters params = (net.sf.okapi.filters.xliff.Parameters) filter.getParameters();
         params.setOverrideTargetLanguage(true);
+        params.setEscapeGT(true);
         // Sometimes users send XLIFFs having some <seg-source> different from the related <source>.
         // In this case the default filter's behaviour is ignoring <seg-source> and using <source> instead. But looking
         // at the resulting XLIFF from a CAT, you see a huge source segment (because it's not segmented) and a strange
