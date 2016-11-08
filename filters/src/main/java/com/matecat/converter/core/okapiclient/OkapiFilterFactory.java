@@ -56,9 +56,21 @@ import java.util.Set;
     protected static final Set<Format> SUPPORTED_FORMATS;
     static {
         SUPPORTED_FORMATS = new HashSet<>(Arrays.asList(
+                Format.DOCM,
                 Format.DOCX,
+                Format.DOTM,
+                Format.DOTX,
                 Format.PPTX,
+                Format.PPSM,
+                Format.PPSX,
+                Format.POTM,
+                Format.POTX,
+                Format.PPSM,
+                Format.PPTM,
+                Format.XLSM,
                 Format.XLSX,
+                Format.XLTM,
+                Format.XLTX,
                 Format.TXT,
                 Format.HTML,
                 Format.XHTML,
@@ -118,9 +130,20 @@ import java.util.Set;
     protected static IFilter getFilter(File file) {
         final Format format = Format.getFormat(file);
         switch (format) {
+            case DOCM:
             case DOCX:
+            case DOTM:
+            case DOTX:
+            case PPSM:
+            case PPSX:
+            case PPTM:
             case PPTX:
-            case XLSX:      return getOpenXMLFilter();
+            case POTM:
+            case POTX:
+            case XLSM:
+            case XLSX:
+            case XLTM:
+            case XLTX:      return getOpenXMLFilter();
             case HTML:
             case XHTML:
             case HTM:       return getHtmlFilter();
