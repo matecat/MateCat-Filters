@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import net.sf.okapi.common.exceptions.OkapiEncryptedDataException;
 import net.sf.okapi.common.exceptions.OkapiUnexpectedRevisionException;
 import com.matecat.filters.basefilters.FiltersRouter;
 import org.apache.commons.io.FilenameUtils;
@@ -104,6 +105,8 @@ public class ConvertToXliffResource {
             String errorMessage;
             if (e instanceof OkapiUnexpectedRevisionException) {
                 errorMessage = "Document contains revisions or comments, please review and remove them.";
+            } else if (e instanceof OkapiEncryptedDataException) {
+                errorMessage = "Document is password protected: can't access to contents.";
             } else {
                 errorMessage = e.getMessage();
             }
