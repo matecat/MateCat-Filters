@@ -16,15 +16,15 @@ public class OutputFormatsMappings {
         map = new HashMap<>();
 
         map.put(Format.DOC, Format.DOCM);
-        map.put(Format.DOT, Format.DOCM);
-        map.put(Format.RTF, Format.DOCM);
+        map.put(Format.DOT, Format.DOTM);
+        map.put(Format.RTF, Format.DOCX);
 
         map.put(Format.XLS, Format.XLSM);
-        map.put(Format.XLT, Format.XLSM);
+        map.put(Format.XLT, Format.XLTM);
 
         map.put(Format.PPT, Format.PPTM);
-        map.put(Format.PPS, Format.PPTM);
-        map.put(Format.POT, Format.PPTM);
+        map.put(Format.PPS, Format.PPSM);
+        map.put(Format.POT, Format.POTM);
 
         map.put(Format.PDF, Format.DOCX);
         map.put(Format.BMP, Format.DOCX);
