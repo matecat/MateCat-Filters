@@ -25,9 +25,8 @@ import net.sf.okapi.steps.common.RawDocumentToFilterEventsStep;
 import net.sf.okapi.steps.rainbowkit.creation.ExtractionStep;
 import net.sf.okapi.steps.rainbowkit.postprocess.MergingStep;
 import net.sf.okapi.steps.segmentation.SegmentationStep;
+import net.sf.okapi.steps.whitespacecorrection.WhitespaceCorrectionStep;
 
-import net.sf.okapi.whitespacecorrection.AddWhitespaceAfterKutenStep;
-import net.sf.okapi.whitespacecorrection.RemoveWhitespaceAfterKutenStep;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,13 +118,13 @@ public class OkapiClient {
      * @param sourceLanguage Source language
      * @param segmentation the name of the custom segmentation file to use (if any), or <code>null</code> to fallback on default
      * @param driver a reference to the current driver to be populated with the segmentation step
-     * 
+     *
      * @see Config.customSegmentationFolder
      */
     private static void createSegmentationStep(Locale sourceLanguage, String segmentation, IPipelineDriver driver) {
         SegmentationStep segmentationStep = new SegmentationStep();
         net.sf.okapi.steps.segmentation.Parameters params = (net.sf.okapi.steps.segmentation.Parameters) segmentationStep.getParameters();
-        
+
         String customSegmentationFilePath = getCustomSegmentationFilePath(segmentation);
 
         if( customSegmentationFilePath != null ) {
@@ -138,13 +137,13 @@ public class OkapiClient {
 	        driver.addStep(new RemoveIcuHintsStep());
         }
     }
-    
-    
+
+
     /**
-     * given a segmentation name, check if exists a corresponding file with custom segmentation rules and return its path 
+     * given a segmentation name, check if exists a corresponding file with custom segmentation rules and return its path
      * @param segmentation
      * @return the full path of the file containing the specified segmentation rules, or null if no custom segmentation has been defined
-     * @throws RuntimeException if the file does not exist or there are no read permissions on it 
+     * @throws RuntimeException if the file does not exist or there are no read permissions on it
      */
     private static String getCustomSegmentationFilePath(String segmentation) {
     	// no custom segmentation required
@@ -152,54 +151,54 @@ public class OkapiClient {
         	LOGGER.info("Using default segmentation");
         	return null;
         }
-        
+
 		// the custom segmentation folder is empty, skip all checks and use default rules
 		if( Config.customSegmentationFolder.isEmpty() ) {
 			LOGGER.info("No custom segmentation folder, falling back to default segmentation");
 			throw new IllegalStateException("Custom segmentation file requested, but no segmentation folder configured. File: " + Config.customSegmentationFolder + segmentation + ".srx");
 		}
-		
-		
+
+
 		/* A custom segmentation has been requested, and there is a valid custom segmentation rules folder.
 		 * Try to get the proper file, if it is not found or not accessible, raise an exception for the client.
 		 * That is why no exception handling has been defined here
 		 */
-				
+
 		// instantiate a file wrapper to make all the necessary checks
 		File segmentationFile = new File(Config.customSegmentationFolder + segmentation + ".srx");
-		
+
 		/* Check if the corresponding file exists
-		 *  
+		 *
 		 * IMPORTANT
 		 * Read permission in folder Config.customSegmentationFolder are check only once at startup time from Config class.
 		 * If these permissions change at runtime and the application becomes not allowed to read from it, the following check will fail
 		 * because it will try to read the folder content, and an empty set of files will be returned, due to the permission issue.
-		 * 
+		 *
 		 *  Sample Scenario:
 		 *   - application loads and at startup time is able to read from Config.customSegmentationFolder
 		 *   - permission on the folder change, and the application cannot read from it anymore
 		 *   - user issues a conversion request and the application tries to look for the specified segmentation file from custom folder
 		 *   - because of read limitation, OS will return the application an empty set of files
 		 *   - the application will correctly fallback on default srx file, but with following "not found" error message
-		 *  
-		 * Even though the behaviuor is correct (and this case should not happen), the error message might be trivial 
-		 */ 
+		 *
+		 * Even though the behaviuor is correct (and this case should not happen), the error message might be trivial
+		 */
 		if(!segmentationFile.isFile()) {
 			LOGGER.warn("Custom segmentation file not found. File: " + Config.customSegmentationFolder + segmentation + ".srx");
 			throw new IllegalArgumentException("Custom segmentation file not found. File: " + Config.customSegmentationFolder + segmentation + ".srx");
 		}
-	
+
 		// Check if the corresponding file can be read
 		if(!segmentationFile.canRead()) {
 			LOGGER.warn("Custom segmentation file cannot be read. File: " + Config.customSegmentationFolder + segmentation + ".srx");
 			throw new IllegalArgumentException("Custom segmentation file cannot be read. File: " + Config.customSegmentationFolder + segmentation + ".srx");
 		}
-	
+
 		// the file exists and can be read, return its path
 		LOGGER.info("Using custom segmentation in file: " + segmentationFile.getPath());
-		return segmentationFile.getPath();	
+		return segmentationFile.getPath();
     }
-    
+
 
     /**
      * Create the extraction step
@@ -385,7 +384,7 @@ public class OkapiClient {
                 // no space after them, and will be merged all "glued" together.
                 // To compensate, add an ending space to each target segment
                 // which source ends with a kuten.
-                driver.addStep(new AddWhitespaceAfterKutenStep());
+                driver.addStep(new WhitespaceCorrectionStep());
             }
 
             if (targetLanguageHasKuten && !sourceLanguageHasKuten) {
@@ -395,7 +394,7 @@ public class OkapiClient {
                 // in place in the XLIFF.
                 // To compensate, replace any kuten + space with just a kuten in
                 // the target segments.
-                driver.addStep(new RemoveWhitespaceAfterKutenStep());
+                driver.addStep(new WhitespaceCorrectionStep());
             }
 
             // Add the t-kit merging step

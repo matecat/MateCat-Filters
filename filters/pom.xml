@@ -106,7 +106,7 @@
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.steps</groupId>
-            <artifactId>okapi-step-whitespace-correction</artifactId>
+            <artifactId>okapi-step-whitespacecorrection</artifactId>
             <version>${okapi.version}</version>
         </dependency>
         <dependency>

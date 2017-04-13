@@ -26,7 +26,7 @@
         Check the pom.xml of the Okapi code to know the version you are
         installing in your local Maven repo.
         -->
-        <okapi.version>0.30-SNAPSHOT</okapi.version>
+        <okapi.version>0.32</okapi.version>
         <!--
         The following parameter is not used by Maven or any other part
         of this code, but we keep it updated in order to make it clear
