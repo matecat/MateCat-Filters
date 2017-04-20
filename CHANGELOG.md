@@ -2,12 +2,34 @@
 
 
 
+## 1.2.2 (2017-04-21)
+
+* Direct conversion of all macro-enabled MS Office files (e.g. DOCM, XLSM...)
+* XLIFF filter now preserves CDATA areas in output files
+* Better whitespace correction for conversion from/to oriental languages
+* Graceful failures on password protected MS Office files
+* Fixed: ">" char was not escaped in XLIFF filter output 
+* Proper handling of the SIGTERM, now you can quit the app with CTRL+C
+
+Changes we developed in Okapi and approved in this MateCat Filters release:
+
+* Support for CDATA preservation in XLIFF and ITS filter
+* Support for all macro-enabled MS Office files (e.g. DOCM, XLSM...)
+* Password protection detection in MS Office files
+* Fixed: paragraphs spacing lost after merge in some MS Office files
+* Fixed: some MS Excel files caused infinite loop on extraction
+* Fixed: some text not extracted from MIF files
+* Fixed: bug merging some Open Office documents with bookmarks references
+* Fixed: errors parsing lists in YAML files whose items had no space after comma
+
+
+
 ## 1.2.1 (2016-10-20)
 
 * HTML subfiltering in XML now uses the same rules of the regular HTML filter
 * Fixed: conversion of CSV and TSV files was not working properly
 
-Changes we developed in Okapi and tested in this MateCat Filters version:
+Changes we developed in Okapi and approved in this MateCat Filters release:
 
 * Fixed: revisions detection in DOCX files sometimes produced false positives
 * Fixed: some tags where not extracted from MIF files
@@ -20,7 +42,7 @@ Changes we developed in Okapi and tested in this MateCat Filters version:
 
 * Improved Filters architecture to allow more customization; develop and plug your own filters to support files with particular features
 
-Changes we developed in Okapi and tested in this MateCat Filters version:
+Changes we developed in Okapi and approved in this MateCat Filters release:
 
 * Excel files fix: visible cells merged with hidden ones were not extracted
 * Proper kuten (asian period character with embedded trailing space) support
@@ -34,7 +56,7 @@ Changes we developed in Okapi and tested in this MateCat Filters version:
 * Workaround for filenames charset bug: due to a bug in MIMEPull library, filenames are always read as ISO-8859-1. To send a UTF-8 filename you can now use the "fileName" POST parameter.
 * Updated ICU4J library for better segmentation. Noticed improvements in the break behavior on periods not followed by space.
 
-Changes we developed in Okapi and tested in this MateCat Filters version:
+Changes we developed in Okapi and approved in this MateCat Filters release:
 
 * Word, Excel and Powerpoint: improved the hyphens support
 * Word, Excel and Powerpoint: improved &lt;mc:AlternateContent> support
@@ -51,7 +73,7 @@ Changes we developed in Okapi and tested in this MateCat Filters version:
 * Fixed URL segmentation rules causing near-infinite loop.
 * Added segmentation rule for footnotes references.
 
-Changes we developed in Okapi and tested in this MateCat Filters version:
+Changes we developed in Okapi and approved in this MateCat Filters release:
 
 * MS Office: 100% RTL support
 * MS Office: improved handling of &lt;w:smartTag>
@@ -70,7 +92,7 @@ Changes we developed in Okapi and tested in this MateCat Filters version:
 
 * Big improvements to documentation, code structure and robustness
 
-Changes we developed in Okapi and tested in this MateCat Filters version:
+Changes we developed in Okapi and approved in this MateCat Filters release:
 
 * MS Office: 80% RTL support
 * MS Office: fixed issues on whitespaces handling
