@@ -278,6 +278,7 @@ import java.util.Set;
         net.sf.okapi.filters.xliff.Parameters params = (net.sf.okapi.filters.xliff.Parameters) filter.getParameters();
         params.setOverrideTargetLanguage(true);
         params.setEscapeGT(true);
+        params.setInlineCdata(true);
         // Sometimes users send XLIFFs having some <seg-source> different from the related <source>.
         // In this case the default filter's behaviour is ignoring <seg-source> and using <source> instead. But looking
         // at the resulting XLIFF from a CAT, you see a huge source segment (because it's not segmented) and a strange
