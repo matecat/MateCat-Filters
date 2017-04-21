@@ -26,13 +26,13 @@
         Check the pom.xml of the Okapi code to know the version you are
         installing in your local Maven repo.
         -->
-        <okapi.version>0.32-SNAPSHOT</okapi.version>
+        <okapi.version>0.33-SNAPSHOT</okapi.version>
         <!--
         The following parameter is not used by Maven or any other part
         of this code, but we keep it updated in order to make it clear
         which Okapi code we are using in our builds.
         -->
-        <okapi.commit>148296d89a22c91372017c678603b230aa4a4e08</okapi.commit>
+        <okapi.commit>a327794a6be4a46a8bcd13aa27b7bfbc59cdb30a</okapi.commit>
     </properties>
 
     <repositories>
