@@ -113,18 +113,18 @@ c. Three.</okpsrx:sample>
           <beforebreak>\b\p{L}\.\uE105?\s*</beforebreak>
           <afterbreak/>
         </rule>
-	  	</languagerule>
+      </languagerule>
 
 
       <languagerule languagerulename="English (EN) exceptions">
         <!--Abbreviations-->
         <rule break="no">
-          <beforebreak>(?i)\b(Adj|Adm|Adv|Asst|Bart|Bldg|Brig|Bros|Capt|Cmdr|Col|Comdr|Con|Corp|Cpl|DR|Dr|Drs|Ens|Gen|Gov|Hon|Hr|Hosp|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|Rep|Reps|Res|Rev|Rt|Sen|Sens|Sfc|Sgt|Sr|St|Supt|Surg|vs|rev)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(Adj|Adm|Adv|Asst|Bart|Bldg|Brig|Bros|Capt|Cmdr|Col|Comdr|Con|Corp|Cpl|DR|Dr|Drs|Ens|Fig|Figs|Gen|Gov|Hon|Hr|Hosp|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|Rep|Reps|Res|Rev|Rt|Sen|Sens|Sfc|Sgt|Sr|St|Supt|Surg|vs|rev)\.\uE105\s*</beforebreak>
           <afterbreak/>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(No|Nos|Nr|Art|pp|pag|vol|chap|fig|figs|approx)\.\uE105?\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Nr|Art|pp|pag|vol|chap|approx)\.\uE105?\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
       </languagerule>
@@ -133,7 +133,7 @@ c. Three.</okpsrx:sample>
       <languagerule languagerulename="Italian (IT) exceptions">
         <!--Abbreviations-->
         <rule break="no">
-          <beforebreak>(?i)\b(Adj|Adm|Adv|Amn|Arch|Asst|Avv|Bart|Bcc|Bldg|Brig|Bros|Capt|Cc|Cmdr|Co|Col|Comdr|Con|Corp|Cpl|DR|Dott|Dr|Drs|Egr|Ens|Gen|Geom|Gov|Hon|Hosp|Hr|Id|Ing|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mo|Mons|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|RP|RSVP|Rag|Rep|Reps|Res|Rev|Rif|Rt|Sen|Sens|Sfc|Sgt|Sig|Sigg|Soc|Spett|Sr|St|Supt|Surg|acc|all|banc|corr|dott|ecc|es|fatt|gg|int|lett|ogg|on|post|pp|racc|ric|seg|sgg|ss|tel|vs|rev|lgs)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(Adj|Adm|Adv|Amn|Arch|Asst|Avv|Bart|Bcc|Bldg|Brig|Bros|Capt|Cc|Cmdr|Co|Col|Comdr|Con|Corp|Cpl|DR|Dott|Dr|Drs|Egr|Ens|Fig|Gen|Geom|Gov|Hon|Hosp|Hr|Id|Ing|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mo|Mons|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|RP|RSVP|Rag|Rep|Reps|Res|Rev|Rif|Rt|Sen|Sens|Sfc|Sgt|Sig|Sigg|Soc|Spett|Sr|St|Supt|Surg|acc|all|banc|corr|dott|ecc|es|fatt|gg|int|lett|ogg|on|post|pp|racc|ric|seg|sgg|ss|tel|vs|rev|lgs)\.\uE105\s*</beforebreak>
           <afterbreak/>
         </rule>
         <!--Compound abbreviations need another rule to avoid breaking inside them-->
@@ -143,7 +143,7 @@ c. Three.</okpsrx:sample>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|pag|vol|cap|fig|art|mq)\.\uE105?\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|pag|vol|cap|art|mq)\.\uE105?\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
       </languagerule>

@@ -1,5 +1,6 @@
 package com.matecat.converter.core.okapiclient;
 
+import com.ibm.icu.util.ULocale;
 import com.matecat.converter.core.Format;
 import com.matecat.converter.core.XliffProcessor;
 import com.matecat.converter.core.encoding.Encoding;
@@ -325,9 +326,10 @@ public class OkapiClient {
         // Add the input file to the driver
         // WARNING:
         // new LocaleId(sourceLanguage) DOESN'T WORK for languages like "sr-Latn-RS" (Serbian Latin)
-        // new LocaleId(sourceLanguage.toLanguageTag()) instead works properly
-        //RawDocument rawDoc = new RawDocument(file.toURI(), encoding.getCode(), new LocaleId(sourceLanguage.toLanguageTag()), new LocaleId(targetLanguage.toLanguageTag()), filter.getName());
-        RawDocument rawDoc = new RawDocument(file.toURI(), encoding.getCode(), LocaleId.ENGLISH, LocaleId.FRENCH, filter.getName());
+        // new LocaleId(sourceLanguage.toLanguageTag()) was also causing issues
+        // new LocaleId(ULocale.forLocale(sourceLanguage)) is the best solution, for now
+        // PAY ATTENTION: the locales configuration here affects the segmentation!
+        RawDocument rawDoc = new RawDocument(file.toURI(), encoding.getCode(), new LocaleId(ULocale.forLocale(sourceLanguage)), new LocaleId(ULocale.forLocale(targetLanguage)), filter.getName());
 
         // Output file (useless but needed)
         String basename = Util.getFilename(file.getPath(), false);
