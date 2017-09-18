@@ -1,6 +1,7 @@
 package com.matecat.converter.core;
 
 import com.matecat.converter.core.okapiclient.OkapiPack;
+import com.matecat.filters.basefilters.DefaultFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -33,14 +34,14 @@ public class XliffBuilderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testBuildWithNullPack() throws Exception {
-        XliffBuilder.build(null);
+        XliffBuilder.build(null, Format.DOCX, DefaultFilter.class);
     }
 
     @Test
     public void testBuild() throws Exception {
 
         // Build xliff
-        File xliff = XliffBuilder.build(pack);
+        File xliff = XliffBuilder.build(pack, Format.DOCX, DefaultFilter.class);
 
         // Check the generated xliff
         try {
