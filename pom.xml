@@ -2,84 +2,75 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.matecat</groupId>
-    <artifactId>filters-parent</artifactId>
-    <version>1.2.2</version>
-    <packaging>pom</packaging>
+  <groupId>com.matecat</groupId>
+  <artifactId>filters-parent</artifactId>
+  <version>1.2.3</version>
+  <packaging>pom</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <!--
-        We use the Okapi's "Snapshot" versions to have faster updates.
-        Snapshots version are not hosted in the Okapi Maven repository,
-        you can find them in development branches in the Okapi source
-        code repository.
-        In order to resolve Okapi Snapshots dependencies, you have to
-        install the Snapshot code in you local Maven repository.
-        You can do it by cloning the Okapi code on your machine,
-        checkout to the desired branch, and running the command
-        "mvn clean install".
-        Check the pom.xml of the Okapi code to know the version you are
-        installing in your local Maven repo.
-        -->
-        <okapi.version>0.33-SNAPSHOT</okapi.version>
-        <!--
-        The following parameter is not used by Maven or any other part
-        of this code, but we keep it updated in order to make it clear
-        which Okapi code we are using in our builds.
-        -->
-        <okapi.commit>a327794a6be4a46a8bcd13aa27b7bfbc59cdb30a</okapi.commit>
-    </properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <okapi.version>0.34</okapi.version>
+    <!--
+    The following parameter is not used by Maven or any other part
+    of this code, but we keep it updated in order to make it clear
+    which Okapi code we are using in our builds.
+    -->
+    <okapi.commit>deda0e0d9b28e1d9cd821053ecf1984847ef458b</okapi.commit>
+  </properties>
 
-    <repositories>
-        <repository>
-            <id>okapi-release</id>
-            <name>Okapi Release</name>
-            <url>http://repository-okapi.forge.cloudbees.com/release/</url>
-        </repository>
-    </repositories>
+  <repositories>
+    <repository>
+      <id>okapi-release</id>
+      <name>Okapi Release</name>
+      <url>http://repository-okapi.forge.cloudbees.com/release/</url>
+    </repository>
+  </repositories>
 
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <manifestEntries>
-                                        <Main-Class>com.matecat.converter.Main</Main-Class>
-                                        <Implementation-Version>${project.version}</Implementation-Version>
-                                    </manifestEntries>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.20.1</version>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer
+                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <manifestEntries>
+                    <Main-Class>com.matecat.converter.Main
+                    </Main-Class>
+                    <Implementation-Version>
+                      ${project.version}
+                    </Implementation-Version>
+                  </manifestEntries>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

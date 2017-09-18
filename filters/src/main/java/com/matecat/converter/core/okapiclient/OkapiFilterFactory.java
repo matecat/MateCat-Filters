@@ -301,9 +301,6 @@ import java.util.Set;
 
     private static IDMLFilter getIdmlFilter() {
         IDMLFilter filter = new IDMLFilter();
-        net.sf.okapi.filters.idml.Parameters params = filter.getParameters();
-        params.setSkipThreshold(Integer.MAX_VALUE / 1024);
-        params.setStopWhenOverThreshold(false);
         return filter;
     }
 
