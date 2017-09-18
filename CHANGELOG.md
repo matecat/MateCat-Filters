@@ -2,6 +2,12 @@
 
 
 
+## 1.2.3 (2017-09-18)
+
+* Upgrade to Okapi M34
+
+
+
 ## 1.2.2 (2017-04-21)
 
 * Direct conversion of all macro-enabled MS Office files (e.g. DOCM, XLSM...)
