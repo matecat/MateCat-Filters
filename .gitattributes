@@ -1,0 +1,2 @@
+# Exclude files used by the test suite
+filters/src/resources linguist-documentation
