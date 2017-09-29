@@ -215,7 +215,7 @@ c. Three.</okpsrx:sample>
       <languagerule languagerulename="German (DE) exceptions">
         <!--Abbreviations-->
         <rule break="no">
-          <beforebreak>(?i)\b(Adj|Adm|Adv|Asst|Bart|Bldg|Brig|Bros|Capt|Cmdr|Col|Comdr|Con|Corp|Cpl|DR|Dr|Ens|Gen|Gov|Hon|Hosp|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|Rep|Reps|Res|Rev|Rt|Sen|Sens|Sfc|Sgt|Sr|St|Supt|Surg|Mio|Mrd|bzw|v|vs|usw|etc|Mrd|MwSt|ggf|vgl|sogen|ff|Buchst|sog|Std|evtl|Zt|Chr|spp|sen|SA|jun|dgl|dergl|Co|zzt|usf|Dkr|Corp|bzgl|BSE|rel|inkl|geb|usw)\.\uE105\s*</beforebreak>
+          <beforebreak>(?i)\b(Adj|Adm|Adv|Asst|Bart|Bldg|Brig|Bros|Capt|Cmdr|Col|Comdr|Con|Corp|Cpl|DR|Dr|Ens|Fig|Gen|Gov|Hon|Hosp|Insp|Lt|MM|MR|MRS|MS|Maj|Messrs|Mlle|Mme|Mr|Mrs|Ms|Msgr|Op|Ord|Pfc|Ph|Prof|Pvt|Rep|Reps|Res|Rev|Rt|Sen|Sens|Sfc|Sgt|Sr|St|Supt|Surg|Mio|Mrd|bzw|v|vs|usw|etc|Mrd|MwSt|ggf|vgl|sogen|ff|Buchst|sog|Std|evtl|Zt|Chr|spp|sen|SA|jun|dgl|dergl|Co|zzt|usf|Dkr|Corp|bzgl|BSE|rel|inkl|geb|usw)\.\uE105\s*</beforebreak>
           <afterbreak/>
         </rule>
         <!--Compound abbreviations need another rule to avoid breaking inside them-->
