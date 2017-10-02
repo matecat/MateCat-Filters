@@ -124,7 +124,7 @@ c. Three.</okpsrx:sample>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(No|Nos|Nr|Art|pp|pag|vol|chap|approx)\.\uE105?\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Nr|Art|pp|pag|vol|fig|chap|approx)\.\uE105?\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
       </languagerule>
@@ -143,7 +143,7 @@ c. Three.</okpsrx:sample>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|pag|vol|cap|art|mq)\.\uE105?\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|pag|vol|fig|cap|art|mq)\.\uE105?\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
       </languagerule>
@@ -226,7 +226,7 @@ c. Three.</okpsrx:sample>
         </rule>
         <!--Abbreviations followed by numbers-->
         <rule break="no">
-          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|ca|Ca)\.\uE105?\s*</beforebreak>
+          <beforebreak>(?i)\b(No|Nos|Art|Nr|pp|ca|Ca|fig)\.\uE105?\s*</beforebreak>
           <afterbreak>\d</afterbreak>
         </rule>
         <!--Ordinals are done with . in German - "1." = "1st" in English; don't break when dot is followed by these (leaving the afterbreak empty you avoid breaking after a digit and a dot)-->
