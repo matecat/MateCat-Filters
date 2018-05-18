@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
@@ -41,7 +42,7 @@ public class XliffProcessorTest {
         // Create text file
         File folder = new File(getClass().getResource("/derivation").getPath());
         File input = new File(folder.getPath() + File.separator + "test.txt");
-        FileUtils.writeStringToFile(input, ORIGINAL);
+        FileUtils.writeStringToFile(input, ORIGINAL, Charset.forName("UTF-8"));
 
         // Generate xlf
         File xlf = new XliffGenerator(Locale.ENGLISH, Locale.FRENCH, input, null).generate();
@@ -53,7 +54,7 @@ public class XliffProcessorTest {
         // Alter the translation
         String xlfContent = FileUtils.readFileToString(xlf, "UTF-8");
         String newXlfContent = xlfContent.replaceAll(ORIGINAL + "</mrk></target>", DERIVED + "</mrk></target>");
-        FileUtils.writeStringToFile(xlf, newXlfContent);
+        FileUtils.writeStringToFile(xlf, newXlfContent, Charset.forName("UTF-8"));
 
         // Generate derived and check
         File output = new XliffProcessor(xlf).getDerivedFile();

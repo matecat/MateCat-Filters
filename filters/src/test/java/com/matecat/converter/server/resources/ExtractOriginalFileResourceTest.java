@@ -5,9 +5,9 @@ import com.matecat.converter.server.MatecatConverterServer;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.After;
@@ -41,12 +41,12 @@ public class ExtractOriginalFileResourceTest {
         File fileToUpload = new File(getClass().getResource("/server/test.docx.xlf").getPath());
 
         // Send request
-        HttpClient httpclient = new DefaultHttpClient();
+        HttpClient httpclient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost(url);
         FileBody uploadFilePart = new FileBody(fileToUpload);
-        MultipartEntity reqEntity = new MultipartEntity();
+        MultipartEntityBuilder reqEntity = MultipartEntityBuilder.create();
         reqEntity.addPart("file", uploadFilePart);
-        httpPost.setEntity(reqEntity);
+        httpPost.setEntity(reqEntity.build());
         HttpResponse response = httpclient.execute(httpPost);
 
         // Check OK status code

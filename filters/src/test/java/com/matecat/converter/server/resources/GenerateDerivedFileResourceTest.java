@@ -2,13 +2,12 @@ package com.matecat.converter.server.resources;
 
 import com.matecat.converter.server.JSONResponseFactory;
 import com.matecat.converter.server.MatecatConverterServer;
-import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.After;
@@ -19,7 +18,6 @@ import javax.ws.rs.Path;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.util.Base64;
 
 import static org.junit.Assert.*;
 
@@ -43,12 +41,12 @@ public class GenerateDerivedFileResourceTest {
         File fileToUpload = new File(getClass().getResource("/server/test.docx.xlf").getPath());
 
         // Send request
-        HttpClient httpclient = new DefaultHttpClient();
+        HttpClient httpclient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost(url);
         FileBody uploadFilePart = new FileBody(fileToUpload);
-        MultipartEntity reqEntity = new MultipartEntity();
+        MultipartEntityBuilder reqEntity = MultipartEntityBuilder.create();
         reqEntity.addPart("xliffContent", uploadFilePart);
-        httpPost.setEntity(reqEntity);
+        httpPost.setEntity(reqEntity.build());
         HttpResponse response = httpclient.execute(httpPost);
 
         // Check OK status code

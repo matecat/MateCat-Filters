@@ -6,10 +6,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.After;
@@ -20,7 +21,7 @@ import javax.ws.rs.Path;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.util.Base64;
+import java.nio.charset.Charset;
 
 import static org.junit.Assert.*;
 
@@ -44,14 +45,14 @@ public class ConvertToXliffResourceTest {
         File fileToUpload = new File(getClass().getResource("/server/test.docx").getPath());
 
         // Send request
-        HttpClient httpclient = new DefaultHttpClient();
+        HttpClient httpclient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost(url);
         FileBody uploadFilePart = new FileBody(fileToUpload);
-        MultipartEntity reqEntity = new MultipartEntity();
+        MultipartEntityBuilder reqEntity = MultipartEntityBuilder.create();
         reqEntity.addPart("documentContent", uploadFilePart);
-        reqEntity.addPart("sourceLocale", new StringBody("en-US"));
-        reqEntity.addPart("targetLocale", new StringBody("fr-FR"));
-        httpPost.setEntity(reqEntity);
+        reqEntity.addPart("sourceLocale", new StringBody("en-US", ContentType.TEXT_PLAIN));
+        reqEntity.addPart("targetLocale", new StringBody("fr-FR", ContentType.TEXT_PLAIN));
+        httpPost.setEntity(reqEntity.build());
         HttpResponse response = httpclient.execute(httpPost);
 
         // Check OK status code
@@ -74,7 +75,7 @@ public class ConvertToXliffResourceTest {
         assertNotSame("", doc);
 
         File out = new File(fileToUpload.getPath() + ".xlf");
-        FileUtils.writeStringToFile(out, doc);
+        FileUtils.writeStringToFile(out, doc, Charset.forName("UTF-8"));
 
     }
 
