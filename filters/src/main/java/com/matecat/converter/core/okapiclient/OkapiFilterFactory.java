@@ -285,7 +285,6 @@ import java.util.Set;
         // target segment including also <mrk> (that couldn't be computed because the <seg-source> was ignored. So it's
         // better to ignore <source> instead, and always use <seg-source> as default reference.
         params.setAlwaysUseSegSource(true);
-        params.setOutputSegmentationType(net.sf.okapi.filters.xliff.Parameters.SEGMENTATIONTYPE_ORIGINAL);
         return filter;
     }
 

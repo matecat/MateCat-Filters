@@ -41,6 +41,11 @@ public enum Format {
             PDF, BMP, GIF, PNG, JPEG, TIFF
             )));
 
+    public static final Set<Format> bilingualFormats
+            = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            PO, XLF, XLIFF, SDLXLIFF
+            )));
+
 
     // Generate a dictionary mapping the extension to its enum constant
     private static final Map<String, Format> supportedFormats;
@@ -59,6 +64,9 @@ public enum Format {
     }
     public static boolean isOCRFormat(Format format) {
         return OCRFormats.contains(format);
+    }
+    public static boolean isBilingual(Format format) {
+        return bilingualFormats.contains(format);
     }
 
     public static Format parse(String extension) {

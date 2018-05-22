@@ -43,6 +43,8 @@ import static com.matecat.converter.core.Format.SDLXLIFF;
  *
  * This class interacts with the Okapi framework in order to generate its result pack, or to merge it into
  * the derived (translated) file.
+ *
+ * TODO: this class should be simplified, split in smaller methods and merged in DefaultFilter, to provide a strong base class for future specialization
  */
 public class OkapiClient {
 
@@ -126,14 +128,14 @@ public class OkapiClient {
         
         String customSegmentationFilePath = getCustomSegmentationFilePath(segmentation);
 
-        if( customSegmentationFilePath != null ) {
-			params.setSourceSrxPath(customSegmentationFilePath);
-			driver.addStep(segmentationStep);
+        if (customSegmentationFilePath != null) {
+            params.setSourceSrxPath(customSegmentationFilePath);
+            driver.addStep(segmentationStep);
         } else {
-	        driver.addStep(new AddIcuHintsStep(sourceLanguage));
-	        params.setSourceSrxPath(SRX_FILE.getPath());
-	        driver.addStep(segmentationStep);
-	        driver.addStep(new RemoveIcuHintsStep());
+            driver.addStep(new AddIcuHintsStep(sourceLanguage));
+            params.setSourceSrxPath(SRX_FILE.getPath());
+            driver.addStep(segmentationStep);
+            driver.addStep(new RemoveIcuHintsStep());
         }
     }
     
@@ -145,57 +147,57 @@ public class OkapiClient {
      * @throws RuntimeException if the file does not exist or there are no read permissions on it 
      */
     private static String getCustomSegmentationFilePath(String segmentation) {
-    	// no custom segmentation required
+        // no custom segmentation required
         if (segmentation == null || segmentation.trim().isEmpty()) {
-        	LOGGER.info("Using default segmentation");
-        	return null;
+            LOGGER.info("Using default segmentation");
+            return null;
         }
-        
-		// the custom segmentation folder is empty, skip all checks and use default rules
-		if( Config.customSegmentationFolder.isEmpty() ) {
-			LOGGER.info("No custom segmentation folder, falling back to default segmentation");
-			throw new IllegalStateException("Custom segmentation file requested, but no segmentation folder configured. File: " + Config.customSegmentationFolder + segmentation + ".srx");
-		}
-		
-		
-		/* A custom segmentation has been requested, and there is a valid custom segmentation rules folder.
-		 * Try to get the proper file, if it is not found or not accessible, raise an exception for the client.
-		 * That is why no exception handling has been defined here
-		 */
-				
-		// instantiate a file wrapper to make all the necessary checks
-		File segmentationFile = new File(Config.customSegmentationFolder + segmentation + ".srx");
-		
-		/* Check if the corresponding file exists
-		 *  
-		 * IMPORTANT
-		 * Read permission in folder Config.customSegmentationFolder are check only once at startup time from Config class.
-		 * If these permissions change at runtime and the application becomes not allowed to read from it, the following check will fail
-		 * because it will try to read the folder content, and an empty set of files will be returned, due to the permission issue.
-		 * 
-		 *  Sample Scenario:
-		 *   - application loads and at startup time is able to read from Config.customSegmentationFolder
-		 *   - permission on the folder change, and the application cannot read from it anymore
-		 *   - user issues a conversion request and the application tries to look for the specified segmentation file from custom folder
-		 *   - because of read limitation, OS will return the application an empty set of files
-		 *   - the application will correctly fallback on default srx file, but with following "not found" error message
-		 *  
-		 * Even though the behaviuor is correct (and this case should not happen), the error message might be trivial 
-		 */ 
-		if(!segmentationFile.isFile()) {
-			LOGGER.warn("Custom segmentation file not found. File: " + Config.customSegmentationFolder + segmentation + ".srx");
-			throw new IllegalArgumentException("Custom segmentation file not found. File: " + Config.customSegmentationFolder + segmentation + ".srx");
-		}
-	
-		// Check if the corresponding file can be read
-		if(!segmentationFile.canRead()) {
-			LOGGER.warn("Custom segmentation file cannot be read. File: " + Config.customSegmentationFolder + segmentation + ".srx");
-			throw new IllegalArgumentException("Custom segmentation file cannot be read. File: " + Config.customSegmentationFolder + segmentation + ".srx");
-		}
-	
-		// the file exists and can be read, return its path
-		LOGGER.info("Using custom segmentation in file: " + segmentationFile.getPath());
-		return segmentationFile.getPath();	
+
+        // the custom segmentation folder is empty, skip all checks and use default rules
+        if (Config.customSegmentationFolder.isEmpty()) {
+            LOGGER.info("No custom segmentation folder, falling back to default segmentation");
+            throw new IllegalStateException("Custom segmentation file requested, but no segmentation folder configured. File: " + Config.customSegmentationFolder + segmentation + ".srx");
+        }
+
+
+        /* A custom segmentation has been requested, and there is a valid custom segmentation rules folder.
+         * Try to get the proper file, if it is not found or not accessible, raise an exception for the client.
+         * That is why no exception handling has been defined here
+         */
+
+        // instantiate a file wrapper to make all the necessary checks
+        File segmentationFile = new File(Config.customSegmentationFolder + segmentation + ".srx");
+
+        /* Check if the corresponding file exists
+         *
+         * IMPORTANT
+         * Read permission in folder Config.customSegmentationFolder are check only once at startup time from Config class.
+         * If these permissions change at runtime and the application becomes not allowed to read from it, the following check will fail
+         * because it will try to read the folder content, and an empty set of files will be returned, due to the permission issue.
+         *
+         *  Sample Scenario:
+         *   - application loads and at startup time is able to read from Config.customSegmentationFolder
+         *   - permission on the folder change, and the application cannot read from it anymore
+         *   - user issues a conversion request and the application tries to look for the specified segmentation file from custom folder
+         *   - because of read limitation, OS will return the application an empty set of files
+         *   - the application will correctly fallback on default srx file, but with following "not found" error message
+         *
+         * Even though the behavior is correct (and this case should not happen), the error message might be trivial
+         */
+        if (!segmentationFile.isFile()) {
+            LOGGER.warn("Custom segmentation file not found. File: " + Config.customSegmentationFolder + segmentation + ".srx");
+            throw new IllegalArgumentException("Custom segmentation file not found. File: " + Config.customSegmentationFolder + segmentation + ".srx");
+        }
+
+        // Check if the corresponding file can be read
+        if (!segmentationFile.canRead()) {
+            LOGGER.warn("Custom segmentation file cannot be read. File: " + Config.customSegmentationFolder + segmentation + ".srx");
+            throw new IllegalArgumentException("Custom segmentation file cannot be read. File: " + Config.customSegmentationFolder + segmentation + ".srx");
+        }
+
+        // the file exists and can be read, return its path
+        LOGGER.info("Using custom segmentation in file: " + segmentationFile.getPath());
+        return segmentationFile.getPath();
     }
     
 
@@ -279,17 +281,16 @@ public class OkapiClient {
      * @param file File
      * @return Okapi's result pack
      */
-    public static OkapiPack generatePack(Locale sourceLanguage, Locale targetLanguage, Encoding encoding, File file, String segmentation, IFilter filter) {
-
+    public static OkapiPack generatePack(Locale sourceLanguage, Locale targetLanguage, Encoding encoding, File file, String segmentation, IFilter filter, Boolean segmentBilingual) {
         // Check inputs
         if (sourceLanguage == null)
-            throw new IllegalArgumentException("The source language cannot be null");
+            throw new IllegalArgumentException("Source language cannot be null");
         if (targetLanguage == null)
-            throw new IllegalArgumentException("The target language cannot be null");
+            throw new IllegalArgumentException("Target language cannot be null");
         if (encoding == null)
-            throw new IllegalArgumentException("The input encoding cannot be null");
-        if (file == null  ||  !file.exists()  ||  file.isDirectory())
-            throw new IllegalArgumentException("The input file is not valid");
+            throw new IllegalArgumentException("Input encoding cannot be null");
+        if (file == null || !file.exists() || file.isDirectory())
+            throw new IllegalArgumentException("Input file is not valid");
 
         final Format format = Format.getFormat(file);
 
@@ -300,12 +301,8 @@ public class OkapiClient {
         IPipelineDriver driver = createOkapiPipelineDriver(file.getParent());
 
         // Filtering step
-        RawDocumentToFilterEventsStep filteringStep = new RawDocumentToFilterEventsStep();
-        if (filter == null) {
-            filter = OkapiFilterFactory.getFilter(file);
-        }
-        filteringStep.setFilter(filter);
-        driver.addStep(filteringStep);
+        if (filter == null) filter = OkapiFilterFactory.getFilter(file);
+        driver.addStep(new RawDocumentToFilterEventsStep(filter));
 
         // Set the filter configuration map to use with the driver
         driver.setFilterConfigurationMapper(createFilterConfigurationMapper(filter));
@@ -316,8 +313,8 @@ public class OkapiClient {
         // already segmented, so it's better to not segment further.
         // XLIFFs instead are already segmented, and segmenting them further causes
         // strange outputs.
-        if (format != Format.PO && format != Format.XLF && format != Format.XLIFF && format != SDLXLIFF) {
-        	createSegmentationStep(sourceLanguage, segmentation, driver);
+        if (!Format.isBilingual(format) || segmentBilingual) {
+        	  createSegmentationStep(sourceLanguage, segmentation, driver);
         }
 
         // Kit creation step

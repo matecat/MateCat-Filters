@@ -1,6 +1,7 @@
 package com.matecat.converter.core;
 
 import com.matecat.converter.core.okapiclient.OkapiPack;
+import com.matecat.filters.basefilters.DefaultFilter;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
@@ -45,7 +46,8 @@ public class XliffProcessorTest {
         FileUtils.writeStringToFile(input, ORIGINAL, Charset.forName("UTF-8"));
 
         // Generate xlf
-        File xlf = new XliffGenerator(Locale.ENGLISH, Locale.FRENCH, input, null).generate();
+        DefaultFilter generator = new DefaultFilter();
+        File xlf = generator.extract(input, Locale.ENGLISH, Locale.ENGLISH, null);
 
         // Remove pack
         File pack = new File(folder.getPath() + File.separator + OkapiPack.PACK_FILENAME);
