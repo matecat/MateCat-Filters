@@ -166,7 +166,7 @@ public class XliffProcessor {
             this.targetLanguage = new Locale(firstFile.getAttribute("target-language"));
         }
         catch (ParserConfigurationException | SAXException | IOException e) {
-            throw new RuntimeException("It was not possible to extract the source and target languages. Corrupted xlf?", e);
+            throw new RuntimeException("Exception extracting source/target languages from MateCat xliff", e);
         }
     }
 
@@ -279,7 +279,7 @@ public class XliffProcessor {
             this.pack = new OkapiPack(packFolder);
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            throw new RuntimeException("It was not possible to reconstruct the pack from the Xliff");
+            throw new RuntimeException("Exception extracting Okapi pack from MateCat xliff", e);
         }
 
     }
@@ -387,7 +387,7 @@ public class XliffProcessor {
 
         }
         catch (Exception e) {
-            throw new RuntimeException("It was not possible to reconstruct the original file");
+            throw new RuntimeException("Exception extracting original file from MateCat xliff", e);
         }
     }
 
@@ -449,7 +449,7 @@ public class XliffProcessor {
             return originalFilename;
         }
         catch (Exception e) {
-            throw new RuntimeException("It was not possible to reconstruct the manifest file");
+            throw new RuntimeException("Exception extracting Okapi manifest from MateCat xliff", e);
         }
     }
 
