@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -158,7 +159,7 @@ public class XliffProcessor {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(inputStream);
-            Element firstFile = (Element) document.getDocumentElement().getElementsByTagName("file").item(0);
+            Element firstFile = (Element) document.getElementsByTagName("file").item(0);
 
             // Extract the languages
             this.sourceLanguage = new Locale(firstFile.getAttribute("source-language"));
@@ -252,26 +253,26 @@ public class XliffProcessor {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(inputStream);
-            Element root = document.getDocumentElement();
 
-            Element fileElement = (Element) root.getFirstChild();
-            Element manifestElement = (Element) fileElement.getNextSibling();
+            NodeList fileElements = document.getElementsByTagName("file");
+            Element originalFileElement = (Element) fileElements.item(0);
+            Element manifestElement = (Element) fileElements.item(1);
 
             // Reconstruct the manifest
             String originalFilename = reconstructManifest(packFolder, manifestElement);
 
-            checkProducerVersion(fileElement);
+            checkProducerVersion(originalFileElement);
 
-            reconstructOriginalFile(packFolder, fileElement, originalFilename);
+            reconstructOriginalFile(packFolder, originalFileElement, originalFilename);
 
-            extractOriginalFormat(fileElement);
+            extractOriginalFormat(originalFileElement);
 
             // Extract the languages
-            this.sourceLanguage = new Locale(fileElement.getAttribute("source-language"));
-            this.targetLanguage = new Locale(fileElement.getAttribute("target-language"));
+            this.sourceLanguage = new Locale(originalFileElement.getAttribute("source-language"));
+            this.targetLanguage = new Locale(originalFileElement.getAttribute("target-language"));
 
             // Reconstruct the original xlf
-            reconstructOriginalXlf(packFolder, document, fileElement, manifestElement, originalFilename);
+            reconstructOriginalXlf(packFolder, document, originalFileElement, manifestElement, originalFilename);
 
             // Generate the pack (which will check the extracted files)
             this.pack = new OkapiPack(packFolder);
@@ -367,8 +368,8 @@ public class XliffProcessor {
             }
 
             // Contents
-            Element internalFileElement = (Element) fileElement.getFirstChild().getFirstChild().getFirstChild();
-            String encodedFile = internalFileElement.getTextContent();
+            Element internalFileElement = (Element) fileElement.getElementsByTagName("internal-file").item(0);
+            String encodedFile = internalFileElement.getTextContent().trim();
             byte[] originalFileBytes = Base64.getDecoder().decode(encodedFile);
 
             // Create original folder
@@ -407,7 +408,8 @@ public class XliffProcessor {
             String targetLanguage = manifestElement.getAttribute("target-language");
 
             // Manifest contents
-            String encodedManifest = manifestElement.getFirstChild().getFirstChild().getFirstChild().getTextContent();
+            Element internalFileElement = (Element) manifestElement.getElementsByTagName("internal-file").item(0);
+            String encodedManifest = internalFileElement.getTextContent().trim();
             String manifest = new String(Base64.getDecoder().decode(encodedManifest), StandardCharsets.UTF_8);
             // MateCAT caches produced XLIFFs and reuses them to save
             // file conversions, updating just the source and target
