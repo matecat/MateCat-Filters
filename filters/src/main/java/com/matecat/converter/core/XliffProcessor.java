@@ -1,5 +1,6 @@
 package com.matecat.converter.core;
 
+import com.ctc.wstx.util.StringUtil;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 import com.matecat.converter.core.util.Config;
@@ -7,6 +8,7 @@ import com.matecat.converter.core.winconverter.WinConverterRouter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -479,6 +481,16 @@ public class XliffProcessor {
             // Obtain the original xlf
             root.removeChild(fileElement);
             root.removeChild(manifestElement);
+
+            // Remove the leading underscore added to all the <ex> ids by the
+            // XliffBuilder (see the comment there for more background)
+            NodeList exElements = document.getElementsByTagName("ex");
+            for (int i = 0; i < exElements.getLength(); i++) {
+                Element exElement = (Element) exElements.item(i);
+                if (exElement.getAttribute("id").startsWith("_")) {
+                    exElement.setAttribute("id", exElement.getAttribute("id").substring(1));
+                }
+            }
 
             // Create work folder
             File workFolder = new File(packFolder.getPath() + File.separator + OkapiPack.WORK_DIRECTORY_NAME);
