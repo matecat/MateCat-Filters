@@ -1,9 +1,9 @@
 package com.matecat.converter.core;
 
-import com.matecat.converter.core.util.Config;
-import com.matecat.converter.core.winconverter.WinConverterRouter;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
+import com.matecat.converter.core.util.Config;
+import com.matecat.converter.core.winconverter.WinConverterRouter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -22,6 +21,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -117,20 +117,20 @@ public class XliffProcessor {
 
     private String extractFilter() {
         InputStream inputStream = null;
-        XMLStreamReader stax = null;
+        XMLStreamReader sax = null;
         try {
             inputStream = new FileInputStream(xlf);
-            stax = XMLInputFactory.newInstance().createXMLStreamReader(inputStream);
+            sax = XMLInputFactory.newInstance().createXMLStreamReader(inputStream);
 
             // Default value is null
             String filter = null;
 
             // Look for a <file> tag in the first 1000 chars
-            while (stax.hasNext() && stax.getLocation().getCharacterOffset() < 1000) {
-                int event = stax.next();
+            while (sax.hasNext() && sax.getLocation().getCharacterOffset() < 1000) {
+                int event = sax.next();
 
-                if (event == XMLStreamConstants.START_ELEMENT && stax.getLocalName().equals("file")) {
-                    filter = stax.getAttributeValue(null, "filter");
+                if (event == XMLStreamConstants.START_ELEMENT && sax.getLocalName().equals("file")) {
+                    filter = sax.getAttributeValue(null, "filter");
                     break;
                 }
             }
@@ -142,7 +142,7 @@ public class XliffProcessor {
         }
         finally {
             try {
-                if (stax != null) stax.close();
+                if (sax != null) sax.close();
             } catch (XMLStreamException ignored) {}
             IOUtils.closeQuietly(inputStream);
         }
@@ -153,12 +153,11 @@ public class XliffProcessor {
      * Extract language from the XLF
      */
     private void extractLanguages() {
-        try {
+        try (InputStream inputStream = new FileInputStream(xlf)) {
             // Parse the XML document
-            String xlfContent = FileUtils.readFileToString(xlf, "UTF-8");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(new InputSource(new StringReader(xlfContent)));
+            Document document = documentBuilder.parse(inputStream);
             Element firstFile = (Element) document.getDocumentElement().getElementsByTagName("file").item(0);
 
             // Extract the languages
@@ -240,7 +239,7 @@ public class XliffProcessor {
      */
     private void reconstructPack() {
 
-        try {
+        try (InputStream inputStream = new FileInputStream(xlf)) {
 
             // Output folder
             File packFolder = new File(xlf.getParentFile().getPath() + File.separator + "pack");
@@ -250,10 +249,9 @@ public class XliffProcessor {
                 packFolder.mkdir();
 
             // Parse the XML document
-            String xlfContent = FileUtils.readFileToString(xlf, "UTF-8");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(new InputSource(new StringReader(xlfContent)));
+            Document document = documentBuilder.parse(inputStream);
             Element root = document.getDocumentElement();
 
             Element fileElement = (Element) root.getFirstChild();
@@ -488,12 +486,27 @@ public class XliffProcessor {
                 workFolder.mkdir();
 
             // Save the file
-            String xlfOutputPath = workFolder.getPath() + File.separator + originalFilename + ".xlf";
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
 
-            DOMSource domSource = new DOMSource(document);
-            StreamResult streamResult = new StreamResult(xlfOutputPath);
-            transformer.transform(domSource, streamResult);
+            String xlfOutputPath = workFolder.getPath() + File.separator + originalFilename + ".xlf";
+
+            // The Java Transformer doesn't update the XML prolog with the
+            // output encoding.
+            // For example, if you read a UTF-16 XML and rewrite it as UTF-8,
+            // the Transformer still writes the prolog with "encoding=UTF-16",
+            // messing up the file.
+            // Since our output encoding will always be UTF-8 (because we use
+            // FileOutputStream, that uses the default Java charset, that we
+            // ensured is UTF-8 in the Main class) I tell Transformer to not
+            // write the prolog and I write it myself in the correct way.
+            try (OutputStream outputStream = new FileOutputStream(xlfOutputPath)) {
+                outputStream.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".getBytes());
+                StreamResult streamResult = new StreamResult(outputStream);
+
+                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+                DOMSource domSource = new DOMSource(document);
+                transformer.transform(domSource, streamResult);
+            }
 
         } catch (TransformerException | IOException e) {
             e.printStackTrace();

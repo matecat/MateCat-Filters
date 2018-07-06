@@ -19,9 +19,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.Base64;
 
@@ -121,13 +119,12 @@ public class XliffBuilder {
 
         File output = null;
 
-        try {
+        try (InputStream baseXlfContent = new FileInputStream(baseXLF)) {
 
             // Parse the XML document
-            String xlfContent = FileUtils.readFileToString(baseXLF, "UTF-8");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(new InputSource(new StringReader(xlfContent)));
+            Document document = documentBuilder.parse(baseXlfContent);
             Element root = document.getDocumentElement();
 
             // Retrieve the source and target language
