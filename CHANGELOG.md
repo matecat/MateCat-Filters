@@ -2,6 +2,18 @@
 
 
 
+## 1.2.4 (2017-08-23)
+
+* Upgraded to Okapi M35
+* Removed deprecated dependencies
+* Parametrized segmentation of bilingual files, so it can be overridden by custom filters
+* Improved exceptions logging
+* Improved compatibility of the XLIFF produced by Filters with SDL Trados Studio
+* When converting to target file, support XLIFFs with non UTF-8 encodings
+* Fixed: conversion to target failures caused by spaces between XLIFF header tags
+
+
+
 ## 1.2.3 (2017-09-18)
 
 * Upgrade to Okapi M34
