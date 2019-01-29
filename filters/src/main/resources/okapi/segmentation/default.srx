@@ -38,6 +38,11 @@ c. Three.</okpsrx:sample>
           <beforebreak>\b[A-Z]\.\uE105\s*</beforebreak>
           <afterbreak/>
         </rule>
+        <!--Don't break on sentences like: Only .004% resulted in a damage.-->
+        <rule break="no">
+          <beforebreak>\s\.</beforebreak>
+          <afterbreak>\d+%</afterbreak>
+        </rule>
         <!--Handle gracefully lists, avoiding breaking on starting numbers, letters and roman numbers.
         For example:
           1. Item with number identifier.
