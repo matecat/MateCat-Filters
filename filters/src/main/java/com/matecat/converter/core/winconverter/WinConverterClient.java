@@ -96,6 +96,11 @@ public class WinConverterClient {
         DataInputStream inputStream = null;
         DataOutputStream outputStream = null;
 
+        // Send a non-zero conversion ID to track conversions between
+        // this converter and the Windows converter
+        final int conversionId = random.nextInt(Integer.MAX_VALUE - 1) + 1;
+        LOGGER.info("Using WinConverter at " + address.toString() + " (conversion id: " + conversionId + ")");
+
         try {
 
             // Connect to the server
@@ -106,10 +111,6 @@ public class WinConverterClient {
             inputStream = new DataInputStream(server.getInputStream());
             outputStream = new DataOutputStream(server.getOutputStream());
 
-            // Send a non-zero conversion ID to track conversions between
-            // this converter and the Windows converter
-            final int conversionId = random.nextInt(Integer.MAX_VALUE - 1) + 1;
-            LOGGER.info("Conversion id: " + conversionId);
             outputStream.writeInt(conversionId);
 
             // Send conversion input and output formats
