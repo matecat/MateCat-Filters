@@ -6,20 +6,20 @@
 
   <groupId>com.matecat</groupId>
   <artifactId>filters-parent</artifactId>
-  <version>1.2.4</version>
+  <version>1.2.5</version>
   <packaging>pom</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <okapi.version>0.35</okapi.version>
+    <okapi.version>0.36</okapi.version>
     <!--
     The following parameter is not used by Maven or any other part
     of this code, but we keep it updated in order to make it clear
     which Okapi code we are using in our builds.
     -->
-    <okapi.commit>62b90dcd2c4d125a22b1980ebe5d87bbddb4757e</okapi.commit>
+    <okapi.commit>c475ad8598d58202acad5a3cf508836aa0dc8d2a</okapi.commit>
   </properties>
 
   <repositories>
@@ -39,14 +39,14 @@
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.20.1</version>
+        <version>2.22.1</version>
         <configuration>
           <skipTests>true</skipTests>
         </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.2.1</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -55,14 +55,10 @@
             </goals>
             <configuration>
               <transformers>
-                <transformer
-                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <manifestEntries>
-                    <Main-Class>com.matecat.converter.Main
-                    </Main-Class>
-                    <Implementation-Version>
-                      ${project.version}
-                    </Implementation-Version>
+                    <Main-Class>com.matecat.converter.Main</Main-Class>
+                    <Implementation-Version>${project.version}</Implementation-Version>
                   </manifestEntries>
                 </transformer>
               </transformers>
