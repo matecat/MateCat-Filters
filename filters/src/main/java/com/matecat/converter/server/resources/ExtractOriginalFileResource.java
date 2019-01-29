@@ -35,7 +35,7 @@ public class ExtractOriginalFileResource {
     public Response convert(@FormDataParam("file") InputStream fileInputStream) {
 
         // Logging
-        LOGGER.info("[EXTRACTION REQUEST]");
+        LOGGER.info("XLIFF > SOURCE request");
 
         Project project = null;
         Response response = null;
@@ -59,7 +59,7 @@ public class ExtractOriginalFileResource {
                     .build();
 
             everythingOk = true;
-            LOGGER.info("[EXTRACTION REQUEST FINISHED]");
+            LOGGER.info("Successfully returned source file");
         }
 
         // If there is any error, return it
@@ -68,7 +68,7 @@ public class ExtractOriginalFileResource {
                     .status(Response.Status.BAD_REQUEST)
                     .entity(JSONResponseFactory.getError(e.getMessage()))
                     .build();
-            LOGGER.error("[EXTRACTION REQUEST FAILED] {}", e.getMessage(), e);
+            LOGGER.error("Exception extracting source file from XLIFF", e);
         }
 
         // Close the project and streams

@@ -43,11 +43,11 @@ public class ProjectFactory {
 
             // Return the project
             Project project = new Project(file);
-            LOGGER.info("[PROJECT CREATED] {} saved in {}", filename, project.getFolder().getPath());
+            LOGGER.info("Caching files in {}", project.getFolder().getPath());
             return project;
         }
         catch (IOException e) {
-            LOGGER.error("[PROJECT CREATION ERROR]: {}", e.getMessage(), e);
+            LOGGER.error("Exception creating cache folder", e);
             throw new ProjectCreationException(String.format("It was not possible to create a project for the file '%s'", filename));
         }
     }

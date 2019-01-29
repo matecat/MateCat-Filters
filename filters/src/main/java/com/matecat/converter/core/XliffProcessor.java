@@ -1,6 +1,5 @@
 package com.matecat.converter.core;
 
-import com.ctc.wstx.util.StringUtil;
 import com.matecat.converter.core.okapiclient.OkapiClient;
 import com.matecat.converter.core.okapiclient.OkapiPack;
 import com.matecat.converter.core.util.Config;
@@ -8,7 +7,6 @@ import com.matecat.converter.core.winconverter.WinConverterRouter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -300,7 +298,7 @@ public class XliffProcessor {
                     LOGGER.warn("Missing producer version in input XLIFF");
                 } else {
                     if (CONVERTER_VERSION == null) {
-                        LOGGER.warn("XLIFF producer version is " + xliffVersion + ", but converter server version is unknown (version available only when running from a jar)");
+                        LOGGER.warn("XLIFF producer version is " + xliffVersion + ", but server version is unknown (version available only when running from a jar)");
                     } else if (!xliffVersion.equals(CONVERTER_VERSION)) {
                         LOGGER.warn("Converters versions mismatch: " + xliffVersion + " (XLIFF) vs " + CONVERTER_VERSION + " (server)");
                     } else {

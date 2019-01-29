@@ -149,13 +149,11 @@ public class OkapiClient {
     private static String getCustomSegmentationFilePath(String segmentation) {
         // no custom segmentation required
         if (segmentation == null || segmentation.trim().isEmpty()) {
-            LOGGER.info("Using default segmentation");
             return null;
         }
 
         // the custom segmentation folder is empty, skip all checks and use default rules
         if (Config.customSegmentationFolder.isEmpty()) {
-            LOGGER.info("No custom segmentation folder, falling back to default segmentation");
             throw new IllegalStateException("Custom segmentation file requested, but no segmentation folder configured. File: " + Config.customSegmentationFolder + segmentation + ".srx");
         }
 
@@ -185,13 +183,11 @@ public class OkapiClient {
          * Even though the behavior is correct (and this case should not happen), the error message might be trivial
          */
         if (!segmentationFile.isFile()) {
-            LOGGER.warn("Custom segmentation file not found. File: " + Config.customSegmentationFolder + segmentation + ".srx");
             throw new IllegalArgumentException("Custom segmentation file not found. File: " + Config.customSegmentationFolder + segmentation + ".srx");
         }
 
         // Check if the corresponding file can be read
         if (!segmentationFile.canRead()) {
-            LOGGER.warn("Custom segmentation file cannot be read. File: " + Config.customSegmentationFolder + segmentation + ".srx");
             throw new IllegalArgumentException("Custom segmentation file cannot be read. File: " + Config.customSegmentationFolder + segmentation + ".srx");
         }
 
@@ -393,8 +389,7 @@ public class OkapiClient {
             return pack.getDerivedFile();
         }
         catch ( Throwable e ) {
-            LOGGER.error("It was not possible to obtain the derived file from " + pack.getOriginalFile().getName(), e);
-            throw new RuntimeException("It was not possible to obtain the derived file from " + pack.getOriginalFile().getName());
+            throw new RuntimeException("Exception generating target file from " + pack.getOriginalFile().getName(), e);
         }
     }
 

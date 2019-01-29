@@ -38,7 +38,7 @@ public class GenerateDerivedFileResource {
             @FormDataParam("xliffContent") InputStream fileInputStream) {
 
         // Logging
-        LOGGER.info("[DERIVATION REQUEST]");
+        LOGGER.info("XLIFF > TARGET request");
 
         Project project = null;
         Response response = null;
@@ -62,7 +62,7 @@ public class GenerateDerivedFileResource {
                     .build();
 
             everythingOk = true;
-            LOGGER.info("[DERIVATION REQUEST FINISHED]");
+            LOGGER.info("Successfully returned target file");
         }
 
         // If there is any error, return it
@@ -71,7 +71,7 @@ public class GenerateDerivedFileResource {
                     .status(Response.Status.BAD_REQUEST)
                     .entity(JSONResponseFactory.getError(e.getMessage()))
                     .build();
-            LOGGER.error("[DERIVATION REQUEST FAILED] {}", e.getMessage(), e);
+            LOGGER.error("Exception converting XLIFF to target", e);
         }
 
         // Close the project and streams

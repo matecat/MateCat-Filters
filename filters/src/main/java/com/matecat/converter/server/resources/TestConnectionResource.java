@@ -23,7 +23,7 @@ public class TestConnectionResource {
      */
     @GET
     public Response test(@Context HttpServletRequest request) {
-        LOGGER.info("[TEST] Connection tested from {}", request.getRemoteAddr());
+        LOGGER.info("TEST request from {}", request.getRemoteAddr());
         return Response
                 .status(Response.Status.OK)
                 .entity("Server on")

@@ -69,7 +69,7 @@ public class ConvertToXliffResource {
         // TODO: refactor internal classes to be filename/extension agnostic
         filename = FilenameUtils.removeExtension(filename) + "." + FilenameUtils.getExtension(filename).toLowerCase();
 
-        LOGGER.info("[CONVERSION REQUEST] {}: {} to {}", filename, sourceLanguageCode, targetLanguageCode);
+        LOGGER.info("SOURCE > XLIFF request: file=<{}> source=<{}> target=<{}>", filename, sourceLanguageCode, targetLanguageCode);
 
         Project project = null;
         Response response = null;
@@ -97,7 +97,7 @@ public class ConvertToXliffResource {
                     .build();
 
             everythingOk = true;
-            LOGGER.info("[CONVERSION FINISHED] {}: {} to {}", filename, sourceLanguageCode, targetLanguageCode);
+            LOGGER.info("Successfully returned XLIFF file");
         }
 
         // If there is any error, return it
@@ -114,7 +114,7 @@ public class ConvertToXliffResource {
                     .status(Response.Status.BAD_REQUEST)
                     .entity(JSONResponseFactory.getError(errorMessage))
                     .build();
-            LOGGER.error("[CONVERSION REQUEST FAILED] {}", errorMessage, e);
+            LOGGER.error("Exception converting source to XLIFF: {}", errorMessage, e);
         }
 
         // Close the project and streams
@@ -149,7 +149,7 @@ public class ConvertToXliffResource {
 
         // If there is any error, throw a ServerException
         catch (MissingResourceException e) {
-            throw new ServerException("The language '" + languageCode + "' is not valid");
+            throw new ServerException("Invalid language: " + languageCode);
         }
     }
 

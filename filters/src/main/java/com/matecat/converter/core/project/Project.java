@@ -83,10 +83,10 @@ public class Project {
             if (Config.deleteOnClose) {
                 try {
                     FileUtils.moveDirectory(folder, errorFolder);
-                    LOGGER.info("folder with temp files moved to " + errorFolderPath);
+                    LOGGER.info("Folder with temp files moved to " + errorFolderPath);
                 } catch (Exception e) {
                     moveError = true;
-                    LOGGER.error("exception while moving temp folder to errors folder; will try to copy it", e);
+                    LOGGER.error("Exception moving temp folder to errors folder; will try to copy it", e);
                 }
             }
 
@@ -94,7 +94,7 @@ public class Project {
                 try {
                     FileUtils.copyDirectory(folder, errorFolder);
                 } catch (Exception e) {
-                    LOGGER.error("exception while copying temp folder to errors folder", e);
+                    LOGGER.error("Exception while copying temp folder to errors folder", e);
                 }
             }
         }
@@ -102,7 +102,7 @@ public class Project {
             try {
                 FileUtils.deleteDirectory(folder);
             } catch (IOException e) {
-                LOGGER.error("exception while deleting temp folder", e);
+                LOGGER.error("Exception while deleting temp folder", e);
             }
         }
         this.folder = null;

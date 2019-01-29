@@ -206,7 +206,7 @@ public class XliffBuilder {
         if (FILTERS_VERSION != null) {
             toolId += " " + FILTERS_VERSION;
         } else {
-            LOGGER.warn("Can't write converter version in XLIFF: converter server version unknown (version available only when running from a jar)");
+            LOGGER.warn("Can't write Filters version in XLIFF (version available only when running from a jar)");
         }
         originalFileNode.setAttribute("tool-id", toolId);
         originalFileNode.setAttribute("filter", filter.getCanonicalName());
