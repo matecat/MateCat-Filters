@@ -87,4 +87,53 @@ public class OkapiClientSegmentationTest {
         Assert.assertEquals(2, segs.size());
     }
 
+    @Test
+    public void testHtml() throws IOException, SAXException {
+        String html = "This is a <a title=\"First line. Second line.\">test</a>";
+        ArrayList<String> segs = segment(html);
+        Assert.assertEquals(html, segs.get(0));
+        Assert.assertEquals(1, segs.size());
+
+        // There is a rule to not break inside urls, but this rule can't catch
+        // relative urls...
+        html = "This is a <a href=\"/folder/script?a=1\">test</a>";
+        segs = segment(html);
+        Assert.assertEquals(html, segs.get(0));
+        Assert.assertEquals(1, segs.size());
+
+        html = "Some text, <b>other text. More text.</b>";
+        segs = segment(html);
+        Assert.assertEquals("Some text, <b>other text. ", segs.get(0));
+        Assert.assertEquals("More text.</b>", segs.get(1));
+        Assert.assertEquals(2, segs.size());
+    }
+
+    @Test
+    public void testUrls() throws IOException, SAXException {
+        String url = "Link to http://test.com/script?a=1";
+        ArrayList<String> segs = segment(url);
+        Assert.assertEquals(url, segs.get(0));
+        Assert.assertEquals(1, segs.size());
+
+        url = "Link to test.com/script?a=1";
+        segs = segment(url);
+        Assert.assertEquals(url, segs.get(0));
+        Assert.assertEquals(1, segs.size());
+
+        url = "Link to test.com/?a=1";
+        segs = segment(url);
+        Assert.assertEquals(url, segs.get(0));
+        Assert.assertEquals(1, segs.size());
+
+        url = "Link to test.com/folder/folder/script?a=1";
+        segs = segment(url);
+        Assert.assertEquals(url, segs.get(0));
+        Assert.assertEquals(1, segs.size());
+
+        url = "Link to test.com/folder/folder/?a=1";
+        segs = segment(url);
+        Assert.assertEquals(url, segs.get(0));
+        Assert.assertEquals(1, segs.size());
+    }
+
 }

@@ -58,16 +58,17 @@ c. Three.</okpsrx:sample>
           <beforebreak>(?im)^(([0-9]+|[ivx]+|\p{L})\.\uE105?\s*)+</beforebreak>
           <afterbreak/>
         </rule>
-        <!--ICU splits urls with querystring at the question mark. This rule avoids it. 
-        The regexp for url matching is of @stephenhay, found in:
-          https://mathiasbynens.be/demo/url-regex
-        In order to make the regexp work in this context I did some small changes.
-        Pay attention that the complexity of most of the expressions in that page can
-        cause infinite computations for the segmentation step, so be careful.
-        Previously we had this precise problem with the expression of @imme_emosol.-->
+        <!--Don't break inside HTML tags.
+        Fails only with a ">" inside an attribute: <a title="a>b" href="/?a=1">-->
         <rule break="no">
-          <beforebreak>(?i)(https?|ftp)://[^\s/$.?#].[^\s]*\?\uE105</beforebreak>
-          <afterbreak>[^\s]+</afterbreak>
+          <beforebreak>(?i)&lt;[a-z]+ [^&gt;]+\uE105\s*</beforebreak>
+          <afterbreak/>
+        </rule>
+        <!--ICU splits at the question mark inside urls: this rule avoids it.
+        Matches everything like "text.text/text?"-->
+        <rule break="no">
+          <beforebreak>\S+\.\S+/\S*\?\uE105\s*</beforebreak>
+          <afterbreak/>
         </rule>
         <!--ICU splits this: "Sentence that ends with footnote reference. [1]"-->
         <rule break="no">
