@@ -2,6 +2,15 @@
 
 
 
+## 1.2.5 (2019-03-04)
+
+* Upgraded to Okapi M36
+* Upgraded dependencies, fixed known vulnerability in Jetty
+* Fixed logging issues, better logging messages
+* Segmentation improvements on percentages and URLs
+
+
+
 ## 1.2.4 (2017-08-23)
 
 * Upgraded to Okapi M35
