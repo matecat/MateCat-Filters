@@ -1,0 +1,51 @@
+// Health endpoint (TestConnectionResource.java)
+GET http://localhost:8732/test
+
+###
+
+// Convert to XLIFF (ConvertToXliffResource.java)
+POST http://localhost:8732/AutomationService/original2xliff
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="fileName"
+
+cipperimerlo.csv
+--WebAppBoundary
+Content-Disposition: form-data; name="sourceLocale"
+
+en-US
+--WebAppBoundary
+Content-Disposition: form-data; name="targetLocale"
+
+it-IT
+--WebAppBoundary
+Content-Disposition: form-data; name="documentContent"; filename="test.csv"
+
+< ./src/test/resources/okapi/test.csv
+#< ./src/test/resources/generation/test.docx
+--WebAppBoundary--
+
+###
+
+// Extract target from XLIFF (GenerateDerivedFileResource.java)
+POST http://localhost:8732/AutomationService/xliff2original
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="xliffContent"; filename="test.docx.xlf"
+
+< ./src/test/resources/extraction/test.docx.xlf
+--WebAppBoundary--
+
+###
+
+// Extract source from XLIFF (ExtractOriginalFileResource.java)
+POST http://localhost:8732/AutomationService/xliff2source
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="test.docx.xlf"
+
+< ./src/test/resources/extraction/test.docx.xlf
+--WebAppBoundary--
