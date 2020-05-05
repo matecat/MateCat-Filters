@@ -26,7 +26,7 @@ import java.io.InputStream;
 public class GenerateDerivedFileResource {
 
     // Logger
-    private static Logger LOGGER = LoggerFactory.getLogger(ConvertToXliffResource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateDerivedFileResource.class);
 
     /**
      * Generate the derived file from the xlf
@@ -41,7 +41,7 @@ public class GenerateDerivedFileResource {
         LOGGER.info("XLIFF > TARGET request");
 
         Project project = null;
-        Response response = null;
+        Response response;
         boolean everythingOk = false;
         try {
 

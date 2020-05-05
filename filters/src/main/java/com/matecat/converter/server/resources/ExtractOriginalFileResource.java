@@ -26,7 +26,7 @@ import java.io.InputStream;
 public class ExtractOriginalFileResource {
 
     // Logger
-    private static Logger LOGGER = LoggerFactory.getLogger(ConvertToXliffResource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExtractOriginalFileResource.class);
 
 
     /**
@@ -41,7 +41,7 @@ public class ExtractOriginalFileResource {
         LOGGER.info("XLIFF > SOURCE request");
 
         Project project = null;
-        Response response = null;
+        Response response;
         boolean everythingOk = false;
         try {
 
