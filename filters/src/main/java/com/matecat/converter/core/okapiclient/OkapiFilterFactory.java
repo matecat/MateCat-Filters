@@ -19,23 +19,24 @@ import net.sf.okapi.filters.php.PHPContentFilter;
 import net.sf.okapi.filters.plaintext.PlainTextFilter;
 import net.sf.okapi.filters.po.POFilter;
 import net.sf.okapi.filters.properties.PropertiesFilter;
-import net.sf.okapi.filters.table.TableFilter;
-import net.sf.okapi.filters.table.tsv.TabSeparatedValuesFilter;
-import net.sf.okapi.filters.xml.XMLFilter;
-import net.sf.okapi.filters.yaml.YamlFilter;
 import net.sf.okapi.filters.rainbowkit.RainbowKitFilter;
 import net.sf.okapi.filters.regex.RegexFilter;
+import net.sf.okapi.filters.table.TableFilter;
 import net.sf.okapi.filters.table.csv.CommaSeparatedValuesFilter;
+import net.sf.okapi.filters.table.tsv.TabSeparatedValuesFilter;
 import net.sf.okapi.filters.ts.TsFilter;
 import net.sf.okapi.filters.ttx.TTXFilter;
 import net.sf.okapi.filters.txml.TXMLFilter;
 import net.sf.okapi.filters.xini.XINIFilter;
 import net.sf.okapi.filters.xliff.XLIFFFilter;
+import net.sf.okapi.filters.xml.XMLFilter;
 import net.sf.okapi.filters.xmlstream.XmlStreamFilter;
+import net.sf.okapi.filters.yaml.YamlFilter;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,6 +44,7 @@ import java.util.Set;
 /**
  * Filter factory
  */
+// TODO: Replace System.err printouts with proper logging
     public class OkapiFilterFactory {
 
     // Path of the configurations
@@ -124,8 +126,8 @@ import java.util.Set;
 
 
     /**
-     * Get the corresponding filter for a given format
-     * @return
+     * Get the corresponding filter for a given file format.
+     * @return a {@code IFilter} instance capable to handle the format
      */
     protected static IFilter getFilter(File file) {
         final Format format = Format.getFormat(file);
@@ -191,7 +193,7 @@ import java.util.Set;
 
     private static OpenXMLFilter getOpenXMLFilter() {
         OpenXMLFilter filter = new OpenXMLFilter();
-        net.sf.okapi.filters.openxml.ConditionalParameters conditionalParameters = ( net.sf.okapi.filters.openxml.ConditionalParameters) filter.getParameters();
+        net.sf.okapi.filters.openxml.ConditionalParameters conditionalParameters = filter.getParameters();
         // Global
         conditionalParameters.setCleanupAggressively(true);
         conditionalParameters.setTranslateDocProperties(false);
@@ -227,10 +229,10 @@ import java.util.Set;
         HtmlFilter filter = new HtmlFilter();
         try {
             net.sf.okapi.filters.html.Parameters params = (net.sf.okapi.filters.html.Parameters) filter.getParameters();
-            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + HTML_CONFIG_FILENAME), "UTF-8");
+            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + HTML_CONFIG_FILENAME), StandardCharsets.UTF_8);
             params.fromString(config);
         } catch (IOException e) {
-            System.err.println("Dita custom configuration could not be loaded");
+            System.err.println("HTML custom configuration could not be loaded");
         }
         return filter;
     }
@@ -275,7 +277,7 @@ import java.util.Set;
     }
     private static XLIFFFilter getXliffFilter() {
         XLIFFFilter filter = new XLIFFFilter();
-        net.sf.okapi.filters.xliff.Parameters params = (net.sf.okapi.filters.xliff.Parameters) filter.getParameters();
+        net.sf.okapi.filters.xliff.Parameters params = filter.getParameters();
         params.setOverrideTargetLanguage(true);
         params.setEscapeGT(true);
         params.setInlineCdata(true);
@@ -374,7 +376,7 @@ import java.util.Set;
     private static RegexFilter getStringsFilter() {
         RegexFilter filter = new RegexFilter();
         try {
-            net.sf.okapi.filters.regex.Parameters params = (net.sf.okapi.filters.regex.Parameters) filter.getParameters();
+            net.sf.okapi.filters.regex.Parameters params = filter.getParameters();
             String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_regex@macstrings.fprm"), "UTF-8");
             params.fromString(config);
         } catch (IOException e) {
@@ -386,8 +388,8 @@ import java.util.Set;
     private static RegexFilter getSRTFilter() {
         RegexFilter filter = new RegexFilter();
         try {
-            net.sf.okapi.filters.regex.Parameters params = (net.sf.okapi.filters.regex.Parameters) filter.getParameters();
-            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_regex@srt.fprm"), "UTF-8");
+            net.sf.okapi.filters.regex.Parameters params = filter.getParameters();
+            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_regex@srt.fprm"), StandardCharsets.UTF_8);
             params.fromString(config);
         } catch (IOException e) {
             System.err.println("Strings custom configuration could not be loaded");
@@ -398,8 +400,8 @@ import java.util.Set;
     private static XMLFilter getRESXFilter() {
         XMLFilter filter = new XMLFilter();
         try {
-            net.sf.okapi.filters.its.Parameters params = (net.sf.okapi.filters.its.Parameters) filter.getParameters();
-            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_xml@resx.fprm"), "UTF-8");
+            net.sf.okapi.filters.its.Parameters params = filter.getParameters();
+            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_xml@resx.fprm"), StandardCharsets.UTF_8);
             params.fromString(config);
         } catch (IOException e) {
             System.err.println("XML custom configuration could not be loaded");
@@ -410,8 +412,8 @@ import java.util.Set;
     private static XMLFilter getWixFilter() {
         XMLFilter filter = new XMLFilter();
         try {
-            net.sf.okapi.filters.its.Parameters params = (net.sf.okapi.filters.its.Parameters) filter.getParameters();
-            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_xml@wix.fprm"), "UTF-8");
+            net.sf.okapi.filters.its.Parameters params = filter.getParameters();
+            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + "okf_xml@wix.fprm"), StandardCharsets.UTF_8);
             params.fromString(config);
         } catch (IOException e) {
             System.err.println("XML custom configuration could not be loaded");
@@ -423,7 +425,7 @@ import java.util.Set;
         XmlStreamFilter filter = new XmlStreamFilter();
         try {
             net.sf.okapi.filters.xmlstream.Parameters params = (net.sf.okapi.filters.xmlstream.Parameters) filter.getParameters();
-            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + XML_CONFIG_FILENAME), "UTF-8");
+            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + XML_CONFIG_FILENAME), StandardCharsets.UTF_8);
             params.fromString(config);
         } catch (IOException e) {
             System.err.println("XML custom configuration could not be loaded");
@@ -449,7 +451,7 @@ import java.util.Set;
         XmlStreamFilter filter = new XmlStreamFilter();
         try {
             net.sf.okapi.filters.xmlstream.Parameters params = (net.sf.okapi.filters.xmlstream.Parameters) filter.getParameters();
-            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + DITA_CONFIG_FILENAME), "UTF-8");
+            String config = IOUtils.toString(System.class.getResourceAsStream(OKAPI_CUSTOM_CONFIGS_PATH + DITA_CONFIG_FILENAME), StandardCharsets.UTF_8);
             params.fromString(config);
         } catch (IOException e) {
             System.err.println("Dita custom configuration could not be loaded");

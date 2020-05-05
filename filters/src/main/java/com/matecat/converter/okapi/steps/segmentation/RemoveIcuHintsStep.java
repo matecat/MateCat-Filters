@@ -1,7 +1,5 @@
 package com.matecat.converter.okapi.steps.segmentation;
 
-import com.ibm.icu.text.BreakIterator;
-import com.ibm.icu.util.ULocale;
 import net.sf.okapi.common.Event;
 import net.sf.okapi.common.LocaleId;
 import net.sf.okapi.common.pipeline.BasePipelineStep;

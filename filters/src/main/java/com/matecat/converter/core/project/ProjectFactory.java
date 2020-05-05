@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 
 
 /**
- * Factory in charge of creating projects, in temporal folders
+ * Factory in charge of creating projects, in temporary folders
  */
 public class ProjectFactory {
 
@@ -37,7 +37,7 @@ public class ProjectFactory {
             // Load the folder
             File folder = Files.createTempDirectory(Paths.get(Config.cacheFolder), "").toFile();
 
-            // Save the file inside the temporal
+            // Save the file inside the temporary folder
             File file = new File(folder.getPath() + File.separator + filename);
             FileUtils.copyInputStreamToFile(uploadedInputStream, file);
 

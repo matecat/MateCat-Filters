@@ -1,14 +1,17 @@
 package com.matecat.converter.core.util;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.InetSocketAddress;
-import java.util.*;
-
 import com.matecat.filters.basefilters.DefaultFilter;
 import com.matecat.filters.basefilters.IFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
 
 
 /**
@@ -108,10 +111,10 @@ public class Config {
     
     /**
      * Check the validity of an user provided folder.
-     * 
-     * @param folderPath
-     * @param createIfNotExists
-     * @param checkWritePermission
+     *
+     * @param folderPath the path of the folder
+     * @param createIfNotExists if true tries to create the folder if not exists
+     * @param checkWritePermission if true checks if can read from folder
      * @return the path to the folder if it exists is valid and access permission are satisfied, an empty string otherwise. In case a path is returned, it will always end with a slash ('/')
      */
     static String checkFolderValidity(String folderPath, boolean createIfNotExists, boolean checkWritePermission) {
@@ -149,7 +152,7 @@ public class Config {
         // everything's alright, folder does exist and apparently no permission issues occurred. Make sure the path ends  with a '/'
         return folderPath.endsWith("/") ? folderPath : folderPath + "/";
     }
-    
+
 
 
     /**

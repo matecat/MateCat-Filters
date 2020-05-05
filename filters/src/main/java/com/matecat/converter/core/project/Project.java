@@ -34,7 +34,7 @@ public class Project {
     private File file;
 
     /**
-     * Contructor invoked by the factory, receiving a file
+     * Constructor invoked by the factory, receiving a file
      * @param file Project's file
      */
     protected Project(File file) {
@@ -66,7 +66,7 @@ public class Project {
      * Close the project
      *
      * This will remove all the inner references to the file, and remove the folder depending on the configuration
-     * One this method is executed, it's not possible to use the project again.
+     * Once this method is executed, it's not possible to use the project again.
      */
     public void close(boolean success) {
         if (!success && !Config.errorsFolder.isEmpty()) {
