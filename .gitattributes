@@ -1,2 +1,2 @@
-# Exclude files used by the test suite
+# Exclude files used by the test suite from GitHub language detection
 filters/src/resources linguist-documentation

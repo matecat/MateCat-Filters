@@ -8,12 +8,12 @@ import java.util.stream.Stream;
 
 
 /**
- * Format class, which represents the supported formats by the application.
+ * Enumeration of all the supported formats.
  * It also offers some util functions regarding format handling.
  */
 public enum Format {
 
-    // Suported formats
+    // All supported formats
     DOC, DOT, DOCX, DOCM, DOTX, DOTM, RTF,
     XLS, XLT, XLSX, XLSM, XLTX, XLTM, ODS, SXC, CSV,
     PPT, PPS, POT, PPTX, PPTM, PPSM, PPSX, POTX, POTM,
@@ -28,21 +28,19 @@ public enum Format {
     ARCHIVE, XINI, TS;
 
     // Plain text formats
-    public static final Set<Format> textFormats
-            = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    public static final Set<Format> textFormats = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
             TXT, CSV, XML, HTML, HTM, XHTML, PHP, JSON, TXML, YAML, XLIFF,
             SDLXLIFF, DITA, IDML, RESX, STRINGS, PO, ARCHIVE, PROPERTIES,
             DTD, SRT, TSV, WIX
             )));
 
     // OCR formats
-    public static final Set<Format> OCRFormats
-            = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    public static final Set<Format> OCRFormats = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
             PDF, BMP, GIF, PNG, JPEG, TIFF
             )));
 
-    public static final Set<Format> bilingualFormats
-            = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    // Bilingual formats
+    public static final Set<Format> bilingualFormats = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
             PO, XLF, XLIFF, SDLXLIFF
             )));
 
@@ -76,7 +74,7 @@ public enum Format {
 
         // Return corresponding format
         // TODO: extension abbreviations should be handled better
-        Format format = null;
+        Format format;
         switch (extension) {
             case "jpg":
                 format = Format.JPEG;

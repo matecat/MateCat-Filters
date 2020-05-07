@@ -8,6 +8,7 @@ import net.sf.okapi.common.resource.ITextUnit;
 import net.sf.okapi.common.resource.Segment;
 import net.sf.okapi.common.resource.TextContainer;
 import net.sf.okapi.common.resource.TextFragment;
+
 import java.util.Locale;
 
 public class AddIcuHintsStep extends BasePipelineStep {

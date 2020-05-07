@@ -37,7 +37,7 @@ public class DefaultFilter implements IFilter {
         return XliffBuilder.build(okapiPack, originalFormat, this.getClass());
     }
 
-    public static OkapiPack extractOkapiPack(File sourceFile, Locale sourceLanguage, Locale targetLanguage, String segmentation, net.sf.okapi.common.filters.IFilter okapiFilter, Boolean segmentBilingual) {
+    private OkapiPack extractOkapiPack(File sourceFile, Locale sourceLanguage, Locale targetLanguage, String segmentation, net.sf.okapi.common.filters.IFilter okapiFilter, Boolean segmentBilingual) {
         Format originalFormat = Format.getFormat(sourceFile);
 
         // 1. If the file it's not supported, convert it

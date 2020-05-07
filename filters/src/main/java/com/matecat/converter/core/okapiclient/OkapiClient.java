@@ -35,8 +35,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
-import static com.matecat.converter.core.Format.SDLXLIFF;
-
 
 /**
  * Okapi Client
@@ -49,7 +47,7 @@ import static com.matecat.converter.core.Format.SDLXLIFF;
 public class OkapiClient {
 
     // Logger
-    private static Logger LOGGER = LoggerFactory.getLogger(OkapiClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OkapiClient.class);
 
     /**
      * Private constructor (static class)
@@ -120,7 +118,7 @@ public class OkapiClient {
      * @param segmentation the name of the custom segmentation file to use (if any), or <code>null</code> to fallback on default
      * @param driver a reference to the current driver to be populated with the segmentation step
      * 
-     * @see Config.customSegmentationFolder
+     * @see Config#customSegmentationFolder
      */
     private static void createSegmentationStep(Locale sourceLanguage, String segmentation, IPipelineDriver driver) {
         SegmentationStep segmentationStep = new SegmentationStep();
@@ -141,8 +139,8 @@ public class OkapiClient {
     
     
     /**
-     * given a segmentation name, check if exists a corresponding file with custom segmentation rules and return its path 
-     * @param segmentation
+     * Given a segmentation name, check if exists a corresponding file with custom segmentation rules and return its path.
+     * @param segmentation the segmentation name
      * @return the full path of the file containing the specified segmentation rules, or null if no custom segmentation has been defined
      * @throws RuntimeException if the file does not exist or there are no read permissions on it 
      */

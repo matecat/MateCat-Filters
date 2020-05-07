@@ -1,10 +1,17 @@
 package com.matecat.converter.server.resources;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Locale;
-import java.util.MissingResourceException;
+import com.matecat.converter.core.project.Project;
+import com.matecat.converter.core.project.ProjectFactory;
+import com.matecat.converter.server.JSONResponseFactory;
+import com.matecat.converter.server.exceptions.ServerException;
+import com.matecat.filters.basefilters.FiltersRouter;
+import net.sf.okapi.common.exceptions.OkapiEncryptedDataException;
+import net.sf.okapi.common.exceptions.OkapiUnexpectedRevisionException;
+import org.apache.commons.io.FilenameUtils;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -12,20 +19,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import net.sf.okapi.common.exceptions.OkapiEncryptedDataException;
-import net.sf.okapi.common.exceptions.OkapiUnexpectedRevisionException;
-import com.matecat.filters.basefilters.FiltersRouter;
-import org.apache.commons.io.FilenameUtils;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.matecat.converter.core.project.Project;
-import com.matecat.converter.core.project.ProjectFactory;
-import com.matecat.converter.server.JSONResponseFactory;
-import com.matecat.converter.server.exceptions.ServerException;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Locale;
+import java.util.MissingResourceException;
 
 
 /**
@@ -35,7 +33,7 @@ import com.matecat.converter.server.exceptions.ServerException;
 public class ConvertToXliffResource {
 
     // Logger
-    private static Logger LOGGER = LoggerFactory.getLogger(ConvertToXliffResource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConvertToXliffResource.class);
 
     /**
      * Convert a file into XLF
@@ -72,7 +70,7 @@ public class ConvertToXliffResource {
         LOGGER.info("SOURCE > XLIFF request: file=<{}> source=<{}> target=<{}>", filename, sourceLanguageCode, targetLanguageCode);
 
         Project project = null;
-        Response response = null;
+        Response response;
         boolean everythingOk = false;
         try {
 
