@@ -6,147 +6,209 @@
 	<title>MateCat Filters {{filtersVersion}}</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 	<style>
-
 		/* RESET */
-		html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
+        html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline
+        }
 
-		* { box-sizing: border-box; }
-		input, textarea {
-		-webkit-appearance: none;
-		-webkit-border-radius: 0;
-		}
-		input:focus, textarea:focus {
-		outline:none;
-		}
-		input[type=file]::-webkit-file-upload-button {
-		visibility: hidden;
-		}
+        article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+            display: block
+        }
 
-		/* COMMON */
-		body {
-		font-family: Calibri, Arial, Helvetica, sans-serif;
-		}
-		strong { font-weight: bold; }
-		.icon {
-		cursor: pointer;
-		position: relative;
-		top: 5px;
-		}
-		input[type=button] {
-		background-color: rgb(0, 176, 218);
-		padding: 12px 20px;
-		font-size: 1em;
-		border: 1px solid #00b0da;
-		cursor: pointer;
-		color: white;
-		border-radius: 5px;
-		margin: 2px 0 2px 10px;
-		width: 175px;
-		}
-		input:disabled {
-		background-color: gainsboro;
-		border-color: gainsboro;
-		}
-		header {
-		width: 100%;
-		color: white;
-		text-align: center;
-		padding: 20px 0;
-		background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIGNvdW50PScxMDAlJyBoZWlnaHQ9JzEwMCUnPgoJPGNpcmNsZSBjeD0nNTAlJyBjeT0nNTAlJyByPSc1JScgZmlsbC1vcGFjaXR5PScuMycgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9JzUwJScgcj0nMTAlJyBmaWxsLW9wYWNpdHk9Jy4zJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nNTAlJyBjeT0nNTAlJyByPScxNSUnIGZpbGwtb3BhY2l0eT0nLjMnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PSc1MCUnIGN5PSc1MCUnIHI9JzIwJScgZmlsbC1vcGFjaXR5PScuMycgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9JzUwJScgcj0nMjUlJyBmaWxsLW9wYWNpdHk9Jy4zJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nNTAlJyBjeT0nNTAlJyByPSczMCUnIGZpbGwtb3BhY2l0eT0nLjMnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PSc1MCUnIGN5PSc1MCUnIHI9JzM1JScgZmlsbC1vcGFjaXR5PScuMycgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9JzUwJScgcj0nNDAlJyBmaWxsLW9wYWNpdHk9Jy4zJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nNTAlJyBjeT0nNTAlJyByPSc0NSUnIGZpbGwtb3BhY2l0eT0nLjMnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PSc1MCUnIGN5PSc1MCUnIHI9JzUwJScgZmlsbC1vcGFjaXR5PScuMycgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzIwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzMwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzQwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzUwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzYwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzcwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzgwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzkwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzEwMCUnIGZpbGwtb3BhY2l0eT0nLjInIGZpbGw9JyMxZjdlYWQnIC8+Cgk8Y2lyY2xlIGN4PScwJyBjeT0nMCcgcj0nMTAlJyBmaWxsLW9wYWNpdHk9Jy4yJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nMCcgY3k9JzAnIHI9JzIwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzAnIGN5PScwJyByPSczMCUnIGZpbGwtb3BhY2l0eT0nLjInIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PScwJyBjeT0nMCcgcj0nNDAlJyBmaWxsLW9wYWNpdHk9Jy4yJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nMCcgY3k9JzAnIHI9JzUwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzAnIGN5PScwJyByPSc2MCUnIGZpbGwtb3BhY2l0eT0nLjInIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PScwJyBjeT0nMCcgcj0nNzAlJyBmaWxsLW9wYWNpdHk9Jy4yJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nMTAwJScgY3k9JzAnIHI9JzEwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzEwMCUnIGN5PScwJyByPScyMCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMxZjdlYWQnIC8+Cgk8Y2lyY2xlIGN4PScxMDAlJyBjeT0nMCcgcj0nMzAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMWY3ZWFkJyAvPgoJPGNpcmNsZSBjeD0nMTAwJScgY3k9JzAnIHI9JzQwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzEwMCUnIGN5PScwJyByPSc1MCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMxZjdlYWQnIC8+Cgk8Y2lyY2xlIGN4PScxMDAlJyBjeT0nMCcgcj0nNjAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMWY3ZWFkJyAvPgoJPGNpcmNsZSBjeD0nMTAwJScgY3k9JzAnIHI9JzcwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzEwMCUnIGN5PScxMDAlJyByPScxMCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PScxMDAlJyBjeT0nMTAwJScgcj0nMjAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nMTAwJScgY3k9JzEwMCUnIHI9JzMwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzEwMCUnIGN5PScxMDAlJyByPSc0MCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PScxMDAlJyBjeT0nMTAwJScgcj0nNTAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nMTAwJScgY3k9JzEwMCUnIHI9JzYwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzEwMCUnIGN5PScxMDAlJyByPSc3MCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PScwJScgY3k9JzEwMCUnIHI9JzEwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzAlJyBjeT0nMTAwJScgcj0nMjAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMWY3ZWFkJyAvPgoJPGNpcmNsZSBjeD0nMCUnIGN5PScxMDAlJyByPSczMCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMxZjdlYWQnIC8+Cgk8Y2lyY2xlIGN4PScwJScgY3k9JzEwMCUnIHI9JzQwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzAlJyBjeT0nMTAwJScgcj0nNTAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMWY3ZWFkJyAvPgoJPGNpcmNsZSBjeD0nMCUnIGN5PScxMDAlJyByPSc2MCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMxZjdlYWQnIC8+Cgk8Y2lyY2xlIGN4PScwJScgY3k9JzEwMCUnIHI9JzcwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KPC9zdmc+');
-		}
+        body {
+            line-height: 1
+        }
 
-		/* ERROR MESAGE */
-		#error {
-		padding: 20px 20px;
-		width: 100%;
-		text-align: center;
-		position: fixed;
-		color: #D8000C;
-		background-color: #FFBABA;
-		bottom: 0;
-		-webkit-transition: opacity .5s ease-in-out;
-		transition: opacity .5s ease-in-out;
-		opacity: 0;
-		filter: alpha(opacity=0);
-		}
+        ol, ul {
+            list-style: none
+        }
 
-		/* HEADERS */
-		h1, h2 { font-weight: bold; }
-		h1 { font-size: 3em; }
-		h2 { font-size: 2em; margin-bottom: 0.5em; }
+        blockquote, q {
+            quotes: none
+        }
 
-		/* SECTIONS */
-		section {
-		text-align: center;
-		padding: 20px 0 10px;
-		}
-		#section-upload, #section-process {
-		-webkit-transition: opacity .5s ease-in-out;
-		transition: opacity .5s ease-in-out;
-		opacity: 0;
-		filter: alpha(opacity=0);
-		}
+        blockquote:before, blockquote:after, q:before, q:after {
+            content: '';
+            content: none
+        }
 
-		/* OPTIONS */
-		#options li {
-		display: inline-block;
-		text-align: center;
-		margin: 0 20px;
-		padding: 10px;
-		border-radius: 10px;
-		cursor: pointer;
-		}
-		#options i {
-		margin-bottom: 10px;
-		}
-		.option-selected {
-		background-color: #00b0da;
-		color: white;
-		}
+        table {
+            border-collapse: collapse;
+            border-spacing: 0
+        }
 
-		/* FILE */
-		#file { display: none; }
-		#file-details {
-		-webkit-transition: opacity .5s ease-in-out;
-		transition: opacity .5s ease-in-out;
-		opacity: 0;
-		filter: alpha(opacity=0);
-		margin-top: 10px;
-		}
-		#img-loading {
-		display: none;
-		width: 30px;
-		height: 30px;
-		position: relative;
-		top: 10px;
-		margin-right: -2px;
-		}
-		#icon-process {
-		margin-right: -2px;
-		left: 3px;
-		}
+        /* COMMON */
+        * {
+            box-sizing: border-box;
+        }
 
-		/* Process */
-		#section-process div { margin-bottom: 10px; }
+        input[type=file]::-webkit-file-upload-button {
+            visibility: hidden;
+        }
 
-	</style>
+        body {
+            font-family: Calibri, Arial, Helvetica, sans-serif;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        .icon {
+            cursor: pointer;
+            position: relative;
+            top: 5px;
+        }
+
+        input[type=button] {
+            background-color: rgb(0, 176, 218);
+            padding: 12px 20px;
+            font-size: 1em;
+            border: 1px solid #00b0da;
+            cursor: pointer;
+            color: white;
+            border-radius: 5px;
+            margin: 2px 0 2px 10px;
+            width: 175px;
+        }
+
+        input:disabled {
+            background-color: gainsboro;
+            border-color: gainsboro;
+        }
+
+        header {
+            width: 100%;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIGNvdW50PScxMDAlJyBoZWlnaHQ9JzEwMCUnPgoJPGNpcmNsZSBjeD0nNTAlJyBjeT0nNTAlJyByPSc1JScgZmlsbC1vcGFjaXR5PScuMycgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9JzUwJScgcj0nMTAlJyBmaWxsLW9wYWNpdHk9Jy4zJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nNTAlJyBjeT0nNTAlJyByPScxNSUnIGZpbGwtb3BhY2l0eT0nLjMnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PSc1MCUnIGN5PSc1MCUnIHI9JzIwJScgZmlsbC1vcGFjaXR5PScuMycgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9JzUwJScgcj0nMjUlJyBmaWxsLW9wYWNpdHk9Jy4zJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nNTAlJyBjeT0nNTAlJyByPSczMCUnIGZpbGwtb3BhY2l0eT0nLjMnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PSc1MCUnIGN5PSc1MCUnIHI9JzM1JScgZmlsbC1vcGFjaXR5PScuMycgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9JzUwJScgcj0nNDAlJyBmaWxsLW9wYWNpdHk9Jy4zJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nNTAlJyBjeT0nNTAlJyByPSc0NSUnIGZpbGwtb3BhY2l0eT0nLjMnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PSc1MCUnIGN5PSc1MCUnIHI9JzUwJScgZmlsbC1vcGFjaXR5PScuMycgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzIwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzMwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzQwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzUwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzYwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzcwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzgwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzkwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzUwJScgY3k9Jy0xMCUnIHI9JzEwMCUnIGZpbGwtb3BhY2l0eT0nLjInIGZpbGw9JyMxZjdlYWQnIC8+Cgk8Y2lyY2xlIGN4PScwJyBjeT0nMCcgcj0nMTAlJyBmaWxsLW9wYWNpdHk9Jy4yJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nMCcgY3k9JzAnIHI9JzIwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzAnIGN5PScwJyByPSczMCUnIGZpbGwtb3BhY2l0eT0nLjInIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PScwJyBjeT0nMCcgcj0nNDAlJyBmaWxsLW9wYWNpdHk9Jy4yJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nMCcgY3k9JzAnIHI9JzUwJScgZmlsbC1vcGFjaXR5PScuMicgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzAnIGN5PScwJyByPSc2MCUnIGZpbGwtb3BhY2l0eT0nLjInIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PScwJyBjeT0nMCcgcj0nNzAlJyBmaWxsLW9wYWNpdHk9Jy4yJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nMTAwJScgY3k9JzAnIHI9JzEwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzEwMCUnIGN5PScwJyByPScyMCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMxZjdlYWQnIC8+Cgk8Y2lyY2xlIGN4PScxMDAlJyBjeT0nMCcgcj0nMzAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMWY3ZWFkJyAvPgoJPGNpcmNsZSBjeD0nMTAwJScgY3k9JzAnIHI9JzQwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzEwMCUnIGN5PScwJyByPSc1MCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMxZjdlYWQnIC8+Cgk8Y2lyY2xlIGN4PScxMDAlJyBjeT0nMCcgcj0nNjAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMWY3ZWFkJyAvPgoJPGNpcmNsZSBjeD0nMTAwJScgY3k9JzAnIHI9JzcwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzEwMCUnIGN5PScxMDAlJyByPScxMCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PScxMDAlJyBjeT0nMTAwJScgcj0nMjAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nMTAwJScgY3k9JzEwMCUnIHI9JzMwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzEwMCUnIGN5PScxMDAlJyByPSc0MCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PScxMDAlJyBjeT0nMTAwJScgcj0nNTAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMjRiZGViJyAvPgoJPGNpcmNsZSBjeD0nMTAwJScgY3k9JzEwMCUnIHI9JzYwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzI0YmRlYicgLz4KCTxjaXJjbGUgY3g9JzEwMCUnIGN5PScxMDAlJyByPSc3MCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMyNGJkZWInIC8+Cgk8Y2lyY2xlIGN4PScwJScgY3k9JzEwMCUnIHI9JzEwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzAlJyBjeT0nMTAwJScgcj0nMjAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMWY3ZWFkJyAvPgoJPGNpcmNsZSBjeD0nMCUnIGN5PScxMDAlJyByPSczMCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMxZjdlYWQnIC8+Cgk8Y2lyY2xlIGN4PScwJScgY3k9JzEwMCUnIHI9JzQwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KCTxjaXJjbGUgY3g9JzAlJyBjeT0nMTAwJScgcj0nNTAlJyBmaWxsLW9wYWNpdHk9Jy4xJyBmaWxsPScjMWY3ZWFkJyAvPgoJPGNpcmNsZSBjeD0nMCUnIGN5PScxMDAlJyByPSc2MCUnIGZpbGwtb3BhY2l0eT0nLjEnIGZpbGw9JyMxZjdlYWQnIC8+Cgk8Y2lyY2xlIGN4PScwJScgY3k9JzEwMCUnIHI9JzcwJScgZmlsbC1vcGFjaXR5PScuMScgZmlsbD0nIzFmN2VhZCcgLz4KPC9zdmc+');
+        }
+
+        /* ERROR MESAGE */
+        #error {
+            display: none;
+            padding: 20px 20px;
+            width: 100%;
+            text-align: center;
+            color: #D8000C;
+            background-color: #FFBABA;
+        }
+
+        /* HEADERS */
+        h1, h2 {
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 3em;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 0.5em;
+        }
+
+        /* SECTIONS */
+        section {
+            text-align: center;
+            padding: 20px 0 10px;
+        }
+
+        #section-upload, #section-process {
+            -webkit-transition: opacity .5s ease-in-out;
+            transition: opacity .5s ease-in-out;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+
+        #section-log {
+            text-align: left;
+            -webkit-transition: opacity .5s ease-in-out;
+            transition: opacity .5s ease-in-out;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+
+        /* OPTIONS */
+        #options li {
+            display: inline-block;
+            text-align: center;
+            margin: 0 20px;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #options i {
+            margin-bottom: 10px;
+        }
+
+        .option-selected {
+            background-color: #00b0da;
+            color: white;
+        }
+
+        /* FILE */
+        #file {
+            display: none;
+        }
+
+        #file-details {
+            -webkit-transition: opacity .5s ease-in-out;
+            transition: opacity .5s ease-in-out;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            margin-top: 10px;
+        }
+
+        #img-loading {
+            display: none;
+            width: 30px;
+            height: 30px;
+            position: relative;
+            top: 10px;
+            margin-right: -2px;
+        }
+
+        #icon-process {
+            margin-right: -2px;
+            left: 3px;
+        }
+
+        /* Process */
+        #section-process div {
+            margin-bottom: 10px;
+        }
+
+        /* Logs */
+        #loglines {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
 	<script>
-        
+
         // Constants
         var CONVERT = 'convert', ORIGINAL = 'original', DERIVED = 'derived';
-        
+
         // Status
         var option = '';
         var filenameUploaded = '';
         var fileToDownload = null;
         var filenameToDownload = '';
-        
+
         // Visual
         $(function() {
-            
+
             // Change option
             $('#option-generate').click(function() {
                 option = CONVERT;
@@ -160,7 +222,7 @@
                 option = DERIVED;
                 changeOption(this, 'Get the translation!');
             });
-            
+
             // Upload a file
             $('#icon-upload').click(function() {
                 $('#file').click();
@@ -181,7 +243,7 @@
                     $('#button-download').attr('disabled','disabled');
                 }, 500);
             });
-            
+
             // Process
             $('#icon-process').click(function() {
                 process();
@@ -189,7 +251,7 @@
             $('#button-process').click(function() {
                 process();
             });
-            
+
             // Download
             $('#icon-download').click(function() {
                 download();
@@ -197,9 +259,9 @@
             $('#button-download').click(function() {
                 download();
             });
-        
+
         });
-        
+
         // Process
         function process() {
             /*if (option != CONVERT  &&  filenameUploaded.split('.').pop() != 'xlf') {
@@ -209,9 +271,15 @@
                 console.log("Executing: " + option);
                 var url = '';
                 switch (option) {
-                    case CONVERT  : url = 'AutomationService/original2xliff'; break;
-                    case ORIGINAL : url = '/AutomationService/xliff2source'; break;
-                    case DERIVED  : url = 'AutomationService/xliff2original'; break;
+                    case CONVERT  :
+                        url = '/AutomationService/original2xliff';
+                        break;
+                    case ORIGINAL :
+                        url = '/AutomationService/xliff2source';
+                        break;
+                    case DERIVED  :
+                        url = '/AutomationService/xliff2original';
+                        break;
                 }
                 console.log("URL: " + url);
                 $('#form-file').ajaxSubmit({
@@ -222,25 +290,28 @@
                 });
             //}
         }
-        
+
         // Download
         function download() {
             if (fileToDownload != null)
                     saveAs(fileToDownload, filenameToDownload);
         }
-        
+
         // Change an option
         function changeOption(selected, processMessage) {
             var fileInputName;
             switch (option) {
                 case CONVERT:
                     fileInputName = "documentContent";
+                    $('.locale').css('display', 'block')
                     break;
                 case ORIGINAL:
                     fileInputName = "file";
+                    $('.locale').css('display', 'none')
                     break;
                 case DERIVED:
                     fileInputName = "xliffContent";
+                    $('.locale').css('display', 'none')
                     break;
             }
             $('#options li').removeClass('option-selected');
@@ -249,14 +320,15 @@
             $('#file').prop('name', fileInputName).val('');
             $('#file-details').css('opacity', 0);
             $('#file-details').val('');
-            $('#section-process').css('opacity',0);
-            setTimeout(function() {
-                    $('#button-process').val(processMessage);
-                    $('#button-process').attr('disabled','disabled');
-                    $('#button-download').attr('disabled','disabled');
-                }, 1000);
+            $('#section-process').css('opacity', 0);
+            $('#section-log').css('opacity', 0);
+            setTimeout(function () {
+                $('#button-process').val(processMessage);
+                $('#button-process').attr('disabled', 'disabled');
+                $('#button-download').attr('disabled', 'disabled');
+            }, 1000);
         }
-        
+
         // Pre processing
         function preProcess() {
             $('#button-download').attr('disabled','disabled');
@@ -265,42 +337,46 @@
             $('#img-loading').css('display','inline-block');
             $('#img-loading').css('opacity', 1);
         }
-        
+
         // Sucess in processing
         function processSuccess(response) {
             if (response.documentContent) {
                 fileToDownload = b64toBlob(response.documentContent);
             } else {
-                fileToDownload = new Blob([response.xliffContent], {type : 'text/xml'});
+                fileToDownload = new Blob([response.xliffContent], {type: 'text/xml'});
             }
             filenameToDownload = response.filename;
+            if (response.log) {
+                $('#section-log').css('opacity', 1);
+                $('#loglines').text(response.log.join(''));
+            }
             $('#button-download').removeAttr('disabled');
             $('#button-process').removeAttr('disabled');
-            $('#icon-process').css('display','inline-block');
-            $('#img-loading').css('display','none');
+            $('#icon-process').css('display', 'inline-block');
+            $('#img-loading').css('display', 'none');
+            $('#error').css('display', 'none');
         }
 
         // Error in processing
         function processError(response) {
             $('#button-process').removeAttr('disabled');
-            $('#icon-process').css('display','inline-block');
-            $('#img-loading').css('display','none');
-            console.log(JSON.parse(response.responseText));
-            showError(JSON.parse(response.responseText).errorMessage);
+            $('#icon-process').css('display', 'inline-block');
+            $('#img-loading').css('display', 'none');
+            $('#section-log').css('opacity', 1);
+            console.log('Error: ' + response.statusText)
+            showError(response.responseJSON.errorMessage);
+            if (response.responseJSON.log) {
+                $('#loglines').text(response.responseJSON.log.join(''));
+            } else {
+                $('#loglines').text('No log retrieved');
+            }
         }
-        
+
         // Show an error
         function showError(message) {
             $('#error')
-                .html(message)
-                .css('visibility','visible')
-                .css('opacity',1);
-            setTimeout(function() {
-                $('#error').css('opacity', 0);
-                setTimeout(function() {
-                    $('#error').css('visibility','hidden');
-                }, 1000);
-            }, 2000);
+                    .html(message)
+                    .css('display', 'block');
         }
 
         // Generate blob from base 64
@@ -323,13 +399,10 @@
             });
             return blob;
         }
-    
+
     </script>
 </head>
 <body>
-<div id="error">
-	This is an error message!
-</div>
 <header><h1>Matecat Filters {{filtersVersion}}</h1></header>
 <section id="section-option">
 	<h2>1. Choose the action you want to perform:</h2>
@@ -341,23 +414,45 @@
 </section>
 <section id="section-upload">
 	<h2>2. Upload the file</h2>
-	<form id="form-file" method="post" enctype="multipart/form-data">
-		<i id="icon-upload" class="icon fa fa-upload fa-2x"></i>
-		<input type="button" id="button-file" value="Upload a file!">
-		<input type="file" id="file" name="documentContent" value="">
-		<input type="hidden" name="sourceLocale" value="en-US">
-		<input type="hidden" name="targetLocale" value="it-IT">
-	</form>
-	<div id="file-details">Uploaded!</div>
+    <form id="form-file" method="post" enctype="multipart/form-data">
+        <ul>
+            <li>
+                <i id="icon-upload" class="icon fa fa-upload fa-2x"></i>
+                <input type="button" id="button-file" value="Upload a file!">
+                <input type="file" id="file" name="documentContent" value="">
+            </li>
+            <li class="locale">
+                <label for="src_lcl">Source locale </label>
+                <input type="text" id="src_lcl" name="sourceLocale" value="en-US">
+            </li>
+            <li class="locale">
+                <label for="tgt_lcl">Target locale </label>
+                <input type="text" id="tgt_lcl" name="targetLocale" value="it-IT">
+            </li>
+            <li>
+                <label for="dbg_mode">Retrieve logs </label>
+                <input type="checkbox" id="dbg_mode" name="debugMode" value="true">
+            </li>
+        </ul>
+    </form>
+    <div id="file-details">Uploaded!</div>
 </section>
 <section id="section-process">
-	<h2>3. Process and download</h2>
-	<div>
-		<i id="icon-process" class="icon fa fa-sign-out fa-2x"></i>
-		<img id="img-loading" src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif">
-		<input type="button" id="button-process" value="Process"/>
-	</div>
-	<div><i id="icon-download" class="icon fa fa-download fa-2x"></i><input type="button" id="button-download" value="Download!" disabled/></div>
+    <h2>3. Process and download</h2>
+    <div>
+        <i id="icon-process" class="icon fa fa-sign-out fa-2x"></i>
+        <img id="img-loading" src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif">
+        <input type="button" id="button-process" value="Process"/>
+    </div>
+    <div>
+        <i id="icon-download" class="icon fa fa-download fa-2x"></i>
+        <input type="button" id="button-download" value="Download!" disabled/>
+    </div>
+</section>
+<section id="section-log">
+    <div id="error">This is an error message!</div>
+    <h3>Logs</h3>
+    <textarea id="loglines" rows="15"></textarea>
 </section>
 </body>
 </html>

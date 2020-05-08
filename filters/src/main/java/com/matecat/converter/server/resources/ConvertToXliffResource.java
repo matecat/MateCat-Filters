@@ -5,6 +5,7 @@ import com.matecat.converter.core.project.ProjectFactory;
 import com.matecat.converter.server.JSONResponseFactory;
 import com.matecat.converter.server.exceptions.ServerException;
 import com.matecat.filters.basefilters.FiltersRouter;
+import com.matecat.logging.StoringAppender;
 import net.sf.okapi.common.exceptions.OkapiEncryptedDataException;
 import net.sf.okapi.common.exceptions.OkapiUnexpectedRevisionException;
 import org.apache.commons.io.FilenameUtils;
@@ -13,10 +14,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
@@ -25,15 +23,14 @@ import java.io.InputStream;
 import java.util.Locale;
 import java.util.MissingResourceException;
 
-
 /**
  * Resource taking care of the conversion task into .XLF
  */
 @Path("/AutomationService/original2xliff")
 public class ConvertToXliffResource {
 
-    // Logger
     private static final Logger LOGGER = LoggerFactory.getLogger(ConvertToXliffResource.class);
+    private static final StoringAppender LOG_CAPTURER = new StoringAppender();
 
     /**
      * Convert a file into XLF
@@ -47,7 +44,12 @@ public class ConvertToXliffResource {
             @FormDataParam("fileName") String filename,
             @FormDataParam("sourceLocale") String sourceLanguageCode,
             @FormDataParam("targetLocale") String targetLanguageCode,
-            @FormDataParam("segmentation") String segmentation) {
+            @FormDataParam("segmentation") String segmentation,
+            @FormDataParam("debugMode") @DefaultValue("false") boolean debugMode) {
+        // If debug mode requested install the log capturer
+        if (debugMode) {
+            LOG_CAPTURER.install();
+        }
 
         // Due to a bug in the MIMEPull library (MIMEParser.java line 510),
         // contentDispositionHeader.getFileName() returns the filename in ISO-8859-1
@@ -70,13 +72,15 @@ public class ConvertToXliffResource {
         LOGGER.info("SOURCE > XLIFF request: file=<{}> source=<{}> target=<{}>", filename, sourceLanguageCode, targetLanguageCode);
 
         Project project = null;
+        File xlf = new File("");
+        String errorMessage = "Unknown error";
         Response response;
         boolean everythingOk = false;
         try {
-
             // Check that the input file is not null
-            if (fileInputStream == null)
+            if (fileInputStream == null) {
                 throw new IllegalArgumentException("The input file has not been sent");
+            }
 
             // Parse the codes
             Locale sourceLanguage = parseLanguage(sourceLanguageCode);
@@ -86,67 +90,67 @@ public class ConvertToXliffResource {
             project = ProjectFactory.createProject(filename, fileInputStream);
 
             // Retrieve the xlf
-            File xlf = new FiltersRouter().extract(project.getFile(), sourceLanguage, targetLanguage, segmentation);
+            xlf = new FiltersRouter().extract(project.getFile(), sourceLanguage, targetLanguage, segmentation);
 
-            // Create response
-            response = Response
-                    .status(Response.Status.OK)
-                    .entity(JSONResponseFactory.getConvertSuccess(xlf))
-                    .build();
-
+            // Set OK flag
             everythingOk = true;
             LOGGER.info("Successfully returned XLIFF file");
-        }
-
-        // If there is any error, return it
-        catch (Exception e) {
-            String errorMessage;
+        } catch (Exception e) {
+            // If there is any error, return it
             if (e instanceof OkapiUnexpectedRevisionException) {
                 errorMessage = "Document contains revisions or comments, please review and remove them.";
             } else if (e instanceof OkapiEncryptedDataException) {
                 errorMessage = "Document is password protected: can't access to contents.";
             } else {
-                errorMessage = e.getMessage();
+                errorMessage = e.toString();
             }
-            response =  Response
-                    .status(Response.Status.BAD_REQUEST)
-                    .entity(JSONResponseFactory.getError(errorMessage))
-                    .build();
-            LOGGER.error("Exception converting source to XLIFF: {}", errorMessage, e);
-        }
-
-        // Close the project and streams
-        finally {
+            LOGGER.error("Exception converting source to XLIFF", e);
+        } finally {
+            // Create response
+            if (everythingOk) {
+                response = Response
+                        .status(Response.Status.OK)
+                        .entity(JSONResponseFactory.getConvertSuccess(xlf, LOG_CAPTURER.getStoredLog()))
+                        .build();
+            } else {
+                response = Response
+                        .status(Response.Status.BAD_REQUEST)
+                        .entity(JSONResponseFactory.getError(errorMessage, LOG_CAPTURER.getStoredLog()))
+                        .build();
+            }
+            // Close the project and streams
             if (fileInputStream != null)
                 try {
                     fileInputStream.close();
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                }
+            // Delete folder only if everything went well
             if (project != null)
-                // Delete folder only if everything went well
                 project.close(everythingOk);
+            // If debug mode requested de-install the log capturer
+            if (debugMode) {
+                LOG_CAPTURER.clear();
+                LOG_CAPTURER.deinstall();
+            }
         }
-
         return response;
     }
-
 
     /**
      * Parse the language code into Locales
      */
     private Locale parseLanguage(String languageCode) throws ServerException {
-
+        if (languageCode.isEmpty()) {
+            throw new ServerException("Empty language");
+        }
         // Parse the code
-        Locale language = Locale.forLanguageTag(
-                languageCode);
-
+        Locale locale = Locale.forLanguageTag(languageCode);
         // Validate language
         try {
-            language.getISO3Language();
-            return language;
-        }
-
-        // If there is any error, throw a ServerException
-        catch (MissingResourceException e) {
+            locale.getISO3Language();
+            return locale;
+        } catch (MissingResourceException e) {
+            // If there is any error, throw a ServerException
             throw new ServerException("Invalid language: " + languageCode);
         }
     }
