@@ -2,6 +2,13 @@
 
 
 
+## Unreleased
+
+* Added debug mode: by setting `debugMode` POST parameter to `true` the JSON response will include the logs captured while serving the request.
+* Revisited WinConverter configuration: no more Consul and simplified definition of WinConverter instances (this was a Translated internal development).
+
+
+
 ## 1.2.5 (2019-03-04)
 
 * Upgraded to Okapi M36

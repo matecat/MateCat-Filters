@@ -7,11 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 
 /**
@@ -28,22 +24,20 @@ public class Config {
     public static final String errorsFolder;
     public static final boolean deleteOnClose;
     public static final boolean winConvEnabled;
-    public static final String winConvConsulAddress;
-    public static final String winConvConsulService;
-    public static final String winConvHost;
-    public static final Integer winConvPort;
+    public static final List<String> winConvertersOcr;
+    public static final List<String> winConvertersNoOcr;
     public static final List<Class> customFilters;
     public static final String customSegmentationFolder;
 
-    public static final List<InetSocketAddress> winConvs = new ArrayList<>();
 
-    
     static {
         try (InputStream inputStream = System.class.getResourceAsStream("/config.properties")) {
             Properties props = new Properties();
             props.load(inputStream);
+            LOGGER.debug("Loaded configuration:");
 
             serverPort = Integer.parseInt(props.getProperty("server-port"));
+            LOGGER.debug("  Server port: {}", serverPort);
 
             String cacheFolderVal = checkFolderValidity(props.getProperty("cache-folder"), true, true);
             if (cacheFolderVal.isEmpty()) {
@@ -56,28 +50,40 @@ public class Config {
                 LOGGER.warn("cache-folder param empty or invalid: caching in OS temp folder");
             }
             cacheFolder = cacheFolderVal;
-
+            LOGGER.debug("  Cache folder: {}", cacheFolder);
 
             errorsFolder = checkFolderValidity(props.getProperty("errors-folder"), true, true);
             if (errorsFolder.isEmpty()) {
-            	  LOGGER.warn("error-folder param empty or invalid: errors backup disabled");
+                LOGGER.warn("error-folder param empty or invalid: errors backup disabled");
             }
+            LOGGER.debug("  Error folder: {}", errorsFolder);
 
             deleteOnClose = Boolean.parseBoolean(props.getProperty("delete-on-close"));
+            LOGGER.debug("  Delete on close: {}", deleteOnClose);
 
             winConvEnabled = Boolean.parseBoolean(props.getProperty("win-conv-enabled"));
+            LOGGER.debug("  WinConverter enabled: {}", winConvEnabled);
 
-            winConvHost = props.getProperty("win-conv-host");
-            String winConvPortString = props.getProperty("win-conv-port");
-            if (winConvPortString != null && !winConvPortString.isEmpty()) {
-                winConvPort = Integer.parseInt(winConvPortString);
+            String winConvertersOcrValue = props.getProperty("win-converters-ocr");
+            if (winConvertersOcrValue != null) {
+                winConvertersOcr = Arrays.asList(winConvertersOcrValue.split(","));
             } else {
-                winConvPort = null;
+                winConvertersOcr = new ArrayList<>();
             }
+            LOGGER.debug("  WinConverters with OCR: {}", winConvertersOcr);
 
-            winConvConsulAddress = props.getProperty("win-conv-consul-address");
-            winConvConsulService = props.getProperty("win-conv-consul-service");
+            String winConvertersNoOcrValue = props.getProperty("win-converters-no-ocr");
+            if (winConvertersNoOcrValue != null) {
+                winConvertersNoOcr = Arrays.asList(winConvertersNoOcrValue.split(","));
+            } else {
+                winConvertersNoOcr = new ArrayList<>();
+            }
+            LOGGER.debug("  WinConverters without OCR: {}", winConvertersNoOcr);
 
+            // if win converter enabled check lists of converter addresses is not empty
+            if (winConvEnabled && winConvertersOcr.isEmpty() && winConvertersNoOcr.isEmpty()) {
+                throw new RuntimeException("WinConverter enabled but no WinConverter address specified");
+            }
 
             String filtersString = props.getProperty("custom-filters");
             List<Class> filtersList = new ArrayList<>();
@@ -94,59 +100,59 @@ public class Config {
             }
             filtersList.add(DefaultFilter.class);
             customFilters = Collections.unmodifiableList(filtersList);
-
+            LOGGER.debug("  Custom filter classes: {}", customFilters);
 
             // load the custom segmentation directory value
             customSegmentationFolder = checkFolderValidity(props.getProperty("custom-segmentation-folder"), false, false);
-            if( customSegmentationFolder.isEmpty() ) {
-            	  LOGGER.warn("custom-segmentation-folder param empty or invalid: custom segmentation disabled");
+            if (customSegmentationFolder.isEmpty()) {
+                LOGGER.warn("custom-segmentation-folder param empty or invalid: custom segmentation disabled");
             }
+            LOGGER.debug("  Custom segmentation folder: {}", customSegmentationFolder);
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Exception while loading config.properties.", e);
         }
     }
 
-    
+
     /**
      * Check the validity of an user provided folder.
      *
-     * @param folderPath the path of the folder
-     * @param createIfNotExists if true tries to create the folder if not exists
+     * @param folderPath           the path of the folder
+     * @param createIfNotExists    if true tries to create the folder if not exists
      * @param checkWritePermission if true checks if can read from folder
      * @return the path to the folder if it exists is valid and access permission are satisfied, an empty string otherwise. In case a path is returned, it will always end with a slash ('/')
      */
     static String checkFolderValidity(String folderPath, boolean createIfNotExists, boolean checkWritePermission) {
         // no path provided
-        if(folderPath == null || folderPath.trim().isEmpty()) {
-        	return "";
+        if (folderPath == null || folderPath.trim().isEmpty()) {
+            return "";
         }
 
         File folder = new File(folderPath);
 
         // path provided, but the directory does not exist
-        if(!folder.isDirectory()) {
+        if (!folder.isDirectory()) {
 
-          // not asked to create it
-          if(!createIfNotExists) {
-                  throw new RuntimeException("Folder " + folderPath + " provided in config file does not exist");
-          }
+            // not asked to create it
+            if (!createIfNotExists) {
+                throw new RuntimeException("Folder " + folderPath + " provided in config file does not exist");
+            }
 
-          // failure when attempting to create it
-          if(!folder.mkdirs()) {
-            throw new RuntimeException("Failed to create path: " + folderPath + ".");
-          }
+            // failure when attempting to create it
+            if (!folder.mkdirs()) {
+                throw new RuntimeException("Failed to create path: " + folderPath + ".");
+            }
         }
 
         // path provided, directory exists but cannot read because of permission issues
-        if(!folder.canRead()) {
-          throw new RuntimeException("No read permission for folder: " + folderPath + ".");
+        if (!folder.canRead()) {
+            throw new RuntimeException("No read permission for folder: " + folderPath + ".");
         }
 
         // need write permission, but is not available
-        if(checkWritePermission && !folder.canWrite()) {
-          throw new RuntimeException("No write permission for folder: " + folderPath + ".");
+        if (checkWritePermission && !folder.canWrite()) {
+            throw new RuntimeException("No write permission for folder: " + folderPath + ".");
         }
 
         // everything's alright, folder does exist and apparently no permission issues occurred. Make sure the path ends  with a '/'
@@ -154,10 +160,10 @@ public class Config {
     }
 
 
-
     /**
      * Private constructor (static class)
      */
-    private Config() {}
+    private Config() {
+    }
 
 }
