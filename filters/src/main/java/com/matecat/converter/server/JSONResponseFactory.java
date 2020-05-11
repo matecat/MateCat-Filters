@@ -1,16 +1,19 @@
 package com.matecat.converter.server;
 
-import org.json.simple.JSONObject;
+import org.json.JSONStringer;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Base64;
+import java.util.List;
 
 /**
- * Factory which creates JSON messages to use as http responses
- *
+ * Factory which creates JSON messages to use as http responses.
+ * <p>
+ * The use of {@link JSONStringer} allows to decide the order the JSON object fields.
+ * <p>
  * TODO: Replace the JSON response by the contents of the file. This class will be deleted.
  */
 public class JSONResponseFactory {
@@ -20,43 +23,57 @@ public class JSONResponseFactory {
     public static final String XLIFF_CONTENT = "xliffContent";
     public static final String DOCUMENT_CONTENT = "documentContent";
     public static final String FILENAME = "filename";
+    public static final String DEBUG_LOG = "log";
 
-    public static String getError(String errorMessage) {
-        JSONObject output = new JSONObject();
-        output.put(IS_SUCCESS, false);
-        output.put(ERROR_MESSAGE, errorMessage);
-        return output.toJSONString();
+    public static String getError(String errorMessage, List<String> logLines) {
+        JSONStringer stringer = new JSONStringer();
+        stringer.object()
+                .key(IS_SUCCESS).value(false)
+                .key(ERROR_MESSAGE).value(errorMessage);
+        insertDebugLog(stringer, logLines);
+        stringer.endObject();
+        return stringer.toString();
     }
 
-    public static String getConvertSuccess(File file) {
+    public static String getConvertSuccess(File file, List<String> logLines) {
         try {
             String xliffContent = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
-            JSONObject output = new JSONObject();
-            output.put(IS_SUCCESS, true);
-            output.put(XLIFF_CONTENT, xliffContent);
-            output.put(FILENAME, file.getName());
-            return output.toJSONString();
+            JSONStringer stringer = new JSONStringer();
+            stringer.object()
+                    .key(IS_SUCCESS).value(true)
+                    .key(FILENAME).value(file.getName());
+            insertDebugLog(stringer, logLines);
+            stringer.key(XLIFF_CONTENT).value(xliffContent);
+            stringer.endObject();
+            return stringer.toString();
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
+            // wrap and rethrow
+            throw new RuntimeException(e);
         }
     }
 
-    public static String getDerivedSuccess(File file) {
+    public static String getDerivedSuccess(File file, List<String> logLines) {
         try {
             String encodedDocument = Base64.getEncoder().encodeToString(Files.readAllBytes(file.toPath()));
-            JSONObject output = new JSONObject();
-            output.put(IS_SUCCESS, true);
-            output.put(DOCUMENT_CONTENT, encodedDocument);
-            output.put(FILENAME, file.getName());
-            return output.toJSONString();
+            JSONStringer stringer = new JSONStringer();
+            stringer.object()
+                    .key(IS_SUCCESS).value(true)
+                    .key(FILENAME).value(file.getName());
+            insertDebugLog(stringer, logLines);
+            stringer.key(DOCUMENT_CONTENT).value(encodedDocument);
+            stringer.endObject();
+            return stringer.toString();
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
+            // wrap and rethrow
+            throw new RuntimeException(e);
         }
     }
 
-
-
-
+    private static void insertDebugLog(JSONStringer stringer, List<String> logLines) {
+        if (!logLines.isEmpty()) {
+            stringer.key(DEBUG_LOG).array();
+            logLines.forEach(stringer::value);
+            stringer.endArray();
+        }
+    }
 }

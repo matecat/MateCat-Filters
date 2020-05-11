@@ -69,6 +69,11 @@
             <artifactId>json</artifactId>
             <version>20170516</version>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
 
         <!-- JETTY -->
         <dependency>
@@ -109,6 +114,12 @@
             <groupId>net.sf.okapi</groupId>
             <artifactId>okapi-core</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- OKAPI STEPS -->
@@ -116,26 +127,60 @@
             <groupId>net.sf.okapi.steps</groupId>
             <artifactId>okapi-step-common</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.steps</groupId>
             <artifactId>okapi-step-whitespacecorrection</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.steps</groupId>
             <artifactId>okapi-step-segmentation</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.steps</groupId>
             <artifactId>okapi-step-encodingconversion</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.steps</groupId>
             <artifactId>okapi-step-rainbowkit</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>junit</artifactId>
+                    <groupId>junit</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- OKAPI FILTERS -->
@@ -143,121 +188,265 @@
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-rainbowkit</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-html</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-plaintext</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-openxml</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-openoffice</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-php</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-its</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-properties</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-po</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-xliff</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-json</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-idml</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-icml</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-txml</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-yaml</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-mif</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-xmlstream</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-table</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-archive</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-xini</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-regex</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-ttx</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-ts</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.okapi.filters</groupId>
             <artifactId>okapi-filter-dtd</artifactId>
             <version>${okapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
