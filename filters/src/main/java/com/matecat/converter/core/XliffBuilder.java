@@ -54,7 +54,7 @@ import java.util.Base64;
 public class XliffBuilder {
 
     // Logger
-    private static Logger LOGGER = LoggerFactory.getLogger(XliffBuilder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(XliffBuilder.class);
 
     private static final String FILTERS_VERSION = XliffBuilder.class.getPackage().getImplementationVersion();
 

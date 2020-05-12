@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 public class XliffProcessor {
 
     // Logger
-    private static Logger LOGGER = LoggerFactory.getLogger(XliffProcessor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(XliffProcessor.class);
 
     private static final String CONVERTER_VERSION = XliffBuilder.class.getPackage().getImplementationVersion();
     private static final Pattern PRODUCER_CONVERTER_VERSION_PATTERN = Pattern.compile("matecat-converter(\\s+([^\"]+))?");

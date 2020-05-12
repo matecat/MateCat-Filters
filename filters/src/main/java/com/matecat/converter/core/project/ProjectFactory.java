@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 public class ProjectFactory {
 
     // Logger
-    private static Logger LOGGER = LoggerFactory.getLogger(ProjectFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectFactory.class);
 
     /**
      * Private constructor to make the class static
