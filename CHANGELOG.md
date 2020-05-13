@@ -4,8 +4,10 @@
 
 ## Unreleased
 
-* Added debug mode: by setting `debugMode` POST parameter to `true` the JSON response will include the logs captured while serving the request.
+* Added request tracing to a dedicated logger.
 * Revisited WinConverter configuration: no more Consul and simplified definition of WinConverter instances (this was a Translated internal development).
+* Added debug mode: by setting `debugMode` POST parameter to `true` the JSON response will include the logs captured while serving the request.
+* Upgraded Jetty to 9.4.28
 
 
 

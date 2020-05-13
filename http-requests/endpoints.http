@@ -3,49 +3,49 @@ GET http://localhost:8732/test
 
 ###
 
-// Convert to XLIFF (ConvertToXliffResource.java)
-POST http://localhost:8732/AutomationService/original2xliff
-Content-Type: multipart/form-data; boundary=WebAppBoundary
+// Convert to XLIFF (ConvertToXliffResource.java)POST http://localhost:8732/AutomationService/original2xliff
+Content-Type: multipart/form-data; boundary=ReqBoundary
 
---WebAppBoundary
+--ReqBoundary
 Content-Disposition: form-data; name="fileName"
 
 cipperimerlo.csv
---WebAppBoundary
+--ReqBoundary
 Content-Disposition: form-data; name="sourceLocale"
 
 en-US
---WebAppBoundary
+--ReqBoundary
 Content-Disposition: form-data; name="targetLocale"
 
 it-IT
---WebAppBoundary
+--ReqBoundary
 Content-Disposition: form-data; name="documentContent"; filename="test.csv"
 
-< ./src/test/resources/okapi/test.csv
-#< ./src/test/resources/generation/test.docx
---WebAppBoundary--
+< ../filters/src/test/resources/okapi/test.csv
+#< ../filters/src/test/resources/generation/test.docx
+--ReqBoundary--
 
 ###
 
 // Extract target from XLIFF (GenerateDerivedFileResource.java)
 POST http://localhost:8732/AutomationService/xliff2original
-Content-Type: multipart/form-data; boundary=WebAppBoundary
+Content-Type: multipart/form-data; boundary=ReqBoundary
 
---WebAppBoundary
+--ReqBoundary
 Content-Disposition: form-data; name="xliffContent"; filename="test.docx.xlf"
 
-< ./src/test/resources/extraction/test.docx.xlf
---WebAppBoundary--
+< ../filters/src/test/resources/extraction/test.docx.xlf
+#< ../filters/src/test/resources/server/test.docx.xlf
+--ReqBoundary--
 
 ###
 
 // Extract source from XLIFF (ExtractOriginalFileResource.java)
 POST http://localhost:8732/AutomationService/xliff2source
-Content-Type: multipart/form-data; boundary=WebAppBoundary
+Content-Type: multipart/form-data; boundary=ReqBoundary
 
---WebAppBoundary
+--ReqBoundary
 Content-Disposition: form-data; name="file"; filename="test.docx.xlf"
 
-< ./src/test/resources/extraction/test.docx.xlf
---WebAppBoundary--
+< ../filters/src/test/resources/extraction/test.docx.xlf
+--ReqBoundary--
