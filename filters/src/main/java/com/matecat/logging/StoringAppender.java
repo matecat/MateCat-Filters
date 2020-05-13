@@ -85,6 +85,8 @@ public class StoringAppender extends AppenderBase<ILoggingEvent> {
         if (!consoleFound) {
             final PatternLayoutEncoder ple = new PatternLayoutEncoder();
             ple.setPattern(DEFAULT_PATTERN);
+            ple.setContext(lc);
+            ple.start();
             this.encoder = ple;
         }
         // start our self and add to root logger
