@@ -1,5 +1,6 @@
 package com.matecat.converter;
 
+import ch.qos.logback.classic.LoggerContext;
 import com.matecat.converter.server.MatecatConverterServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +21,15 @@ public class Main {
         // Init the server
         MatecatConverterServer server = new MatecatConverterServer();
 
-		// Shutdown gracefully when receiving SIGTERM or similar
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			LOGGER.info("Shutdown signal received, stopping the server...");
-			server.stop();
-			LOGGER.info("Server stopped successfully. Good bye!");
-		}));
+        // Shutdown gracefully when receiving SIGTERM or similar
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            LOGGER.info("Shutdown signal received, stopping the server...");
+            server.stop();
+            LOGGER.info("Server stopped successfully. Good bye!");
+            // clean stopping of the logging library
+            LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+            loggerContext.stop();
+        }));
 	}
 
 }
