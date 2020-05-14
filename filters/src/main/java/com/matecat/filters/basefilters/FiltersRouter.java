@@ -12,7 +12,7 @@ import java.util.Locale;
 
 public class FiltersRouter {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(FiltersRouter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FiltersRouter.class);
 
     private List<IFilter> filters;
 

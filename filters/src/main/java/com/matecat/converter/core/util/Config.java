@@ -16,7 +16,7 @@ import java.util.*;
 public class Config {
 
     // Logger
-    private static Logger LOGGER = LoggerFactory.getLogger(Config.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
 
     // Configuration params
     public static final int serverPort;

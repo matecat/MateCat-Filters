@@ -24,7 +24,7 @@ import java.util.Date;
 public class Project {
 
     // Logger
-    private static Logger LOGGER = LoggerFactory.getLogger(Project.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Project.class);
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH-mm");
