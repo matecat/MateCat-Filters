@@ -24,18 +24,18 @@ public class OkapiPack {
 
     // Inner files
     private File pack;
-    private File xlf, manifest, originalFile;
-    private File derivedFile;
+    private File xlf, manifest, originalFile, derivedFile;
 
 
     /**
      * Pack constructor
+     *
      * @param pack File wrapping the pack's folder
      */
     public OkapiPack(final File pack) {
 
         // Check that it is a valid pack
-        if (pack == null  ||  !pack.exists()  ||  !pack.isDirectory()  ||  pack.listFiles().length == 0)
+        if (pack == null || !pack.exists() || !pack.isDirectory() || pack.listFiles().length == 0)
             throw new IllegalArgumentException("The given pack is not valid");
 
         // Save the pack and init the rest of files
@@ -50,7 +50,6 @@ public class OkapiPack {
      * It throws a RuntimeException if any of them is not found.
      */
     private void initFiles() {
-
         // Load manifest
         manifest = new File(pack.getPath() + File.separator + MANIFEST_FILENAME);
         if (!manifest.exists())
@@ -76,6 +75,7 @@ public class OkapiPack {
 
     /**
      * Get pack folder
+     *
      * @return File wrapping the folder of the pack
      */
     public File getPackFolder() {
@@ -87,6 +87,7 @@ public class OkapiPack {
 
     /**
      * Get Xlf
+     *
      * @return Get the xliff file contained inside the pack
      */
     public File getXlf() {
@@ -98,6 +99,7 @@ public class OkapiPack {
 
     /**
      * Get manifest
+     *
      * @return Get the manifest file contained inside the pack
      */
     public File getManifest() {
@@ -109,6 +111,7 @@ public class OkapiPack {
 
     /**
      * Get original file
+     *
      * @return Get the original file contained inside the pack
      */
     public File getOriginalFile() {
@@ -129,7 +132,7 @@ public class OkapiPack {
             manifest = null;
             pack = null;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't delete pack", e);
         }
     }
 
@@ -137,6 +140,7 @@ public class OkapiPack {
     /**
      * Get the derived file
      * If it has not been computed yet, an Runtime exception will be thrown
+     *
      * @return Derived file
      */
     public File getDerivedFile() {
