@@ -10,10 +10,10 @@ import java.nio.charset.StandardCharsets;
 
 public class Main {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
 
-	public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         if (Charset.defaultCharset() != StandardCharsets.UTF_8) {
             throw new Exception("Java default charset is " + Charset.defaultCharset() + ", must be UTF-8. Fix your configuration.");
         }
