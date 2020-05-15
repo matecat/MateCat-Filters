@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
@@ -35,7 +37,10 @@ public class BaseResource {
     protected static final String TARGET_FILESIZE = "targetFileSize";
     protected static final String TGT_LANG = "targetLanguage";
     protected static final String TIMESTAMP = "timestamp";
-
+    protected static final String CALLER_IP = "callerIp";
+    protected static final String HEADER_REQ_ID = "x-matecat-filter-proxy-reqid";
+    @Context
+    protected HttpServletRequest httpRequest;
 
     /**
      * Enumeration for filters operation types.
@@ -61,11 +66,18 @@ public class BaseResource {
      * @param operation the operation type of the request
      */
     protected void traceStart(Operations operation) {
-        // TODO: take the req id from an HTTP header if possible (filter proxy)
-        MDC.put(REQ_ID, generateRequestId());
+        MDC.clear();
+        // take the request id from an HTTP header (by the Matecat Filter Proxy)
+        // or generate a random one
+        final String headerReqId = httpRequest.getHeader(HEADER_REQ_ID);
+        if (headerReqId != null) {
+            MDC.put(REQ_ID, headerReqId);
+        } else {
+            MDC.put(REQ_ID, generateRequestId());
+        }
         MDC.put(OPERATION, operation.toString());
         MDC.put(TIMESTAMP, Instant.now().toString());
-        // TODO: put the IP address of the request in the context
+        MDC.put(CALLER_IP, httpRequest.getRemoteAddr());
         TRACER.debug("Request start");
     }
 

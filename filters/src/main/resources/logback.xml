@@ -7,11 +7,8 @@
         </encoder>
     </appender>
     <appender name="TRACEOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <!--        <target>System.err</target>-->
         <immediateFlush>true</immediateFlush>
-        <encoder>
-            <pattern>%logger [%5level] %msg {%mdc}%n</pattern>
-        </encoder>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
     <logger name="req-tracing" level="debug" additivity="false">
         <appender-ref ref="TRACEOUT"/>
