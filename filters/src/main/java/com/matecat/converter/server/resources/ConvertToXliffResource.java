@@ -109,6 +109,7 @@ public class ConvertToXliffResource extends BaseResource {
                 } else {
                     errorMessage = e.toString();
                 }
+                MDC.put("exception", e.toString());
                 LOGGER.error("Exception converting source to XLIFF", e);
             } finally {
                 // Create response

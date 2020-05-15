@@ -38,10 +38,10 @@ import java.util.regex.Pattern;
 
 /**
  * Xliff Processor
- *
+ * <p>
  * Processor of Xliff files, allowing:
- *  1. Extraction of the embedded pack (original file and manifest)
- *  2. Extraction of source and target languages
+ * 1. Extraction of the embedded pack (original file and manifest)
+ * 2. Extraction of source and target languages
  */
 public class XliffProcessor {
 
@@ -52,13 +52,12 @@ public class XliffProcessor {
     private static final Pattern PRODUCER_CONVERTER_VERSION_PATTERN = Pattern.compile("matecat-converter(\\s+([^\"]+))?");
 
     // File we are processing
-    private File xlf;
+    private final File xlf;
 
     // Embedded pack
     private OkapiPack pack;
 
     // Inner properties
-    private String originalFilename = null;
     private Format originalFormat;
     private Locale sourceLanguage, targetLanguage;
 
@@ -68,12 +67,13 @@ public class XliffProcessor {
 
     /**
      * Construct the processor given the XLF
+     *
      * @param xlf Xliff file we are going to process
      */
     public XliffProcessor(final File xlf) {
 
         // Check that the input file is not null
-        if (xlf == null  ||  !xlf.exists()  ||  xlf.isDirectory())
+        if (xlf == null || !xlf.exists() || xlf.isDirectory())
             throw new IllegalArgumentException("The input file does not exist");
 
         // Check that the file is an .xlf
@@ -88,6 +88,7 @@ public class XliffProcessor {
 
     /**
      * Get source language
+     *
      * @return Source language
      */
     public Locale getSourceLanguage() {
@@ -99,6 +100,7 @@ public class XliffProcessor {
 
     /**
      * Get target language
+     *
      * @return Target language
      */
     public Locale getTargetLanguage() {
@@ -137,14 +139,13 @@ public class XliffProcessor {
             }
 
             return filter;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
-        }
-        finally {
+        } finally {
             try {
                 if (sax != null) sax.close();
-            } catch (XMLStreamException ignored) {}
+            } catch (XMLStreamException ignored) {
+            }
             IOUtils.closeQuietly(inputStream);
         }
     }
@@ -164,8 +165,7 @@ public class XliffProcessor {
             // Extract the languages
             this.sourceLanguage = new Locale(firstFile.getAttribute("source-language"));
             this.targetLanguage = new Locale(firstFile.getAttribute("target-language"));
-        }
-        catch (ParserConfigurationException | SAXException | IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new RuntimeException("Exception extracting source/target languages from MateCat xliff", e);
         }
     }
@@ -173,9 +173,10 @@ public class XliffProcessor {
 
     /**
      * Get the original file embedded into the XLF
+     *
      * @return Original file
      */
-    public File getOriginalFile() throws Exception {
+    public File getOriginalFile() {
 
         // Reconstruct the pack
         if (pack == null)
@@ -196,6 +197,7 @@ public class XliffProcessor {
     /**
      * Get the derived file
      * This is produced using the original file, the manifest and the XLF
+     *
      * @return Derived file
      */
     public File getDerivedFile() {
@@ -218,7 +220,8 @@ public class XliffProcessor {
 
     /**
      * Try to convert a file to its original format
-     * @param file File
+     *
+     * @param file           File
      * @param originalFormat Original format
      * @return Converted file if possible, input file otherwise
      */
@@ -315,14 +318,14 @@ public class XliffProcessor {
 
     /**
      * Extract the original format from the embedded information
+     *
      * @param fileElement XML element from the file
      */
     private void extractOriginalFormat(Element fileElement) {
         try {
             String filename = fileElement.getAttribute("original");
             this.originalFormat = Format.getFormat(filename);
-        }
-        catch (Exception e1) {
+        } catch (Exception e1) {
             throw new RuntimeException("The encoded file has no extension");
         }
     }
@@ -330,6 +333,7 @@ public class XliffProcessor {
 
     /**
      * Get the original filename from the embedded information
+     *
      * @param fileElement XML element from the file
      * @return Filename
      */
@@ -344,8 +348,8 @@ public class XliffProcessor {
             String datatype = fileElement.getAttribute("datatype");
             String convertedExtension = datatype.substring(2);
             filename = FilenameUtils.getBaseName(filename) + "." + convertedExtension;
+        } catch (Exception ignore) {
         }
-        catch (Exception ignore) {}
 
         // Return it
         return filename;
@@ -355,7 +359,8 @@ public class XliffProcessor {
 
     /**
      * Extract the original file and save it in the pack
-     * @param packFolder Pack's folder
+     *
+     * @param packFolder  Pack's folder
      * @param fileElement XML element containing the file
      */
     private void reconstructOriginalFile(File packFolder, Element fileElement, String originalFilename) {
@@ -384,8 +389,7 @@ public class XliffProcessor {
             originalFile.createNewFile();
             FileUtils.writeByteArrayToFile(originalFile, originalFileBytes);
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Exception extracting original file from MateCat xliff", e);
         }
     }
@@ -393,7 +397,8 @@ public class XliffProcessor {
 
     /**
      * Reconstruct the manifest and save it in the pack
-     * @param packFolder Pack's folder
+     *
+     * @param packFolder      Pack's folder
      * @param manifestElement XML element containing the manifest
      */
     private String reconstructManifest(File packFolder, Element manifestElement) {
@@ -447,8 +452,7 @@ public class XliffProcessor {
             FileUtils.writeStringToFile(manifestFile, manifest, StandardCharsets.UTF_8);
 
             return originalFilename;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Exception extracting Okapi manifest from MateCat xliff", e);
         }
     }
@@ -457,17 +461,16 @@ public class XliffProcessor {
     /**
      * Reconstruct the original XLF used to derive this XLF; and save it into the work folder
      * inside the pack
-     *
+     * <p>
      * This is done by simply removing the file and manifest XML elements.
-     * @param packFolder Pack's folder
-     * @param document XML document
-     * @param fileElement XML element containing the file
+     *
+     * @param packFolder      Pack's folder
+     * @param document        XML document
+     * @param fileElement     XML element containing the file
      * @param manifestElement XML element containing the manifest
      */
     private void reconstructOriginalXlf(File packFolder, Document document, Element fileElement, Element manifestElement, String originalFilename) {
-
         try {
-
             // Get root
             Element root = document.getDocumentElement();
 
@@ -498,9 +501,7 @@ public class XliffProcessor {
                 workFolder.mkdir();
 
             // Save the file
-
             String xlfOutputPath = workFolder.getPath() + File.separator + originalFilename + ".xlf";
-
             // The Java Transformer doesn't update the XML prolog with the
             // output encoding.
             // For example, if you read a UTF-16 XML and rewrite it as UTF-8,
@@ -519,9 +520,8 @@ public class XliffProcessor {
                 DOMSource domSource = new DOMSource(document);
                 transformer.transform(domSource, streamResult);
             }
-
         } catch (TransformerException | IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't reconstruct the original XLIFF file " + originalFilename + " in " + packFolder, e);
         }
     }
 
