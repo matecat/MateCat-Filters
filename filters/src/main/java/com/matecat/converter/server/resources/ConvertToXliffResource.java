@@ -98,7 +98,6 @@ public class ConvertToXliffResource extends BaseResource {
 
                 // Set OK flag
                 everythingOk = true;
-                MDC.put(SUCCESSFUL, String.valueOf(true));
                 LOGGER.info("Successfully returned XLIFF file");
             } catch (Exception e) {
                 // If there is any error, return it

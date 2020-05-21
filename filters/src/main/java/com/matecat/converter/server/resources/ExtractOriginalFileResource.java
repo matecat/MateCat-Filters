@@ -65,7 +65,6 @@ public class ExtractOriginalFileResource extends BaseResource {
 
                 // Set OK flag
                 everythingOk = true;
-                MDC.put(SUCCESSFUL, String.valueOf(true));
                 LOGGER.info("Successfully returned source file");
             } catch (Exception e) {
                 // Save error message
