@@ -67,8 +67,8 @@ public class GenerateDerivedFileResource extends BaseResource {
                 MDC.put(SUCCESSFUL, String.valueOf(true));
                 LOGGER.info("Successfully returned target file");
             } catch (Exception e) {
-                // save error message
-                errorMessage = e.toString();
+                // save the error message
+                errorMessage = prepareErrorMessage(e);
                 LOGGER.error("Exception converting XLIFF to target", e);
             } finally {
                 // Create response

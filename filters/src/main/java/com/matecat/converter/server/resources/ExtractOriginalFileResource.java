@@ -68,8 +68,8 @@ public class ExtractOriginalFileResource extends BaseResource {
                 MDC.put(SUCCESSFUL, String.valueOf(true));
                 LOGGER.info("Successfully returned source file");
             } catch (Exception e) {
-                // Save error message
-                errorMessage = e.toString();
+                // save the error message
+                errorMessage = prepareErrorMessage(e);
                 LOGGER.error("Exception converting XLIFF to source", e);
             } finally {
                 // Create response

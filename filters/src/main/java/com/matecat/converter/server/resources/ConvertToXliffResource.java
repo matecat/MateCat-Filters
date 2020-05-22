@@ -5,8 +5,6 @@ import com.matecat.converter.core.project.ProjectFactory;
 import com.matecat.converter.server.JSONResponseFactory;
 import com.matecat.converter.server.exceptions.ServerException;
 import com.matecat.filters.basefilters.FiltersRouter;
-import net.sf.okapi.common.exceptions.OkapiEncryptedDataException;
-import net.sf.okapi.common.exceptions.OkapiUnexpectedRevisionException;
 import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -101,15 +99,8 @@ public class ConvertToXliffResource extends BaseResource {
                 MDC.put(SUCCESSFUL, String.valueOf(true));
                 LOGGER.info("Successfully returned XLIFF file");
             } catch (Exception e) {
-                // If there is any error, return it
-                if (e instanceof OkapiUnexpectedRevisionException) {
-                    errorMessage = "Document contains revisions or comments, please review and remove them.";
-                } else if (e instanceof OkapiEncryptedDataException) {
-                    errorMessage = "Document is password protected: can't access contents.";
-                } else {
-                    errorMessage = e.toString();
-                }
-                MDC.put("exception", e.toString());
+                // save the error message
+                errorMessage = prepareErrorMessage(e);
                 LOGGER.error("Exception converting source to XLIFF", e);
             } finally {
                 // Create response
