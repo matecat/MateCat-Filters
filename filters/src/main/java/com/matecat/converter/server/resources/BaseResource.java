@@ -1,6 +1,7 @@
 package com.matecat.converter.server.resources;
 
 import com.matecat.converter.core.project.Project;
+import com.matecat.converter.server.MatecatConverterServer;
 import com.matecat.logging.StoringAppender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -57,7 +57,7 @@ public class BaseResource {
      */
     protected String generateRequestId() {
         final ThreadLocalRandom rand = ThreadLocalRandom.current();
-        return String.format("%1$tH%1$tM-%2$xd", new Date(), rand.nextLong());
+        return String.format("%s-%xd", MatecatConverterServer.getLocalIP(), rand.nextLong());
     }
 
     /**

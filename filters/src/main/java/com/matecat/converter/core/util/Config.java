@@ -37,6 +37,9 @@ public class Config {
             LOGGER.debug("Loaded configuration:");
 
             serverPort = Integer.parseInt(props.getProperty("server-port"));
+            if (serverPort <= 0) {
+                throw new RuntimeException("The server port specified in the configuration must be positive");
+            }
             LOGGER.debug("  Server port: {}", serverPort);
 
             String cacheFolderVal = checkFolderValidity(props.getProperty("cache-folder"), true, true);
