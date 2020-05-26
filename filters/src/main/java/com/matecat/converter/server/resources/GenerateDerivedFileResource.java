@@ -64,7 +64,6 @@ public class GenerateDerivedFileResource extends BaseResource {
                 MDC.put(TARGET_FILESIZE, String.valueOf(derivedFile.length()));
 
                 everythingOk = true;
-                MDC.put(SUCCESSFUL, String.valueOf(true));
                 LOGGER.info("Successfully returned target file");
             } catch (Exception e) {
                 // save the error message

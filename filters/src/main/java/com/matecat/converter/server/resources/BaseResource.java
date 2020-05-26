@@ -116,6 +116,7 @@ public class BaseResource {
      * @param reqOutcome      true if request successful
      */
     protected void requestCleanup(InputStream fileInputStream, boolean debugMode, Project project, boolean reqOutcome) {
+        MDC.put(SUCCESSFUL, String.valueOf(reqOutcome));
         // Close the file stream
         if (fileInputStream != null)
             try {
