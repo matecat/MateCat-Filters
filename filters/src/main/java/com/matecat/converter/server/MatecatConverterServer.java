@@ -38,19 +38,6 @@ public class MatecatConverterServer {
 
 
     /**
-     * Constructor admitting a configured port
-     *
-     * @param serverPort Port to use
-     */
-    public MatecatConverterServer(int serverPort) {
-        if (serverPort < 0)
-            throw new IllegalArgumentException("The port specified in the configuration is not valid");
-        this.serverPort = serverPort;
-        init();
-    }
-
-
-    /**
      * Stop the server
      */
     public void stop() {

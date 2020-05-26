@@ -34,13 +34,18 @@ public class Config {
         try (InputStream inputStream = System.class.getResourceAsStream("/config.properties")) {
             Properties props = new Properties();
             props.load(inputStream);
-            LOGGER.debug("Loaded configuration:");
 
             serverPort = Integer.parseInt(props.getProperty("server-port"));
             if (serverPort <= 0) {
-                throw new RuntimeException("The server port specified in the configuration must be positive");
+                throw new RuntimeException("Server port must be positive");
             }
-            LOGGER.debug("  Server port: {}", serverPort);
+            if (serverPort < 1024) {
+                if ("root".equals(System.getProperty("user.name"))) {
+                    LOGGER.warn("Launching with 'root' user and privileged port " + serverPort + " is DISCOURAGED");
+                } else {
+                    throw new RuntimeException("Using privileged port " + serverPort + " with non 'root' user");
+                }
+            }
 
             String cacheFolderVal = checkFolderValidity(props.getProperty("cache-folder"), true, true);
             if (cacheFolderVal.isEmpty()) {
@@ -53,19 +58,15 @@ public class Config {
                 LOGGER.warn("cache-folder param empty or invalid: caching in OS temp folder");
             }
             cacheFolder = cacheFolderVal;
-            LOGGER.debug("  Cache folder: {}", cacheFolder);
 
             errorsFolder = checkFolderValidity(props.getProperty("errors-folder"), true, true);
             if (errorsFolder.isEmpty()) {
                 LOGGER.warn("error-folder param empty or invalid: errors backup disabled");
             }
-            LOGGER.debug("  Error folder: {}", errorsFolder);
 
             deleteOnClose = Boolean.parseBoolean(props.getProperty("delete-on-close"));
-            LOGGER.debug("  Delete on close: {}", deleteOnClose);
 
             winConvEnabled = Boolean.parseBoolean(props.getProperty("win-conv-enabled"));
-            LOGGER.debug("  WinConverter enabled: {}", winConvEnabled);
 
             String winConvertersOcrValue = props.getProperty("win-converters-ocr");
             if (winConvertersOcrValue != null) {
@@ -73,7 +74,6 @@ public class Config {
             } else {
                 winConvertersOcr = new ArrayList<>();
             }
-            LOGGER.debug("  WinConverters with OCR: {}", winConvertersOcr);
 
             String winConvertersNoOcrValue = props.getProperty("win-converters-no-ocr");
             if (winConvertersNoOcrValue != null) {
@@ -81,7 +81,6 @@ public class Config {
             } else {
                 winConvertersNoOcr = new ArrayList<>();
             }
-            LOGGER.debug("  WinConverters without OCR: {}", winConvertersNoOcr);
 
             // if win converter enabled check lists of converter addresses is not empty
             if (winConvEnabled && winConvertersOcr.isEmpty() && winConvertersNoOcr.isEmpty()) {
@@ -103,17 +102,25 @@ public class Config {
             }
             filtersList.add(DefaultFilter.class);
             customFilters = Collections.unmodifiableList(filtersList);
-            LOGGER.debug("  Custom filter classes: {}", customFilters);
 
             // load the custom segmentation directory value
             customSegmentationFolder = checkFolderValidity(props.getProperty("custom-segmentation-folder"), false, false);
             if (customSegmentationFolder.isEmpty()) {
                 LOGGER.warn("custom-segmentation-folder param empty or invalid: custom segmentation disabled");
             }
-            LOGGER.debug("  Custom segmentation folder: {}", customSegmentationFolder);
 
+            LOGGER.debug("Loaded configuration:");
+            LOGGER.debug("  Server port: {}", serverPort);
+            LOGGER.debug("  Cache folder: {}", cacheFolder);
+            LOGGER.debug("  Error folder: {}", errorsFolder);
+            LOGGER.debug("  Delete on close: {}", deleteOnClose);
+            LOGGER.debug("  WinConverter enabled: {}", winConvEnabled);
+            LOGGER.debug("  WinConverters with OCR: {}", winConvertersOcr);
+            LOGGER.debug("  WinConverters without OCR: {}", winConvertersNoOcr);
+            LOGGER.debug("  Custom filter classes: {}", customFilters);
+            LOGGER.debug("  Custom segmentation folder: {}", customSegmentationFolder);
         } catch (Exception e) {
-            throw new RuntimeException("Exception while loading config.properties.", e);
+            throw new RuntimeException("Configuration problem", e);
         }
     }
 
