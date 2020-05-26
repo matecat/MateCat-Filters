@@ -1,10 +1,6 @@
 package com.matecat.converter.server;
 
 import com.matecat.converter.core.util.Config;
-import com.matecat.converter.server.resources.ConvertToXliffResource;
-import com.matecat.converter.server.resources.ExtractOriginalFileResource;
-import com.matecat.converter.server.resources.GenerateDerivedFileResource;
-import com.matecat.converter.server.resources.TestConnectionResource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -18,9 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.BindException;
-import java.net.InetAddress;
-import java.net.URL;
+import java.net.*;
 
 
 /**
@@ -28,42 +22,17 @@ import java.net.URL;
  */
 public class MatecatConverterServer {
 
-    // Logger
     private static final Logger LOGGER = LoggerFactory.getLogger(MatecatConverterServer.class);
-
-    // Used port
-    private int serverPort;
-
-    // Server
     private Server server;
-    private String localIP, externalIP;
+    private final int serverPort;
+    private static String localIP, externalIP;
 
 
     /**
      * Constructor which will use the default port
      */
     public MatecatConverterServer() {
-        try {
-            int port = Config.serverPort;
-            if (port <= 0)
-                throw new Exception();
-            this.serverPort = port;
-            init();
-        }
-        catch (Exception e) {
-            throw new RuntimeException("There is no default port specified in the configuration");
-        }
-    }
-
-
-    /**
-     * Constructor admitting a configured port
-     * @param serverPort Port to use
-     */
-    public MatecatConverterServer(int serverPort) {
-        if (serverPort < 0)
-            throw new IllegalArgumentException("There port specified in the configuration is not valid");
-        this.serverPort = serverPort;
+        this.serverPort = Config.serverPort;
         init();
     }
 
@@ -82,6 +51,7 @@ public class MatecatConverterServer {
 
     /**
      * Check if the server has been started (this is, ready to receive requests)
+     *
      * @return True if started, false otherwise
      */
     public boolean isStarted() {
@@ -91,6 +61,7 @@ public class MatecatConverterServer {
 
     /**
      * Check if the server is stopped
+     *
      * @return True if stopped, false otherwise
      */
     public boolean isStopped() {
@@ -100,16 +71,18 @@ public class MatecatConverterServer {
 
     /**
      * Get external IP
+     *
      * @return External IP
      */
-    private String getExternalIP() {
+    public static String getExternalIP() {
         if (externalIP == null) {
             try {
                 URL whatismyip = new URL("http://checkip.amazonaws.com");
                 BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
                 externalIP = in.readLine();
                 in.close();
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         }
         return externalIP;
     }
@@ -117,14 +90,26 @@ public class MatecatConverterServer {
 
     /**
      * Get local IP
+     *
      * @return Local IP
      */
-    private String getLocalIP() {
+    public static String getLocalIP() {
         if (localIP == null) {
-            try {
-                localIP = InetAddress.getLocalHost().getHostAddress();
+            // this method is deemed to be more reliable and cover more networking scenarios
+            // it has also the advantage that does not perform any lookup
+            // from https://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java
+            try (final DatagramSocket socket = new DatagramSocket()) {
+                // the address below does not need to exist or be reachable
+                socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+                localIP = socket.getLocalAddress().getHostAddress();
+            } catch (UnknownHostException | SocketException e) {
+                // fallback using InetAddress which performs a DNS lookup
+                try {
+                    localIP = InetAddress.getLocalHost().getHostAddress();
+                } catch (IOException ignored) {
+                    throw new RuntimeException("Unable to determine local IP address");
+                }
             }
-            catch (IOException ignored) {}
         }
         return localIP;
     }
@@ -137,17 +122,15 @@ public class MatecatConverterServer {
             initServer();
             server.start();
             LOGGER.info("Server started at {}:{} / {}:{}", getExternalIP(), serverPort, getLocalIP(), serverPort);
-        }
-        catch (BindException e) {
+        } catch (BindException e) {
             LOGGER.error("Port " + serverPort + " already in use");
             System.exit(-1);
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             LOGGER.error("Server has been interrupted", e);
-            throw new RuntimeException("The server has been interrupted");
+            throw new RuntimeException("The server has been interrupted", e);
         } catch (Exception e) {
-            LOGGER.error("Exception starting the server", e);
-            throw new RuntimeException("Unknown internal server problem");
+            LOGGER.error("Internal server problem", e);
+            throw new RuntimeException("Internal server problem", e);
         }
     }
 
@@ -156,13 +139,9 @@ public class MatecatConverterServer {
      * Initialize the resources and other aspects of the server
      */
     private void initServer() {
-
         // Configure the server
         ResourceConfig resourceConfig = new ResourceConfig();
-        resourceConfig.packages(ConvertToXliffResource.class.getPackage().getName());
-        resourceConfig.packages(GenerateDerivedFileResource.class.getPackage().getName());
-        resourceConfig.packages(ExtractOriginalFileResource.class.getPackage().getName());
-        resourceConfig.packages(TestConnectionResource.class.getPackage().getName());
+        resourceConfig.packages("com.matecat.converter.server.resources");
         resourceConfig.register(JacksonFeature.class);
         resourceConfig.register(MultiPartFeature.class);
         ServletContainer servletContainer = new ServletContainer(resourceConfig);

@@ -33,7 +33,7 @@ public class ConvertToXliffResourceTest {
 
     @Before
     public void setUp() throws Exception {
-        server = new MatecatConverterServer(PORT);
+        server = new MatecatConverterServer();
         while (!server.isStarted())
             Thread.sleep(100);
     }
