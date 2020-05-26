@@ -3,6 +3,8 @@ package com.matecat.converter.server.resources;
 import com.matecat.converter.core.project.Project;
 import com.matecat.converter.server.MatecatConverterServer;
 import com.matecat.logging.StoringAppender;
+import net.sf.okapi.common.exceptions.OkapiEncryptedDataException;
+import net.sf.okapi.common.exceptions.OkapiUnexpectedRevisionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -47,8 +49,8 @@ public class BaseResource {
      */
     protected enum Operations {
         SOURCE2XLIFF, XLIFF2SOURCE, XLIFF2TARGET;
-    }
 
+    }
     /**
      * Builds a random request id with the pattern HHMM-################# where
      * HH = hour, MM = minutes and # = a random alphanumeric character.
@@ -128,5 +130,32 @@ public class BaseResource {
             LOG_CAPTURER.clear();
             LOG_CAPTURER.deinstall();
         }
+    }
+
+    /**
+     * Build an error message chaining the throwable in the exception or using canned strings.
+     * <p>
+     * Also store the message in the MDC.
+     *
+     * @param ex the exception
+     * @return the build error message
+     */
+    protected String prepareErrorMessage(Exception ex) {
+        StringBuilder sb = new StringBuilder();
+        if (ex instanceof OkapiUnexpectedRevisionException) {
+            sb.append("Document contains revisions or comments, please review and remove them.");
+        } else if (ex instanceof OkapiEncryptedDataException) {
+            sb.append("Document is password protected: can't access contents.");
+        } else {
+            sb.append(ex.toString());
+            Throwable cause = ex.getCause();
+            while (cause != null) {
+                sb.append(" caused by ").append(cause.toString());
+                cause = cause.getCause();
+            }
+        }
+        final String errorMessage = sb.toString();
+        MDC.put("exception", errorMessage);
+        return errorMessage;
     }
 }
