@@ -1,11 +1,15 @@
 ![MateCat Filters Logo]("http://i.imgur.com/J8FSuWi.png")
 
 
-# Retirement
+# New hosted service, premier enterprise solutions, open-source no longer supported
 
-As of **June 2020** this repository is put in read only mode (archived).
-Translated has decided to continue the development of the **MateCat Filters** project in a wider context but in-house.
-The future MateCat Filters versions will still be usable via the [hosted API](https://rapidapi.com/translated/api/matecat-filters/). A [basic free plan](https://docs.rapidapi.com/docs/api-pricing) will allow trial and testing.
+**MateCat Filters** have been used by many corporations in mission-critical production environments. Unfortunately we can no longer provide this project for free given its maintenance costs. For this reason, as of **June 2020**, we decided to:
+- put the repository in read only mode (archived)
+- still offer the filters via the [hosted API](https://rapidapi.com/translated/api/matecat-filters/)
+- support enterprises with custom solutions
+- hire full time engineers dedicated to the project.
+
+While we are sad of terminating the open source project, we believe this will offer a better service for all users.
 
 The source herein corresponds to version _1.2.5_ based on Okapi version _M36_.
 
