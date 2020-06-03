@@ -4,11 +4,10 @@
 # Retirement
 
 As of **June 2020** this repository is put in read only mode (archived).
-Translated decided to close the sources of the **MateCat Filters** project.
+Translated has decided to continue the development of the **MateCat Filters** project in a wider context but in-house.
+The future MateCat Filters versions will still be usable via the [hosted API](https://rapidapi.com/translated/api/matecat-filters/). A [basic free plan](https://docs.rapidapi.com/docs/api-pricing) will allow trial and testing.
+
 The source herein corresponds to version _1.2.5_ based on Okapi version _M36_.
-
-The MateCat Filters will still be usable via the [hosted API](https://rapidapi.com/translated/api/matecat-filters/). A [basic free plan](https://docs.rapidapi.com/docs/api-pricing) will allow trial and testing.
-
 
 ## Convert any file to XLIFF and back
 
